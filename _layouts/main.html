@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ site.title }}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/4.0.21/fullpage.min.css">
+
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <div id="fullpage">
+        <div class="section" id="section1">
+            <div class="container text-center">
+                <h1>Welcome to {{ site.title }}</h1>
+                <p>{{ site.description }}</p>
+                <p>Scroll down to explore more.</p>
+            </div>
+        </div>
+
+        <div class="section" id="section2">
+            <div class="container text-center">
+                <h2>Section 2: Movie Trends</h2>
+                <p>Discover insights into the evolution of cinema.</p>
+            </div>
+        </div>
+
+        <div class="section" id="section3">
+            <div class="container text-center">
+                <h2>Section 3: Data Insights</h2>
+                <p>Explore visualizations and analytics of the movie industry.</p>
+            </div>
+        </div>
+
+
+        <div class="section" id="team-section">
+            <div class="container text-center">
+                <h2>Meet Our Team</h2>
+                <p>(randomized order)</p>
+                <div class="row justify-content-center" id="team-container">
+                    {% for member in site.data.team %}
+                    <div class="col-md-4 text-center team-member" data-order="{{ forloop.index }}">
+                        <img src="/assets/images/{{ member.photo }}" alt="{{ member.name }}" class="team-photo">
+                        <h3>{{ member.name }}</h3>
+                        {{ member.status }}
+                        <!-- icon for mail, github, linkedin, X, homepage -->
+                        <div class="team-social">
+                            {% if member.homepage %}
+                            <a href="{{ member.homepage }}"><i class="fas fa-home"></i></a>
+                            {% endif %}
+                            {% if member.google_scholar %}
+                            <a href="{{ member.google_scholar }}"><i class="fas fa-graduation-cap"></i></a>
+                            {% endif %}
+                            {% if member.email %}
+                            <a href="mailto:{{ member.email }}"><i class="fas fa-envelope"></i></a>
+                            {% endif %}
+                            {% if member.github %}
+                            <a href="https://github.com/{{ member.github }}"><i class="fab fa-github"></i></a>
+                            {% endif %}
+                            {% if member.linkedin %}
+                            <a href="{{ member.linkedin }}"><i class="fab fa-linkedin"></i></a>
+                            {% endif %}
+                            {% if member.twitter %}
+                            <a href="{{ member.twitter }}"><i class="fab fa-twitter"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="footer-section">
+            <div class="container text-center" style="font-size: 14pt;">
+                <p>This project has been presented as the course project of CS-401: Applied Data Analysis course in Fall 2024 at EPFL.</p>
+                <p><code>Code</code> 💻 and analysis 🧐 with ❤️ by the team.</p>
+                <!-- epfl and ada course logo -->
+                <div class="footer-logo">
+                    <img src="/assets/images/epfl.png" alt="EPFL Logo" class="epfl-logo" style="height: 100px;">
+                    <img src="/assets/images/ada.svg" alt="ADA Course Logo" class="ada-logo" style="height: 100px;">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/4.0.21/fullpage.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            new fullpage('#fullpage', {
+                autoScrolling: true,
+                scrollHorizontally: false,
+                navigation: true,
+                navigationPosition: 'right',
+                showActiveTooltip: true,
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const container = document.getElementById('team-container');
+            const items = Array.from(container.children);
+            items.sort(() => Math.random() - 0.5);
+            items.forEach((item) => {
+                container.appendChild(item);
+            });
+        });
+    </script>
+</body>
+
+</html>
