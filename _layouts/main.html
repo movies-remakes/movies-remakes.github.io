@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -29,6 +31,11 @@
             <div class="container text-center">
                 <h2>Section 2: Movie Trends</h2>
                 <p>Discover insights into the evolution of cinema.</p>
+                <div class="row justify-content-center mt-4">
+                    <div class="col-md-8">
+                        <canvas id="movieRevenueChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -38,7 +45,6 @@
                 <p>Explore visualizations and analytics of the movie industry.</p>
             </div>
         </div>
-
 
         <div class="section" id="team-section">
             <div class="container text-center">
@@ -79,7 +85,8 @@
 
         <div class="section" id="footer-section">
             <div class="container text-center" style="font-size: 14pt;">
-                <p>This project has been presented as the course project of CS-401: Applied Data Analysis course in Fall 2024 at EPFL.</p>
+                <p>This project has been presented as the course project of CS-401: Applied Data Analysis course in Fall
+                    2024 at EPFL.</p>
                 <p><code>Code</code> 💻 and analysis 🧐 with ❤️ by the team.</p>
                 <!-- epfl and ada course logo -->
                 <div class="footer-logo">
