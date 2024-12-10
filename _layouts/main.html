@@ -29,8 +29,401 @@
 
         <div class="section" id="section2">
             <div class="container text-center">
-                <h2>Section 2: Movie Trends</h2>
-                <p>Discover insights into the evolution of cinema.</p>
+                <h2>Data</h2>
+                <p>hover on the sources or columns!</p>
+                <div style="height: 40px;"></div>
+                <style>
+                    .data-visualization-wrapper * {
+                        box-sizing: border-box;
+                        margin: 0;
+                        padding: 0;
+                    }
+
+                    .data-visualization-wrapper {
+                        font-family: Arial, sans-serif;
+                        margin: 20px;
+                        margin: 0 auto;
+                    }
+
+                    .data-visualization-wrapper .container {
+                        position: relative;
+                    }
+
+                    .data-visualization-wrapper .logos {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-bottom: 250px;
+                    }
+
+                    .data-visualization-wrapper .logo {
+                        position: relative;
+                    }
+
+                    .data-visualization-wrapper .logo img {
+                        width: 100px;
+                        cursor: pointer;
+                        transition: transform 0.3s;
+                        border-radius: 15px;
+                        z-index: 1000;
+                    }
+
+                    .data-visualization-wrapper .logo img:hover {
+                        transform: scale(1.05);
+                    }
+
+                    .data-visualization-wrapper .logo .tooltip {
+                        visibility: hidden;
+                        width: max-content;
+                        background-color: #1dafc6;
+                        color: #fff;
+                        text-align: center;
+                        border-radius: 5px;
+                        padding: 5px 10px;
+                        position: absolute;
+                        bottom: 110%;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        opacity: 0;
+                        z-index: 100;
+                    }
+
+                    .data-visualization-wrapper .logo .tooltip::after {
+                        content: "";
+                        position: absolute;
+                        top: 100%;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        border-width: 5px;
+                        border-style: solid;
+                        border-color: #333 transparent transparent transparent;
+                    }
+
+                    .data-visualization-wrapper .logo:hover .tooltip {
+                        visibility: visible;
+                        opacity: 1;
+                    }
+
+                    .data-visualization-wrapper #data-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        table-layout: fixed;
+                        background-color: #fff;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        margin-bottom: 40px;
+                    }
+
+                    .data-visualization-wrapper #data-table th,
+                    .data-visualization-wrapper #data-table td {
+                        border: 1px solid #ddd;
+                        padding: 12px;
+                        text-align: center;
+                        height: 50px;
+                        word-wrap: break-word;
+                        width: calc(100% / 14);
+                        position: relative;
+                    }
+
+                    .data-visualization-wrapper #data-table th {
+                        background-color: #f4f4f4;
+                        transition: background-color 0.3s;
+                    }
+
+                    .data-visualization-wrapper #data-table th:hover {
+                        background-color: #e0e0e0;
+                    }
+
+                    .data-visualization-wrapper #data-table th .tooltip {
+                        visibility: hidden;
+                        width: max-content;
+                        background-color: #1dafc6;
+                        color: #fff;
+                        text-align: center;
+                        border-radius: 5px;
+                        padding: 5px 10px;
+                        position: absolute;
+                        top: 110%;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        opacity: 0;
+                        z-index: 100;
+                    }
+
+                    .data-visualization-wrapper #data-table th .tooltip::after {
+                        content: "";
+                        position: absolute;
+                        bottom: 100%;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        border-width: 5px;
+                        border-style: solid;
+                        border-color: transparent transparent #333 transparent;
+                    }
+
+                    .data-visualization-wrapper #data-table th:hover .tooltip {
+                        visibility: visible;
+                        opacity: 1;
+                    }
+
+                    .data-visualization-wrapper .arrows {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 500px;
+                        pointer-events: none;
+                        z-index: 1;
+                    }
+
+                    .data-visualization-wrapper .arrow-line {
+                        stroke: #f2f2f2;
+                        stroke-width: 2;
+                        transition: stroke 0.3s;
+                    }
+
+                    .data-visualization-wrapper .arrow-line.dashed {
+                        stroke-dasharray: 4;
+                    }
+
+                    .data-visualization-wrapper .arrow-line.hovered {
+                        stroke: #555;
+                        z-index: 1000;
+                    }
+
+                    @media (max-width: 768px) {
+                        .data-visualization-wrapper .logos {
+                            flex-direction: column;
+                            align-items: center;
+                            margin-bottom: 20px;
+                        }
+
+                        .data-visualization-wrapper .logo {
+                            margin-bottom: 10px;
+                        }
+
+                        .data-visualization-wrapper .arrows {
+                            height: 700px;
+                        }
+
+                        .data-visualization-wrapper #data-table th,
+                        .data-visualization-wrapper #data-table td {
+                            padding: 8px;
+                            height: 40px;
+                        }
+                    }
+                </style>
+
+                <div class="data-visualization-wrapper">
+                    <div class="container">
+                        <div class="logos">
+                            <div class="logo" id="cmu-logo">
+                                <img src="/assets/images/cmu_logo.jpg" alt="CMU Movie Corpus">
+                                <div class="tooltip">CMU Movie Corpus</div>
+                            </div>
+                            <div class="logo" id="tmdb-logo">
+                                <img src="/assets/images/tmdb_logo.png" alt="TMDB">
+                                <div class="tooltip">TMDB</div>
+                            </div>
+                            <div class="logo" id="imdb-logo">
+                                <img src="/assets/images/imdb_logo.png" alt="IMDb">
+                                <div class="tooltip">IMDb
+                                    information.</div>
+                            </div>
+                            <div class="logo" id="wikipedia-logo">
+                                <img src="/assets/images/wiki_logo.png" alt="Wikipedia">
+                                <div class="tooltip">Wikipedia</div>
+                            </div>
+                        </div>
+
+                        <table id="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Name<br>📇<div class="tooltip">Title of the Movie</div>
+                                    </th>
+                                    <th>Genre<br>🍿<div class="tooltip">The date when the movie was released.</div>
+                                    </th>
+                                    <th>Year<br>𝟚𝟘𝟚𝟜<div class="tooltip">The release date of the movie.</div>
+                                    </th>
+                                    <th>Type<br>🅾️🅰️🅱️<div class="tooltip">Whether is this a regular, short, or ...
+                                            movie.</div>
+                                    </th>
+                                    <th>Country<br>🇨🇭<div class="tooltip">The origin of the movie.</div>
+                                    </th>
+                                    <th>Lang<br>㍻<div class="tooltip">The language of the movie.</div>
+                                    </th>
+                                    <th>Runtime<br>⏱️<div class="tooltip">The duration of a movie.</div>
+                                    </th>
+                                    <th>Budget<br>💵<div class="tooltip">The budget expended for the production.</div>
+                                    </th>
+                                    <th>Revenue<br>🤑<div class="tooltip">The revenue of the movie.</div>
+                                    </th>
+                                    <th>Votes<br>🗳️<div class="tooltip">The number and average votes of people for the
+                                            movie.</div>
+                                    </th>
+                                    <th>Crew<br>✨<div class="tooltip">The stars and crew of the movie.</div>
+                                    </th>
+                                    <th>Adult<br>🔞<div class="tooltip">If the movie is for adults only</div>
+                                    </th>
+                                    <th>Plot<br>🗺️<div class="tooltip">The summary of the plot.</div>
+                                    </th>
+                                    <th>Remake<br>♻️<div class="tooltip">Whether is the movie remade or is a reference
+                                            for a remake.</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <svg class="arrows" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5"
+                                    orient="auto">
+                                    <path d="M0,0 L10,3.5 L0,7 Z" fill="#555" />
+                                </marker>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+
+                <script>
+                    window.addEventListener('load', () => {
+                        const svg = document.querySelector('.arrows');
+                        const logos = document.querySelectorAll('.logo');
+                        const table = document.getElementById('data-table');
+                        const headers = table.querySelectorAll('th');
+
+                        const sourceToColumns = {
+                            'cmu-logo': [{ column: 12, type: 'solid' }, { column: 1, type: 'solid' }, { column: 4, type: 'solid' }, { column: 6, type: 'dashed' }, { column: 8, type: 'solid' }, { column: 11, type: 'solid' }, { column: 2, type: 'solid' }, { column: 0, type: 'solid' },],
+                            'tmdb-logo': [{ column: 12, type: 'dashed' }, { column: 1, type: 'dashed' }, { column: 4, type: 'dashed' }, { column: 6, type: 'solid' }, { column: 7, type: 'solid' }, { column: 8, type: 'dashed' }, { column: 9, type: 'dashed' }, { column: 2, type: 'dashed' }],
+                            'imdb-logo': [{ column: 1, type: 'dashed' }, { column: 6, type: 'dashed' }, { column: 5, type: 'solid' }, { column: 11, type: 'dashed' }, { column: 10, type: 'solid' }, { column: 9, type: 'solid' } , { column: 3, type: 'solid' }, { column: 2, type: 'dashed' }],
+                            'wikipedia-logo': [ { column: 13, type: 'solid' }]
+                        };
+
+                        logos.forEach(logo => {
+                            const logoId = logo.id;
+                            const mappings = sourceToColumns[logoId];
+                            if (mappings) {
+                                mappings.forEach(({ column, type }) => {
+                                    drawLine(logo, headers[column], type);
+                                });
+                            }
+
+                            logo.addEventListener('mouseover', () => {
+                                highlightLinesBySource(logoId, true);
+                            });
+
+                            logo.addEventListener('mouseout', () => {
+                                highlightLinesBySource(logoId, false);
+                            });
+                        });
+
+                        headers.forEach((header, colIndex) => {
+                            header.addEventListener('mouseover', () => {
+                                highlightLinesByColumn(colIndex, true);
+                            });
+
+                            header.addEventListener('mouseout', () => {
+                                highlightLinesByColumn(colIndex, false);
+                            });
+                        });
+
+                        function drawLine(sourceElement, targetElement, lineType) {
+                            const svgNS = "http://www.w3.org/2000/svg";
+
+                            const sourceRect = sourceElement.getBoundingClientRect();
+                            const targetRect = targetElement.getBoundingClientRect();
+                            const containerRect = document.querySelector('.data-visualization-wrapper').getBoundingClientRect();
+
+                            const startX = sourceRect.left + sourceRect.width / 2 - containerRect.left;
+                            const startY = sourceRect.bottom - containerRect.top;
+                            const endX = targetRect.left + targetRect.width / 2 - containerRect.left;
+                            const endY = targetRect.top - containerRect.top;
+
+                            const line = document.createElementNS(svgNS, 'line');
+                            line.setAttribute('x1', startX);
+                            line.setAttribute('y1', startY);
+                            line.setAttribute('x2', endX);
+                            line.setAttribute('y2', endY);
+                            line.classList.add('arrow-line');
+                            if (lineType === 'dashed') {
+                                line.classList.add('dashed');
+                            }
+                            line.dataset.source = sourceElement.id;
+                            line.dataset.target = targetElement.cellIndex;
+
+                            svg.appendChild(line);
+                        }
+
+                        function highlightLinesBySource(sourceId, highlight) {
+                            const lines = document.querySelectorAll(`.arrow-line[data-source="${sourceId}"]`);
+                            lines.forEach(line => {
+                                line.classList.toggle('hovered', highlight);
+                            });
+                        }
+
+                        function highlightLinesByColumn(columnIndex, highlight) {
+                            const lines = document.querySelectorAll(`.arrow-line[data-target="${columnIndex}"]`);
+                            lines.forEach(line => {
+                                line.classList.toggle('hovered', highlight);
+                            });
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+
+        <div class="section" id="section2">
+            <div class="container text-center">
+                <h2>Data</h2>
+                <p>Hover on the sources our columns!</p>
                 <div class="row justify-content-center mt-4">
                     <div class="col-md-8">
                         <canvas id="movieRevenueChart" width="400" height="200"></canvas>
