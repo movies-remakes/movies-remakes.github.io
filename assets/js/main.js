@@ -1,116 +1,198 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const ctx = document.getElementById('movieRevenueChart').getContext('2d');
-
-    // Histogram Data (Bin counts)
-    const bins = [5, 10, 15, 20, 10, 5]; // Counts in each bin
-    const binLabels = ['0-10', '10-20', '20-30', '30-40', '40-50', '50-60']; // Bin labels
-
-    // Distribution Data (e.g., Normal Distribution)
-    const distribution = [3, 8, 18, 15, 7, 2]; // Approximate the curve over the bins
-    const midpoints = [5, 15, 25, 35, 45, 55]; // Midpoints of bins for the curve
-
-    const histogramChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: binLabels, // Bin ranges
-            datasets: [
-                {
-                    type: 'bar',
-                    label: 'Histogram',
-                    data: bins, // Bin counts
-                    backgroundColor: 'rgba(75, 192, 192, 0.6)', // Bars color
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1,
-                },
-                {
-                    type: 'line', // Distribution line
-                    label: 'Distribution',
-                    data: distribution, // Distribution values
-                    borderColor: 'rgba(255, 99, 132, 1)', // Line color
-                    borderWidth: 2,
-                    fill: false, // No area under the curve
-                    tension: 0.4, // Smooth curve
-                    pointRadius: 0, // Hide points
-                },
-            ],
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true, // Show legend
-                },
-            },
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Bins', // X-axis title
-                    },
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Frequency', // Y-axis title
-                    },
-                },
-            },
-        },
+// Function to calculate frequency of elements in an array
+function calculateFrequency(array) {
+    const frequency = {};
+    array.forEach(value => {
+        frequency[value] = (frequency[value] || 0) + 1;
     });
+    // normalize frequency
+    const total = array.length;
+    for (const key in frequency) {
+        frequency[key] /= total;
+    }
+    return frequency;
+}
 
-    // const mySparseLogChart = new Chart(ctx, {
-    //     type: 'line',
-    //     data: {
-    //         labels: ['1', '10', '100', '1000', '10000'], // Labels (e.g., logarithmic intervals)
-    //         datasets: [
-    //             {
-    //                 label: 'Exponential Growth',
-    //                 data: [1, 10, 100, 1000, 10000], // Data points
-    //                 borderColor: 'rgba(75, 192, 192, 1)',
-    //                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
-    //                 borderWidth: 2,
-    //             },
-    //             {
-    //                 label: 'Linear Growth',
-    //                 data: [1, 2, 3, 4, 5], // Another dataset
-    //                 borderColor: 'rgba(153, 102, 255, 1)',
-    //                 backgroundColor: 'rgba(153, 102, 255, 0.2)',
-    //                 borderWidth: 2,
-    //             },
-    //         ],
-    //     },
-    //     options: {
-    //         responsive: true,
-    //         scales: {
-    //             x: {
-    //                 title: {
-    //                     display: true,
-    //                     text: 'X-axis (Linear)', // X-axis title
-    //                 },
-    //             },
-    //             y: {
-    //                 type: 'logarithmic', // Use logarithmic scale for Y-axis
-    //                 title: {
-    //                     display: true,
-    //                     text: 'Y-axis (Logarithmic)', // Y-axis title
-    //                 },
-    //                 ticks: {
-    //                     maxTicksLimit: 5, // Limit the number of ticks on the Y-axis
-    //                     callback: function(value) {
-    //                         // Only show powers of 10 as labels
-    //                         if (value === 1 || value === 10 || value === 100 || value === 1000 || value === 10000) {
-    //                             return value.toLocaleString();
-    //                         }
-    //                         return ''; // Hide intermediate ticks
-    //                     },
-    //                 },
-    //             },
-    //         },
-    //         plugins: {
-    //             legend: {
-    //                 display: true, // Display legend
-    //             },
-    //         },
-    //     },
-    // });
+// Kernel Smoothing Function (Gaussian Kernel)
+function gaussianKernel(frequencies, sigma = 0.1) {
+    const keys = Object.keys(frequencies).map(Number);
+    const minKey = Math.min(...keys);
+    const maxKey = Math.max(...keys);
+
+    const smoothedData = [];
+    const range = [];
+
+    for (let x = minKey; x <= maxKey; x++) {
+        let sum = 0;
+        keys.forEach(key => {
+            const gaussian = Math.exp(-0.5 * ((x - key) ** 2) / sigma ** 2);
+            sum += frequencies[key] * gaussian;
+        });
+        smoothedData.push(sum);
+        range.push(x);
+    }
+    return { range, smoothedData };
+}
+
+// Fetch JSON and render histogram with kernel smoothing
+document.addEventListener("DOMContentLoaded", function () {
+    fetch('/assets/data/columns_data.json')
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            console.log("HTTP success, loading JSON...");
+            return response.json();
+        })
+        .then(data => {
+            if (!data.runtime.original || !data.runtime.remakes) {
+                throw new Error("Invalid JSON structure: 'runtime.original' or 'runtime.remakes' is missing.");
+            }
+
+            // Calculate frequencies
+            const freqOriginal = calculateFrequency(data.runtime.original);
+            const freqRemakes = calculateFrequency(data.runtime.remakes);
+
+            // Apply Gaussian Kernel Smoothing
+            const smoothedOriginal = gaussianKernel(freqOriginal, 2.0);
+            const smoothedRemakes = gaussianKernel(freqRemakes, 2.0);
+
+            // Render Chart.js Bar Chart with Line Smoothing
+            const ctx = document.getElementById('chart-1-2-1').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar', // Histogram style
+                data: {
+                    labels: smoothedOriginal.range, // X-axis: range of values
+                    datasets: [
+                        {
+                            type: 'line',
+                            label: 'Originals',
+                            data: smoothedOriginal.smoothedData,
+                            borderColor: 'blue',
+                            borderWidth: 2,
+                            fill: false,
+                            pointRadius: 0,
+                            tension: 0.4
+                        },
+                        {
+                            type: 'line',
+                            label: 'Remakes',
+                            data: smoothedRemakes.smoothedData,
+                            borderColor: 'red',
+                            borderWidth: 2,
+                            fill: false,
+                            pointRadius: 0,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Runtime (minutes)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Frequency'
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error("Error loading JSON:", error));
+});
+document.addEventListener("DOMContentLoaded", function () {
+    // Fetch the JSON file
+    fetch('/assets/data/features_mean_by_year.json')
+        .then(response => response.json())
+        .then(data => {
+            const years = data.year;
+            const voteAverage = data.vote_average;
+            const starPopularity = data.star_1_popularity;
+            const adjustedBudget = data.adjusted_budget.map(value => value / 1000000);
+
+            const ctx1 = document.getElementById('chart-1-3-1').getContext('2d');
+            new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: years,
+                    datasets: [{
+                        label: 'Vote Average',
+                        data: voteAverage,
+                        borderColor: 'blue',
+                        borderWidth: 2,
+                        pointRadius: 1.5,
+                        pointHoverRadius: 4,
+                        pointBackgroundColor: 'blue',
+                        fill: false,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { title: { display: true, text: 'Year' } },
+                        y: { title: { display: true, text: 'Vote Average' } }
+                    }
+                }
+            });
+
+            // Chart 2: Star 1 Popularity
+            const ctx2 = document.getElementById('chart-1-3-2').getContext('2d');
+            new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: years,
+                    datasets: [{
+                        label: 'Star Popularity',
+                        data: starPopularity,
+                        borderColor: 'green',
+                        borderWidth: 2,
+                        pointRadius: 1.5,
+                        pointHoverRadius: 4,
+                        pointBackgroundColor: 'green',
+                        fill: false,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { title: { display: true, text: 'Year' } },
+                        y: { title: { display: true, text: 'Star 1 Popularity' } }
+                    }
+                }
+            });
+
+            // Chart 3: Adjusted Budget
+            const ctx3 = document.getElementById('chart-1-3-3').getContext('2d');
+            new Chart(ctx3, {
+                type: 'line',
+                data: {
+                    labels: years,
+                    datasets: [{
+                        label: 'Adjusted Budget',
+                        data: adjustedBudget,
+                        borderColor: 'red',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'red',
+                        fill: false,
+                        tension: 0.1,
+                        pointRadius: 1.5,
+                        pointHoverRadius: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { title: { display: true, text: 'Year' } },
+                        y: { title: { display: true, text: 'Adjusted Budget' } }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error("Error loading JSON file:", error));
 });
