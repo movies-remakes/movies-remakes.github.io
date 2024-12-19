@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-error-bars"></script>
 </head>
 
 <body>
@@ -617,6 +619,59 @@
                 </div>
             </div>
         </div>
+
+        <div class="section" id="section1-4">
+            <div class="container text-center">
+                <h2>Error Plot for Vote Average</h2>
+                <canvas id="error-plot-1"></canvas>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        fetch('/assets/data/features_mean_by_year.json')
+                            .then(response => response.json())
+                            .then(data => {
+                                const years = data.year;
+                                const voteAverage = data.vote_average;
+                                const voteError = data.vote_error;
+
+                                // Chart.js Error Bars Format
+                                const errorBarData = voteAverage.map((value, index) => ({
+                                    y: value,
+                                    yMin: value - voteError[index],
+                                    yMax: value + voteError[index]
+                                }));
+
+                                const ctx = document.getElementById('error-plot-1').getContext('2d');
+                                new Chart(ctx, {
+                                    type: 'errorBar', // Use the errorBar chart type
+                                    data: {
+                                        labels: years, // X-axis labels
+                                        datasets: [
+                                            {
+                                                label: 'Vote Average with Error Bars',
+                                                data: errorBarData,
+                                                borderColor: 'blue',
+                                                borderWidth: 2,
+                                                pointRadius: 3,
+                                                pointBackgroundColor: 'blue'
+                                            }
+                                        ]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        scales: {
+                                            x: { title: { display: true, text: 'Year' } },
+                                            y: { title: { display: true, text: 'Vote Average' } }
+                                        }
+                                    }
+                                });
+                            })
+                            .catch(error => console.error("Error loading JSON file:", error));
+                    });
+                </script>
+            </div>
+        </div>
+
 
         <!-- <div class="section" id="section3">
             <div class="container text-center">
