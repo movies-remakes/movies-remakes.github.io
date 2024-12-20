@@ -1500,7 +1500,7 @@
                 </tr>
             </tbody>
         </table>
-
+        <em>Hover on cells to see the p-values.</em>
 
         <p>
             The regression analysis reveals key relationships between original movie features and their corresponding
@@ -1512,15 +1512,32 @@
             originals and remakes.
         </p>
 
-        <script>
-            // Initialize Bootstrap tooltips
-            document.addEventListener('DOMContentLoaded', function () {
-                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-                tooltipTriggerList.forEach(function (tooltipTriggerEl) {
-                    new bootstrap.Tooltip(tooltipTriggerEl)
-                })
-            });
-        </script>
+        <h2>Key Insights from Original vs. Remake Analysis</h2>
+
+        <p>
+            The analysis reveals significant differences between movie originals and their remakes across several
+            features, influenced by the fact that whether a movie is an original or a remake. Remakes tend to have
+            higher star popularity, higher adjusted budgets, and lower vote averages compared to originals. We could
+            interpret this like this: When a movie is good enough, they usually make a remake from it and they usually
+            use super stars and put big budgets into the remake since they believe it would be very successful.
+        </p>
+
+        <p>
+            Furthermore, the regression analysis shows that many remake features, including runtime, vote average,
+            adjusted revenue, and star popularity, are strongly influenced by corresponding features in their originals.
+            This suggests that while remakes are shaped by modern industry dynamics, they also carry forward critical
+            aspects of their originals, such as financial success and audience reception.
+        </p>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1531,6 +1548,15 @@
         <iframe src="/assets/plots/casual_is_remake_ate.html" width="820px" height="620px" frameborder="0"></iframe>
 
         <iframe src="/assets/plots/casual_has_remake_ate.html" width="820px" height="620px" frameborder="0"></iframe>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                    new bootstrap.Tooltip(tooltipTriggerEl)
+                })
+            });
+        </script>
 
         <footer>
             <p>&copy; 2024. All rights reserved.</p>
