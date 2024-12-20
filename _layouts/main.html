@@ -786,11 +786,15 @@
         </h2>
 
         <p>
-            Genres are sorted, but what about the emotions we would like to invoke in our viewers?
+            Genres are sorted, but what about the emotions we want to evoke in our viewers? This is where Large Language
+            Models (LLMs) step in to help. To analyze the sentiment of each movie, we utilize a BERT model alongside
+            plot summaries from our merged dataset. For shorter summaries within the model's input limit, we directly
+            perform sentiment analysis. For longer summaries, we first condense them using a Seq2Seq BERT model,
+            ensuring all plots are effectively analyzed.
         </p>
 
         <p>
-            Even though the sentiment labels for whole movie dataset are more or less evenly split, when it comes to
+            Now, let’s go back to the analysis. Even though the sentiment labels for whole movie dataset are more or less evenly split, when it comes to
             remakes and originals there seems to be a prevalence of movies with sad or negative plots. Sad stories often
             have a strong emotional core that can resonate deeply with audiences, providing a built-in emotional
             investment and a higher potential for audience engagement. Due to nostalgic factor and emotional depth,
