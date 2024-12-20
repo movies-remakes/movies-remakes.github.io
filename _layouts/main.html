@@ -131,6 +131,28 @@
             max-width: 500px;
             margin-top: 40px;
         }
+
+        .matrix-table {
+            margin: 30px auto;
+            table-layout: fixed;
+        }
+
+        .matrix-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .row-name {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        td:hover {
+            background-color: #f8f9fa;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -1179,6 +1201,223 @@
 
 
 
+
+        <h2>Testing for Differences: Mean and Median Analysis</h2>
+
+        <p>
+            In this analysis, we examine whether the mean and median of the differences between features of original
+            movies and their remakes are significantly greater or less than zero. To test the mean, we use a one-sample
+            t-test, and for the median, we apply the Wilcoxon signed-rank test.
+        </p>
+
+        <div class="d-flex align-items-start">
+            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical"
+                style="min-width: 180px;">
+                <button class="nav-link active" id="v-pills-tab-11-2-1" data-bs-toggle="pill"
+                    data-bs-target="#v-pills-11-2-1" type="button" role="tab" aria-controls="v-pills-11-2-1"
+                    aria-selected="true">Runtime</button>
+
+                <button class="nav-link" id="v-pills-tab-11-2-2" data-bs-toggle="pill" data-bs-target="#v-pills-11-2-2"
+                    type="button" role="tab" aria-controls="v-pills-11-2-2" aria-selected="false">Star
+                    Popularity</button>
+
+                <button class="nav-link" id="v-pills-tab-11-2-3" data-bs-toggle="pill" data-bs-target="#v-pills-11-2-3"
+                    type="button" role="tab" aria-controls="v-pills-11-2-3" aria-selected="false">Director
+                    Popularity</button>
+
+                <button class="nav-link" id="v-pills-tab-11-2-4" data-bs-toggle="pill" data-bs-target="#v-pills-11-2-4"
+                    type="button" role="tab" aria-controls="v-pills-11-2-4" aria-selected="false">Writer
+                    Popularity</button>
+
+                <button class="nav-link" id="v-pills-tab-11-2-5" data-bs-toggle="pill" data-bs-target="#v-pills-11-2-5"
+                    type="button" role="tab" aria-controls="v-pills-11-2-5" aria-selected="false">Producer
+                    Popularity</button>
+
+                <button class="nav-link" id="v-pills-tab-11-2-6" data-bs-toggle="pill" data-bs-target="#v-pills-11-2-6"
+                    type="button" role="tab" aria-controls="v-pills-11-2-6" aria-selected="false">Vote Average</button>
+
+                <button class="nav-link" id="v-pills-tab-11-2-7" data-bs-toggle="pill" data-bs-target="#v-pills-11-2-7"
+                    type="button" role="tab" aria-controls="v-pills-11-2-7" aria-selected="false">Vote Count</button>
+
+                <button class="nav-link" id="v-pills-tab-11-2-8" data-bs-toggle="pill" data-bs-target="#v-pills-11-2-8"
+                    type="button" role="tab" aria-controls="v-pills-11-2-8" aria-selected="false">Adjusted
+                    Revenue</button>
+
+                <button class="nav-link" id="v-pills-tab-11-2-9" data-bs-toggle="pill" data-bs-target="#v-pills-11-2-9"
+                    type="button" role="tab" aria-controls="v-pills-11-2-9" aria-selected="false">Adjusted
+                    Budget</button>
+
+                <button class="nav-link" id="v-pills-tab-11-2-10" data-bs-toggle="pill"
+                    data-bs-target="#v-pills-11-2-10" type="button" role="tab" aria-controls="v-pills-11-2-10"
+                    aria-selected="false">Sentiment
+                    Score</button>
+            </div>
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-11-2-1" role="tabpanel"
+                    aria-labelledby="v-pills-tab-11-2-1" tabindex="0">
+                    <iframe src="/assets/plots/runtime_difference_distplot.html" width="820px" height="470px"
+                        frameborder="0"></iframe>
+                </div>
+                <div class="tab-pane fade" id="v-pills-11-2-2" role="tabpanel" aria-labelledby="v-pills-tab-11-2-2"
+                    tabindex="0">
+                    <iframe src="/assets/plots/star_1_popularity_difference_distplot.html" width="820px" height="470px"
+                        frameborder="0"></iframe>
+                </div>
+                <div class="tab-pane fade" id="v-pills-11-2-3" role="tabpanel" aria-labelledby="v-pills-tab-11-2-3"
+                    tabindex="0">
+                    <iframe src="/assets/plots/Director_popularity_difference_distplot.html" width="820px"
+                        height="470px" frameborder="0"></iframe>
+                </div>
+                <div class="tab-pane fade" id="v-pills-11-2-4" role="tabpanel" aria-labelledby="v-pills-tab-11-2-4"
+                    tabindex="0">
+                    <iframe src="/assets/plots/Writer_popularity_difference_distplot.html" width="820px" height="470px"
+                        frameborder="0"></iframe>
+                </div>
+                <div class="tab-pane fade" id="v-pills-11-2-5" role="tabpanel" aria-labelledby="v-pills-tab-11-2-5"
+                    tabindex="0">
+                    <iframe src="/assets/plots/Producer_popularity_difference_distplot.html" width="820px"
+                        height="470px" frameborder="0"></iframe>
+                </div>
+                <div class="tab-pane fade" id="v-pills-11-2-6" role="tabpanel" aria-labelledby="v-pills-tab-11-2-6"
+                    tabindex="0">
+                    <iframe src="/assets/plots/vote_average_difference_distplot.html" width="820px" height="470px"
+                        frameborder="0"></iframe>
+                </div>
+                <div class="tab-pane fade" id="v-pills-11-2-7" role="tabpanel" aria-labelledby="v-pills-tab-11-2-7"
+                    tabindex="0">
+                    <iframe src="/assets/plots/vote_count_difference_distplot.html" width="820px" height="470px"
+                        frameborder="0"></iframe>
+                </div>
+                <div class="tab-pane fade" id="v-pills-11-2-8" role="tabpanel" aria-labelledby="v-pills-tab-11-2-8"
+                    tabindex="0">
+                    <iframe src="/assets/plots/adjusted_revenue_difference_distplot.html" width="820px" height="470px"
+                        frameborder="0"></iframe>
+                </div>
+                <div class="tab-pane fade" id="v-pills-11-2-9" role="tabpanel" aria-labelledby="v-pills-tab-11-2-9"
+                    tabindex="0">
+                    <iframe src="/assets/plots/adjusted_budget_difference_distplot.html" width="820px" height="470px"
+                        frameborder="0"></iframe>
+                </div>
+                <div class="tab-pane fade" id="v-pills-11-2-10" role="tabpanel" aria-labelledby="v-pills-tab-11-2-10"
+                    tabindex="0">
+                    <iframe src="/assets/plots/sentiment_score_difference_distplot.html" width="820px" height="470px"
+                        frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <p>
+            The statistical tests reveal significant differences in features like runtime, star popularity, vote
+            average, adjusted revenue, and adjusted budget. Remakes tend to have longer runtimes, higher star
+            popularity, and higher adjusted budgets and revenues, while vote averages are higher for originals.
+        </p>
+
+        <p>
+            In contrast, features such as director, writer, producer popularity, and sentiment score show no significant
+            differences. Additionally, vote count shows a significant difference in the mean but not the median,
+            reflecting variability.
+        </p>
+
+        <h2>Analyzing Original Features that Influence Remake Features</h2>
+
+        <p>
+            To understand how original movie features influence remakes, we performed regression analyses on a selected
+            subset of remake features: runtime, vote average, vote count, adjusted revenue, adjusted budget, and star 1
+            popularity. Using backward elimination, we identified the most relevant original features impacting each
+            remake feature. The resulting coefficients reveal key relationships, offering insights into how original
+            movies shape their remakes.
+        </p>
+
+        <table class="table table-bordered text-center matrix-table">
+            <thead>
+                <tr>
+                    <th class="row-name">Rmd. / Org.</th>
+                    <th>Runtime</th>
+                    <th>Vote Ave.</th>
+                    <th># Vote</th>
+                    <th>Adj. Revenue</th>
+                    <th>Adj. Budget</th>
+                    <th>Star Pop.</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th class="row-name">Runtime</th>
+                    <td data-bs-toggle="tooltip" data-bs-placement="top" title="p-value: 0.0000">0.4418</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th class="row-name">Vote Ave.</th>
+                    <td></td>
+                    <td data-bs-toggle="tooltip" data-bs-placement="top" title="p-value: 0.0000">0.3580</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td data-bs-toggle="tooltip" data-bs-placement="top" title="p-value: 0.0489">-0.1440</td>
+                </tr>
+                <tr>
+                    <th class="row-name"># Vote</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td data-bs-toggle="tooltip" data-bs-placement="top" title="p-value: 0.0152">0.1893</td>
+                </tr>
+                <tr>
+                    <th class="row-name">Adj. Revenue</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td data-bs-toggle="tooltip" data-bs-placement="top" title="p-value: 0.0047">0.2765</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th class="row-name">Adj. Budget</th>
+                    <td></td>
+                    <td data-bs-toggle="tooltip" data-bs-placement="top" title="p-value: 0.0253">0.2853</td>
+                    <td data-bs-toggle="tooltip" data-bs-placement="top" title="p-value: 0.0143">-0.3133</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th class="row-name">Star Pop.</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td data-bs-toggle="tooltip" data-bs-placement="top" title="p-value: 0.0000">0.3399</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <p>
+            The regression analysis reveals key relationships between original movie features and their corresponding
+            remakes. Remake runtime is strongly influenced by the original runtime, indicating that longer originals
+            lead to longer remakes. Similarly, remake vote average is positively associated with the original vote
+            average, showing that well-received originals tend to yield well-received remakes. Financially, remake
+            adjusted revenue is strongly predicted by the original adjusted revenue. Finally, remake star popularity is
+            strongly tied to the original star popularity, reflecting a continuity in lead actor prominence between
+            originals and remakes.
+        </p>
+
+        <script>
+            // Initialize Bootstrap tooltips
+            document.addEventListener('DOMContentLoaded', function () {
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                    new bootstrap.Tooltip(tooltipTriggerEl)
+                })
+            });
+        </script>
 
 
 
