@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -561,6 +565,37 @@
                 </svg>
             </div>
         </div>
+
+        <h2>
+            Adjusting Revenue and Budget for Fair Comparisons
+        </h2>
+
+        <p>
+            In our dataset, all the prices are in us-dollars. Different movies are built and displayed in different
+            countries and in different years. Hence, in order to be able to compare monetary features like budget and
+            revenue for different movies, it is important to adjust them.
+        </p>
+
+        <p>
+            1. Different countries: Cinema ticket prices and costs can be significantly different in different
+            countries. As a simple example, cinema tickets in Switzerland are around 20CHF but in Italy are 10Euro's. So
+            in order to compare how well a Swiss and Italian movie have been sold, we have to take into account these
+            different prices. The metric used for this purpose is Purchasing Power Parity (PPP) rate. In our research,
+            since there is not sufficient historical PPP rate data, we decided to ignore the country adjustment.
+        </p>
+
+        <p>
+            2. Inflation adjustment In time, the prices and costs in each country increase due to inflation. For
+            example, a cinema ticket in the 2000's might have cost 5$ but now it costs 10$. So again to compare
+            different movies which have been built in different times, we have to take into account these prices
+            changes. To do this, we adjust all the movies with the US CPI which is an index showing the price level
+            changes in the US. The definition of CPI is as following:
+        </p>
+
+        <div>
+            \[ CPI_t = \frac{\text{Cost of Market Basket in Year } t}{\text{Cost of Market Basket in Base Year}} \times 100 \]
+        </div>
+
 
         <h2>Remakes and Movies Through Chronus</h2>
 
@@ -1504,8 +1539,9 @@
                     <td data-bs-toggle="tooltip" data-bs-placement="top" title="p-value: 0.0000">0.3399</td>
                 </tr>
             </tbody>
+            <em>Hover on cells to see the p-values.</em>
         </table>
-        <em>Hover on cells to see the p-values.</em>
+
 
         <p>
             The regression analysis reveals key relationships between original movie features and their corresponding
