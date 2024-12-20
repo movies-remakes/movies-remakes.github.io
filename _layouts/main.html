@@ -21,13 +21,109 @@
 
 <body>
     <div id="fullpage">
-        <div class="section" id="section1">
+        <div class="section" id="section1"
+            style="background-image: url(/assets/images/cover_1.webp); background-size: 110vw; background-position: center; color: white;">
             <div class="container text-center">
-                <h1>{{ site.title }}</h1>
-                <p>{{ site.description }}</p>
+                <h1>Unveiling Trends in Movie Remakes</h1>
                 <p>Scroll down to explore more.</p>
             </div>
         </div>
+
+        <script>
+            document.addEventListener('mousemove', (event) => {
+                const section = document.querySelector('#section1');
+                const { clientX, clientY } = event; // Get the mouse position
+                const { innerWidth, innerHeight } = window; // Get the window size
+
+                // Calculate the percentage of mouse position relative to window
+                const mouseXPercent = clientX / innerWidth;
+                const mouseYPercent = clientY / innerHeight;
+
+                // Calculate new background position based on mouse movement
+                const posX = (mouseXPercent - 0.5) * 100; // Adjust sensitivity as needed
+                const posY = (mouseYPercent - 0.5) * 100;
+
+                section.style.backgroundPosition = `${50 + posX}% ${50 + posY}%`;
+            });
+        </script>
+
+        <div class="section" id="section0-1">
+            <div class="container text-center">
+                <h2>Introduction</h2>
+                <!-- <h4>One</h4> -->
+
+                <div class="row justify-content-center mt-4">
+                    <div class="col-md-6" style="text-align: left;">
+                        <p>
+                            You are a film director working for a well-known company - “Lausanne pictures”. It’s been a
+                            while
+                            since
+                            you shot your last movie that took people’s breaths away and you wish to get back into the
+                            spotlight
+                            without “dropping the ball”. But …. you are out of original ideas. “What if I take an
+                            already
+                            existing
+                            storyline but make it bigger, better?”, you think to yourself. “But then, what movie should
+                            I choose
+                            to
+                            reenact so that success is inevitable?”. Tough question. And here is where our team comes to
+                            assist
+                            you.
+                            MADAYAM is about to unravel the MAD secrets of the remake industry “what movie should you
+                            remake? is
+                            the appropriate time to do so now?” - these are the questions we will answer for you based
+                            on the
+                            data across years of evolution and development of film industry.
+                        </p>
+
+                        <p>
+                            Are you ready for the most comprehensive analysis involving the most popular movie datasets?
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="/assets/images/intro.webp" alt="Introduction" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="team-section">
+            <div class="container text-center">
+                <h2>Meet Our Team</h2>
+                <p>(randomized order)</p>
+                <div class="row justify-content-center" id="team-container">
+                    {% for member in site.data.team %}
+                    <div class="col-md-4 text-center team-member" data-order="{{ forloop.index }}">
+                        <img src="/assets/images/{{ member.photo }}" alt="{{ member.name }}" class="team-photo">
+                        <h3>{{ member.name }}</h3>
+                        {{ member.status }}
+                        <!-- icon for mail, github, linkedin, X, homepage -->
+                        <div class="team-social">
+                            {% if member.homepage %}
+                            <a href="{{ member.homepage }}"><i class="fas fa-home"></i></a>
+                            {% endif %}
+                            {% if member.google_scholar %}
+                            <a href="{{ member.google_scholar }}"><i class="fas fa-graduation-cap"></i></a>
+                            {% endif %}
+                            {% if member.email %}
+                            <a href="mailto:{{ member.email }}"><i class="fas fa-envelope"></i></a>
+                            {% endif %}
+                            {% if member.github %}
+                            <a href="https://github.com/{{ member.github }}"><i class="fab fa-github"></i></a>
+                            {% endif %}
+                            {% if member.linkedin %}
+                            <a href="{{ member.linkedin }}"><i class="fab fa-linkedin"></i></a>
+                            {% endif %}
+                            {% if member.twitter %}
+                            <a href="{{ member.twitter }}"><i class="fab fa-twitter"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
 
         <div class="section" id="section2">
             <div class="container text-center">
@@ -401,6 +497,62 @@
             </div>
         </div>
 
+        <div class="section" id="section0-1">
+            <div class="container text-center">
+                <h2>Maria's 1</h2>
+                <h4>One</h4>
+            </div>
+        </div>
+
+        <div class="section" id="section0-2">
+            <div class="container text-center">
+                <h2>Maria's 1</h2>
+                <h4>Dou</h4>
+            </div>
+        </div>
+
+        <div class="section" id="section0-3">
+            <div class="container text-center">
+                <h2>Maria's 1</h2>
+                <h4>Three</h4>
+            </div>
+        </div>
+
+        <div class="section" id="section0-4">
+            <div class="container text-center">
+                <h2>Maria's 1</h2>
+                <h4>Four</h4>
+            </div>
+        </div>
+
+        <div class="section" id="section0-5">
+            <div class="container text-center">
+                <h2>Maria's 1</h2>
+                <h4>Five</h4>
+            </div>
+        </div>
+
+        <div class="section" id="section0-6">
+            <div class="container text-center">
+                <h2>Maria's 1</h2>
+                <h4>Six</h4>
+            </div>
+        </div>
+
+        <div class="section" id="section0-7">
+            <div class="container text-center">
+                <h2>Maria's 1</h2>
+                <h4>Seven</h4>
+            </div>
+        </div>
+
+        <div class="section" id="section0-8">
+            <div class="container text-center">
+                <h2>Maria's 1</h2>
+                <h4>Eight</h4>
+            </div>
+        </div>
+
         <div class="section" id="section1-1">
             <div class="container text-center">
                 <h2>Feature Comparison of Movie Originals vs. Their Remakes</h2>
@@ -622,132 +774,154 @@
 
         <div class="section" id="section1-4">
             <div class="container text-center">
-                <h2>Error Plot for Vote Average</h2>
-                <canvas id="error-plot-1"></canvas>
+                <h2>Feature Comparison of Movie Originals vs. Their Remakes (Cnt'd)</h2>
+                <h4>Assessing the Impact of Remakes: A Regression Analysis with Time Controls</h4>
+                <br>
 
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        fetch('/assets/data/features_mean_by_year.json')
-                            .then(response => response.json())
-                            .then(data => {
-                                const years = data.year;
-                                const voteAverage = data.vote_average;
-                                const voteError = data.vote_error;
+                <div style="text-align: left;">
+                    <p>
+                        To test whether the differences in star popularity, vote average, and budget between originals
+                        and
+                        remakes are statistically significant, we perform a regression analysis. Each feature (star
+                        popularity, vote average, and budget) is regressed on the following factors:
+                    </p>
 
-                                // Chart.js Error Bars Format
-                                const errorBarData = voteAverage.map((value, index) => ({
-                                    y: value,
-                                    yMin: value - voteError[index],
-                                    yMax: value + voteError[index]
-                                }));
+                    <p>
+                        1. A dummy variable indicating whether a movie is an original (1 for original, 0 for remake).
+                        <br>
+                        2. Decade dummy variables to account for temporal trends over time.
+                    </p>
 
-                                const ctx = document.getElementById('error-plot-1').getContext('2d');
-                                new Chart(ctx, {
-                                    type: 'errorBar', // Use the errorBar chart type
-                                    data: {
-                                        labels: years, // X-axis labels
-                                        datasets: [
-                                            {
-                                                label: 'Vote Average with Error Bars',
-                                                data: errorBarData,
-                                                borderColor: 'blue',
-                                                borderWidth: 2,
-                                                pointRadius: 3,
-                                                pointBackgroundColor: 'blue'
-                                            }
-                                        ]
-                                    },
-                                    options: {
-                                        responsive: true,
-                                        scales: {
-                                            x: { title: { display: true, text: 'Year' } },
-                                            y: { title: { display: true, text: 'Vote Average' } }
-                                        }
-                                    }
-                                });
-                            })
-                            .catch(error => console.error("Error loading JSON file:", error));
-                    });
-                </script>
-            </div>
-        </div>
+                    <p>
+                        By including the decade controls, we isolate the effect of being a remake or an original while
+                        accounting for broader trends across decades. The focus is on the coefficient of the original
+                        dummy
+                        variable to determine if it is statistically significant. This will help us identify whether the
+                        observed differences can be directly attributed to the nature of the movie (original vs. remake)
+                        or
+                        if they are better explained by time-based factors.
+                    </p>
+                </div>
 
-
-        <!-- <div class="section" id="section3">
-            <div class="container text-center">
-                <h2>Data</h2>
-                <p>Hover on the sources our columns!</p>
                 <div class="row justify-content-center mt-4">
                     <div class="col-md-8">
-                        <canvas id="movieRevenueChart" width="400" height="200"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div> -->
+                        <div class="d-flex align-items-start">
+                            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist"
+                                aria-orientation="vertical">
 
-        <!-- <div class="section" id="section4">
-            <div class="container text-center">
-                <div class="d-flex align-items-start">
-                    <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist"
-                        aria-orientation="vertical">
-                        <button class="nav-link active" id="v-pills-tab-1" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-1" type="button" role="tab" aria-controls="v-pills-1"
-                            aria-selected="true">Home</button>
+                                <button class="nav-link active" id="v-pills-tab-1-4-1" data-bs-toggle="pill"
+                                    data-bs-target="#v-pills-1-4-1" type="button" role="tab"
+                                    aria-controls="v-pills-1-4-1" aria-selected="true">Adjusted Budget</button>
 
-                        <button class="nav-link" id="v-pills-tab-2" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-2" type="button" role="tab" aria-controls="v-pills-2"
-                            aria-selected="false">Profile</button>
-                    </div>
-                    <div class="tab-content" id="v-pills-tabContent">
-                        <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel"
-                            aria-labelledby="v-pills-tab-1" tabindex="0">
-                            1
-                        </div>
-                        <div class="tab-pane fade" id="v-pills-2" role="tabpanel"
-                            aria-labelledby="v-pills-tab-2" tabindex="0">
-                            2
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
+                                <button class="nav-link" id="v-pills-tab-1-4-2" data-bs-toggle="pill"
+                                    data-bs-target="#v-pills-1-4-2" type="button" role="tab"
+                                    aria-controls="v-pills-1-4-2" aria-selected="false">First Star Popularity</button>
 
-        <div class="section" id="team-section">
-            <div class="container text-center">
-                <h2>Meet Our Team</h2>
-                <p>(randomized order)</p>
-                <div class="row justify-content-center" id="team-container">
-                    {% for member in site.data.team %}
-                    <div class="col-md-4 text-center team-member" data-order="{{ forloop.index }}">
-                        <img src="/assets/images/{{ member.photo }}" alt="{{ member.name }}" class="team-photo">
-                        <h3>{{ member.name }}</h3>
-                        {{ member.status }}
-                        <!-- icon for mail, github, linkedin, X, homepage -->
-                        <div class="team-social">
-                            {% if member.homepage %}
-                            <a href="{{ member.homepage }}"><i class="fas fa-home"></i></a>
-                            {% endif %}
-                            {% if member.google_scholar %}
-                            <a href="{{ member.google_scholar }}"><i class="fas fa-graduation-cap"></i></a>
-                            {% endif %}
-                            {% if member.email %}
-                            <a href="mailto:{{ member.email }}"><i class="fas fa-envelope"></i></a>
-                            {% endif %}
-                            {% if member.github %}
-                            <a href="https://github.com/{{ member.github }}"><i class="fab fa-github"></i></a>
-                            {% endif %}
-                            {% if member.linkedin %}
-                            <a href="{{ member.linkedin }}"><i class="fab fa-linkedin"></i></a>
-                            {% endif %}
-                            {% if member.twitter %}
-                            <a href="{{ member.twitter }}"><i class="fab fa-twitter"></i></a>
-                            {% endif %}
+                                <button class="nav-link" id="v-pills-tab-1-4-3" data-bs-toggle="pill"
+                                    data-bs-target="#v-pills-1-4-3" type="button" role="tab"
+                                    aria-controls="v-pills-1-4-3" aria-selected="false">Vote Average</button>
+                            </div>
+                            <div class="tab-content" id="v-pills-tabContent">
+                                <div class="tab-pane fade show active" id="v-pills-1-4-1" role="tabpanel"
+                                    aria-labelledby="v-pills-tab-1-4-1" tabindex="0">
+
+                                    <iframe src="/assets/plots/adjusted_budget_errorbar.html" width="720px"
+                                        height="470px" frameborder="0"></iframe>
+
+                                </div>
+
+                                <div class="tab-pane fade" id="v-pills-1-4-2" role="tabpanel"
+                                    aria-labelledby="v-pills-tab-1-4-2" tabindex="0">
+
+                                    <iframe src="/assets/plots/star_popularity.html" width="720px" height="470px"
+                                        frameborder="0"></iframe>
+
+                                </div>
+
+                                <div class="tab-pane fade" id="v-pills-1-4-3" role="tabpanel"
+                                    aria-labelledby="v-pills-tab-1-4-3" tabindex="0">
+
+                                    <iframe src="/assets/plots/vote_average_errorbar.html" width="720px" height="470px"
+                                        frameborder="0"></iframe>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    {% endfor %}
+                    <div class="col-md-4" style="text-align: left;">
+                        <p>
+                            The regression results provide evidence on the role of originality in explaining the
+                            observed differences in movie features. The key findings are as follows:
+                        </p>
+
+                        <ul>
+                            <li>
+                                Significant Originality Coefficient: Across all three regressions, the coefficient of
+                                the "original" dummy variable is statistically significant (indicated in blue). This
+                                suggests that whether a movie is an
+                                original or a remake has a meaningful impact on star popularity, vote average, and
+                                budget, even after controlling for decade-based time trends.
+                            </li>
+                            <li>
+                                Direction of the Effect: The coefficients for star popularity and budget are negative,
+                                indicating that remakes tend
+                                to have higher values for these features compared to originals. In contrast, the
+                                coefficient
+                                for vote average is positive, showing that originals tend to have slightly higher vote
+                                averages than remakes. These directions are consistent with the patterns observed in the
+                                distributions earlier, further confirming the differences between originals and remakes
+                                in these features.
+
+                            </li>
+                        </ul>
+
+                        Note: The coefficients are on normalized features.
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="section" id="section1-5">
+            <div class="container text-center">
+                <h2>Feature Comparison of Movie Originals vs. Their Remakes (Cnt'd)</h2>
+                <h4>Pairwise Analysis of Originals and Their Remakes</h4>
+
+                <div class="row justify-content-center align-items-center mt-4">
+                    <div class="col-md-7">
+                        Up until now, we compared the overall distributions of features (star popularity, vote average,
+                        and budget) for originals and remakes as separate groups. As a next step, we shift our focus to
+                        a more granular comparison by analyzing pairs of movies—each original and its corresponding
+                        remake. This pairwise analysis allows us to directly compare the features of remakes relative to
+                        their specific originals, providing deeper insights into how these features change when a movie
+                        is remade. By examining these pairs, we can better understand whether the observed trends hold
+                        consistently across individual original-remake pairs or are driven by broader patterns in the
+                        data.
+                    </div>
+                    <div class="col-md-5">
+                        <img src="/assets/images/comp.jpg" alt="original vs. remake" class="img-fluid">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="section" id="section1-6">
+            <div class="container text-center">
+                <h2></h2>
+                <h4></h4>
+
+            </div>
+        </div>
+
+        <div class="section" id="section1-7">
+            <div class="container text-center">
+                <h2></h2>
+                <h4></h4>
+
+            </div>
+        </div>
+
+
 
         <div class="section" id="footer-section">
             <div class="container text-center" style="font-size: 14pt;">
