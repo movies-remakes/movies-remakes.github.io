@@ -124,6 +124,164 @@
             </div>
         </div>
 
+        <div class="section" id="section0-1">
+            <div class="container text-center">
+                <h2>Remakes and movies through chronus</h2>
+
+                <div class="row justify-content-center mt-4">
+                    <div class="col-md-7">
+                        <div class="d-flex align-items-start">
+                            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist"
+                                aria-orientation="vertical">
+
+                                <button class="nav-link active" id="v-pills-tab-0-1-1" data-bs-toggle="pill"
+                                    data-bs-target="#v-pills-0-1-1" type="button" role="tab"
+                                    aria-controls="v-pills-0-1-1" aria-selected="true">Remake</button>
+
+                                <button class="nav-link" id="v-pills-tab-0-1-2" data-bs-toggle="pill"
+                                    data-bs-target="#v-pills-0-1-2" type="button" role="tab"
+                                    aria-controls="v-pills-0-1-2" aria-selected="false">Original</button>
+
+                                <button class="nav-link" id="v-pills-tab-0-1-3" data-bs-toggle="pill"
+                                    data-bs-target="#v-pills-0-1-3" type="button" role="tab"
+                                    aria-controls="v-pills-0-1-3" aria-selected="false">Rest</button>
+
+                                <button class="nav-link" id="v-pills-tab-0-1-4" data-bs-toggle="pill"
+                                    data-bs-target="#v-pills-0-1-4" type="button" role="tab"
+                                    aria-controls="v-pills-0-1-4" aria-selected="false">Whole</button>
+                            </div>
+                            <div class="tab-content" id="v-pills-tabContent">
+                                <div class="tab-pane fade show active" id="v-pills-0-1-1" role="tabpanel"
+                                    aria-labelledby="v-pills-tab-0-1-1" tabindex="0">
+
+                                    <iframe src="/assets/plots/interactive_yearly_distribution_remake.html"
+                                        width="720px" height="470px" frameborder="0"></iframe>
+
+                                </div>
+
+                                <div class="tab-pane fade" id="v-pills-0-1-2" role="tabpanel"
+                                    aria-labelledby="v-pills-tab-0-1-2" tabindex="0">
+
+                                    <iframe src="/assets/plots/interactive_yearly_distribution_original.html"
+                                        width="720px" height="470px" frameborder="0"></iframe>
+
+                                </div>
+
+                                <div class="tab-pane fade" id="v-pills-0-1-3" role="tabpanel"
+                                    aria-labelledby="v-pills-tab-0-1-3" tabindex="0">
+
+                                    <iframe src="/assets/plots/interactive_yearly_distribution_rest.html" width="720px"
+                                        height="470px" frameborder="0"></iframe>
+
+                                </div>
+
+                                <div class="tab-pane fade" id="v-pills-0-1-4" role="tabpanel"
+                                    aria-labelledby="v-pills-tab-0-1-4" tabindex="0">
+
+                                    <iframe src="/assets/plots/interactive_yearly_distribution_whole.html" width="720px"
+                                        height="470px" frameborder="0"></iframe>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5" style="text-align: left;">
+                        <p>
+                            Let’s dive deeper into the world of films and remakes. First, you might as a question “How
+                            many remakes have been made throughout the filmographic history? Is there a difference in
+                            the number of films made across the decades? How about remakes?” All of these are valid
+                            questions. And let me tell you, there is a difference. While there are more remakes and more
+                            films made each year, the number of original movies are worth re-capturing seems to decline.
+                            Well, at least you are not tricking yourself by choosing to re-shoot the film instead of
+                            trying to aimlessly search for worthy new ideas. This is different with remakes and the
+                            whole dataset: more movies are made - more remakes are produced. Cooking some statistics to
+                            see how close our power law fits the log-log distributions, we observe that R2 metric for
+                            the whole dataset is 0.86 suggesting that the fitted power law distribution explains the
+                            data well. This is not the case for the remakes and originals with only 0.58 and 0.18
+                            respectively.
+                        </p>
+                        <p>
+                            Finally, we can notice that the mean number of remakes across the cinematic history is much
+                            more recent than for the whole dataset. Understandably, before you shoot a remake you have
+                            to shoot an original.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="section0-2">
+            <div class="container text-center">
+                <h2>How long should our creative struggle take? Or runtimes</h2>
+
+                <div class="row justify-content-center mt-4">
+                    <div class="col-md-5" style="text-align: left;">
+                        <p>
+                            Well, ok, we have more remakes. But it is not about quantity but quality of those, mes amis,
+                            that we are interested in. To start us off, we should constrain our movie to a reasonable
+                            time. Compared to the whole dataset, there are not so many outliers and there is not a
+                            single remake exceeding 200 minutes.
+                        </p>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="d-flex align-items-start">
+                            <div class="tab-content" id="v-pills-tabContent">
+                                <div class="tab-pane fade show active" id="v-pills-0-2-1" role="tabpanel"
+                                    aria-labelledby="v-pills-tab-0-2-1" tabindex="0">
+
+                                    <iframe src="/assets/plots/boxplots_remakes.html" width="720px" height="470px"
+                                        frameborder="0"></iframe>
+
+                                </div>
+
+                                <div class="tab-pane fade" id="v-pills-0-2-2" role="tabpanel"
+                                    aria-labelledby="v-pills-tab-0-2-2" tabindex="0">
+
+                                    <iframe src="/assets/plots/boxplots_originals.html" width="720px" height="470px"
+                                        frameborder="0"></iframe>
+
+                                </div>
+
+                                <div class="tab-pane fade" id="v-pills-0-2-3" role="tabpanel"
+                                    aria-labelledby="v-pills-tab-0-2-3" tabindex="0">
+
+                                    <iframe src="/assets/plots/boxplots_rest.html" width="720px" height="470px"
+                                        frameborder="0"></iframe>
+
+                                </div>
+
+                                <div class="tab-pane fade" id="v-pills-0-2-4" role="tabpanel"
+                                    aria-labelledby="v-pills-tab-0-2-4" tabindex="0">
+
+                                    <iframe src="/assets/plots/boxplots_whole.html" width="720px" height="470px"
+                                        frameborder="0"></iframe>
+
+                                </div>
+                            </div>
+                            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist"
+                                aria-orientation="vertical">
+
+                                <button class="nav-link active" id="v-pills-tab-0-2-1" data-bs-toggle="pill"
+                                    data-bs-target="#v-pills-0-2-1" type="button" role="tab"
+                                    aria-controls="v-pills-0-2-1" aria-selected="true">Remake</button>
+
+                                <button class="nav-link" id="v-pills-tab-0-2-2" data-bs-toggle="pill"
+                                    data-bs-target="#v-pills-0-2-2" type="button" role="tab"
+                                    aria-controls="v-pills-0-2-2" aria-selected="false">Original</button>
+
+                                <button class="nav-link" id="v-pills-tab-0-2-3" data-bs-toggle="pill"
+                                    data-bs-target="#v-pills-0-2-3" type="button" role="tab"
+                                    aria-controls="v-pills-0-2-3" aria-selected="false">Rest</button>
+
+                                <button class="nav-link" id="v-pills-tab-0-2-4" data-bs-toggle="pill"
+                                    data-bs-target="#v-pills-0-2-4" type="button" role="tab"
+                                    aria-controls="v-pills-0-2-4" aria-selected="false">Whole</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="section" id="section2">
             <div class="container text-center">
@@ -497,19 +655,6 @@
             </div>
         </div>
 
-        <div class="section" id="section0-1">
-            <div class="container text-center">
-                <h2>Maria's 1</h2>
-                <h4>One</h4>
-            </div>
-        </div>
-
-        <div class="section" id="section0-2">
-            <div class="container text-center">
-                <h2>Maria's 1</h2>
-                <h4>Dou</h4>
-            </div>
-        </div>
 
         <div class="section" id="section0-3">
             <div class="container text-center">
