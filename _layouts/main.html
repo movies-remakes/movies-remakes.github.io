@@ -4,1102 +4,1196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ site.title }}</title>
-
+    <title>Movie Remakes Data Story</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/4.0.21/fullpage.min.css">
-
-    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
 
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-error-bars"></script>
+        .cover {
+            height: 100vh;
+            background: url('/assets/images/cover_1.webp') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .cover h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border-right: .15em solid white;
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+
+        .cover p {
+            font-size: 1.2rem;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+        }
+
+        @keyframes blink-caret {
+
+            from,
+            to {
+                border-color: transparent
+            }
+
+            50% {
+                border-color: white;
+            }
+        }
+
+        .content {
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .cover-content {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 8px;
+            /* blur */
+            backdrop-filter: blur(5px);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-top: 30px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        .chart-container {
+            /* center align */
+            display: flex;
+            justify-content: center;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #890505;
+            color: #fff;
+            border-radius: 8px;
+        }
+
+        .team-photo {
+            width: 100%;
+            height: 100%;
+            max-width: 150px;
+            max-height: 150px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            transform: scale(1);
+            transition: transform 0.5s;
+        }
+
+        .team-photo:hover {
+            transform: scale(1.1);
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .team-member {
+            text-align: center;
+            max-width: 500px;
+            margin-top: 40px;
+        }
+    </style>
 </head>
 
 <body>
-    <div id="fullpage">
-        <div class="section" id="section1"
-            style="background-image: url(/assets/images/cover_1.webp); background-size: 110vw; background-position: center; color: white;">
-            <div class="container text-center">
-                <h1>Unveiling Trends in Movie Remakes</h1>
-                <p>Scroll down to explore more.</p>
+
+    <div class="cover">
+        <div class="cover-content">
+            <h1 style="color: #ffffff;">Unveiling Trends in Movie Remakes</h1>
+            <p>An engaging look into trends, success stories, and the evolution of remade films.</p>
+            <a href="#main-content" class="btn btn-danger">Explore the Story</a>
+        </div>
+    </div>
+
+    <div id="main-content" class="content">
+
+        <figure>
+            <img src="/assets/images/intro.webp" alt="Movie Remakes" style="width: 100%;">
+            <figcaption style="text-align: center; margin-top: 5px; margin-bottom: 20px;">Image by GPT</figcaption>
+        </figure>
+
+        <p>
+            You are a film director working for a well-known company - “Lausanne pictures”. It’s been a while since you
+            shot your last movie that took people’s breaths away and you wish to get back into the spotlight without
+            “dropping the ball”. But …. you are out of original ideas. “What if I take an already existing storyline but
+            make it bigger, better?”, you think to yourself. “But then, what movie should I choose to reenact so that
+            success is inevitable?”. Tough question. And here is where our team comes to assist you. MADAYAM is about to
+            unravel the MAD secrets of the remake industry “what movie should you remake? is the appropriate time to do
+            so now?” - these are the questions we will answer for you based on the data across years of evolution and
+            development of film industry.
+
+            Are you ready for the most comprehensive analysis involving the most popular movie datasets?
+        </p>
+
+        <h2>Meet Our Team</h2>
+        <p>(randomized order)</p>
+        <div class="row justify-content-center" id="team-container">
+            {% for member in site.data.team %}
+            <div class="col-md-4 text-center team-member" data-order="{{ forloop.index }}">
+                <img src="/assets/images/{{ member.photo }}" alt="{{ member.name }}" class="team-photo">
+                <h3 style="font-size: 18pt;">{{ member.name }}</h3>
+                {{ member.status }}
+                <!-- icon for mail, github, linkedin, X, homepage -->
+                <div class="team-social">
+                    {% if member.homepage %}
+                    <a href="{{ member.homepage }}"><i class="fas fa-home"></i></a>
+                    {% endif %}
+                    {% if member.google_scholar %}
+                    <a href="{{ member.google_scholar }}"><i class="fas fa-graduation-cap"></i></a>
+                    {% endif %}
+                    {% if member.email %}
+                    <a href="mailto:{{ member.email }}"><i class="fas fa-envelope"></i></a>
+                    {% endif %}
+                    {% if member.github %}
+                    <a href="https://github.com/{{ member.github }}"><i class="fab fa-github"></i></a>
+                    {% endif %}
+                    {% if member.linkedin %}
+                    <a href="{{ member.linkedin }}"><i class="fab fa-linkedin"></i></a>
+                    {% endif %}
+                    {% if member.twitter %}
+                    <a href="{{ member.twitter }}"><i class="fab fa-twitter"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h2>Remakes and Movies Through Chronus</h2>
+
+        <p>
+            Let’s dive deeper into the world of films and remakes. First, you might as a question “How many remakes have
+            been made throughout the filmographic history? Is there a difference in the number of films made across the
+            decades? How about remakes?” All of these are valid questions. And let me tell you, there is a difference.
+            While there are more remakes and more films made each year, the number of original movies are worth
+            re-capturing seems to decline. Well, at least you are not tricking yourself by choosing to re-shoot the film
+            instead of trying to aimlessly search for worthy new ideas. This is different with remakes and the whole
+            dataset: more movies are made - more remakes are produced. Cooking some statistics to see how close our
+            power law fits the log-log distributions, we observe that R2 metric for the whole dataset is 0.86 suggesting
+            that the fitted power law distribution explains the data well. This is not the case for the remakes and
+            originals with only 0.58 and 0.18 respectively.
+        </p>
+
+        <p>
+            Finally, we can notice that the mean number of remakes across the cinematic history is much more recent than
+            for the whole dataset. Understandably, before you shoot a remake you have to shoot an original.
+        </p>
+
+        <div class="d-flex align-items-start">
+            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+                <button class="nav-link active" id="v-pills-tab-0-1-1" data-bs-toggle="pill"
+                    data-bs-target="#v-pills-0-1-1" type="button" role="tab" aria-controls="v-pills-0-1-1"
+                    aria-selected="true">Remake</button>
+
+                <button class="nav-link" id="v-pills-tab-0-1-2" data-bs-toggle="pill" data-bs-target="#v-pills-0-1-2"
+                    type="button" role="tab" aria-controls="v-pills-0-1-2" aria-selected="false">Original</button>
+
+                <button class="nav-link" id="v-pills-tab-0-1-3" data-bs-toggle="pill" data-bs-target="#v-pills-0-1-3"
+                    type="button" role="tab" aria-controls="v-pills-0-1-3" aria-selected="false">Rest</button>
+
+                <button class="nav-link" id="v-pills-tab-0-1-4" data-bs-toggle="pill" data-bs-target="#v-pills-0-1-4"
+                    type="button" role="tab" aria-controls="v-pills-0-1-4" aria-selected="false">Whole</button>
+            </div>
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-0-1-1" role="tabpanel"
+                    aria-labelledby="v-pills-tab-0-1-1" tabindex="0">
+
+                    <iframe src="/assets/plots/interactive_yearly_distribution_remake.html" width="720px" height="470px"
+                        frameborder="0"></iframe>
+
+                </div>
+
+                <div class="tab-pane fade" id="v-pills-0-1-2" role="tabpanel" aria-labelledby="v-pills-tab-0-1-2"
+                    tabindex="0">
+
+                    <iframe src="/assets/plots/interactive_yearly_distribution_original.html" width="720px"
+                        height="470px" frameborder="0"></iframe>
+
+                </div>
+
+                <div class="tab-pane fade" id="v-pills-0-1-3" role="tabpanel" aria-labelledby="v-pills-tab-0-1-3"
+                    tabindex="0">
+
+                    <iframe src="/assets/plots/interactive_yearly_distribution_rest.html" width="720px" height="470px"
+                        frameborder="0"></iframe>
+
+                </div>
+
+                <div class="tab-pane fade" id="v-pills-0-1-4" role="tabpanel" aria-labelledby="v-pills-tab-0-1-4"
+                    tabindex="0">
+
+                    <iframe src="/assets/plots/interactive_yearly_distribution_whole.html" width="720px" height="470px"
+                        frameborder="0"></iframe>
+
+                </div>
+            </div>
+        </div>
+
+        <h2>
+            How Long Should Our Creative Struggle Take? Or Runtimes
+        </h2>
+
+        <p>
+            Well, ok, we have more remakes. But it is not about quantity but quality of those, mes amis, that we are
+            interested in. To start us off, we should constrain our movie to a reasonable time. Compared to the whole
+            dataset, there are not so many outliers and there is not a single remake exceeding 200 minutes.
+        </p>
+
+        <div class="d-flex align-items-start">
+            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+                <button class="nav-link active" id="v-pills-tab-0-2-1" data-bs-toggle="pill"
+                    data-bs-target="#v-pills-0-2-1" type="button" role="tab" aria-controls="v-pills-0-2-1"
+                    aria-selected="true">Remake</button>
+
+                <button class="nav-link" id="v-pills-tab-0-2-2" data-bs-toggle="pill" data-bs-target="#v-pills-0-2-2"
+                    type="button" role="tab" aria-controls="v-pills-0-2-2" aria-selected="false">Original</button>
+
+                <button class="nav-link" id="v-pills-tab-0-2-3" data-bs-toggle="pill" data-bs-target="#v-pills-0-2-3"
+                    type="button" role="tab" aria-controls="v-pills-0-2-3" aria-selected="false">Rest</button>
+
+                <button class="nav-link" id="v-pills-tab-0-2-4" data-bs-toggle="pill" data-bs-target="#v-pills-0-2-4"
+                    type="button" role="tab" aria-controls="v-pills-0-2-4" aria-selected="false">Whole</button>
+            </div>
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-0-2-1" role="tabpanel"
+                    aria-labelledby="v-pills-tab-0-2-1" tabindex="0">
+
+                    <iframe src="/assets/plots/boxplots_remakes.html" width="720px" height="470px"
+                        frameborder="0"></iframe>
+
+                </div>
+
+                <div class="tab-pane fade" id="v-pills-0-2-2" role="tabpanel" aria-labelledby="v-pills-tab-0-2-2"
+                    tabindex="0">
+
+                    <iframe src="/assets/plots/boxplots_originals.html" width="720px" height="470px"
+                        frameborder="0"></iframe>
+
+                </div>
+
+                <div class="tab-pane fade" id="v-pills-0-2-3" role="tabpanel" aria-labelledby="v-pills-tab-0-2-3"
+                    tabindex="0">
+
+                    <iframe src="/assets/plots/boxplots_rest.html" width="720px" height="470px"
+                        frameborder="0"></iframe>
+
+                </div>
+
+                <div class="tab-pane fade" id="v-pills-0-2-4" role="tabpanel" aria-labelledby="v-pills-tab-0-2-4"
+                    tabindex="0">
+
+                    <iframe src="/assets/plots/boxplots_whole.html" width="720px" height="470px"
+                        frameborder="0"></iframe>
+
+                </div>
+            </div>
+        </div>
+
+        <h2>People and Their Opinions</h2>
+
+        <p>
+            We want your movie to be great. But to know what “great” actually means, we first need to take a look at
+            what people’s opinions are on different movies, be it an original movie, a remake or any other. Let’s now
+            take a look at the trends in the vote scores.
+        </p>
+
+        <p>
+            As we would have predicted anyways, vote scores for originals are shifted to the right meaning that movies
+            that really resonated with the audience were chosen to be remade. Rather surprisingly, the remakes didn’t
+            seem to keep that sparkle and performed similarly to the rest of the movies. Well, something to think about.
+        </p>
+
+        <div class="chart-container">
+            <iframe src="/assets/plots/vote_averages.html" width="820px" height="620px" frameborder="0"></iframe>
+        </div>
+
+        <p>
+            The remakes appeared to generate significant buzz, receiving a higher average number of votes compared to
+            the rest of the dataset. Interestingly, the originals maintained a slight edge in average votes over both
+            remakes and other films. This trend could suggest that fans of the original movies felt compelled to share
+            their opinions on the recreated versions of the beloved films.
+        </p>
+
+        <div class="chart-container">
+            <iframe src="/assets/plots/violin_plot.html" width="820px" height="620px" frameborder="0"></iframe>
+        </div>
+
+        <h2>Bombastic Genre Combo</h2>
+
+        <p>
+            Now, we’ve thought a lot about data generally and have made up our mind about some technicalities, but what
+            about the movie itself? Let’s think holistically for now and consider a possible genre combination between
+            the original movie and the remake.
+        </p>
+
+        <div class="chart-container">
+            <iframe src="/assets/plots/mean_vote_averages_heatmap.html" width="820px" height="620px"
+                frameborder="0"></iframe>
+        </div>
+
+        <p>
+            Uff, some tenners do seem appealing. But despite the success of the combination, we should approach this
+            with some skepticism. Specifically, there might be only few votes for those compared to the ones with a
+            lower rating. Overall, it is not just about the score, it is also about the wide public reach and the urgent
+            need of the viewers to share their opinion. Plus, it is simply fairer when the votes are given by a variety
+            of people. This also applies to the case where there are more votes just because there are more movies. To
+            account for all that, we average the vote counts across movies and apply logarithm scaling to make the plot
+            descriptive. After checking the vote counts we see that for some genre combinations the value is indeed low.
+            This coincides with the tenners that we observe, tough luck. Hence, we multiply vote averages by the mean
+            logarithm of vote counts to get a better look.
+        </p>
+
+        <div class="chart-container">
+            <iframe src="/assets/plots/weighted_vote_average_heatmap.html" width="820px" height="620px"
+                frameborder="0"></iframe>
+        </div>
+
+        <p>
+            Seems like you can’t really go wrong with Comedy, Mystery and World cinema. Well, for now that seems fair.
+        </p>
+
+        <h2>
+            Laughing or Crying? Hating or Loving? Sinking into Despair or Rising in Joy?
+        </h2>
+
+        <p>
+            Genres are sorted, but what about the emotions we would like to invoke in our viewers?
+        </p>
+
+        <p>
+            Even though the sentiment labels for whole movie dataset are more or less evenly split, when it comes to
+            remakes and originals there seems to be a prevalence of movies with sad or negative plots. Sad stories often
+            have a strong emotional core that can resonate deeply with audiences, providing a built-in emotional
+            investment and a higher potential for audience engagement. Due to nostalgic factor and emotional depth,
+            these movies might have higher commercial appeal to the audience. Nonetheless, looking at the data,
+            specifically vote averages, it seems that on average there was only 0.23% higher score for films with
+            negative sentiment. There were no remakes that had a drastically different plotline from the originals: all
+            of the sentiment labels for originals matched those of remakes. Overall, it is up to us to choose the
+            sentiment of the story.
+        </p>
+
+        <div class="chart-container">
+            <iframe src="/assets/plots/normalized_sentiment_analysis.html" width="820px" height="620px"
+                frameborder="0"></iframe>
+        </div>
+
+        <h2>Who Should We Invite to Star?</h2>
+
+        <p>
+            Now, you might start thinking, who should we invite to join our movie to make it truly splendid - an
+            impressive cast! For one, we should make sure our cast is diverse to maximize our monetary gains.
+        </p>
+
+        <div class="chart-container">
+            <iframe src="/assets/plots/revenue_nationalities_with_error_bars.html" width="820px" height="620px"
+                frameborder="0"></iframe>
+        </div>
+
+        <p>
+            What about the actual ethnicities? How represented is the movie industry?
+        </p>
+
+        <p>
+            Despite higher revenues gained by movies with diverse nationalities and a lot of them represented in the
+            filmmaking industry likely appealing to wider public, when it comes to race the movie industry should
+            definitely do better..
+        </p>
+
+        <div class="d-flex align-items-start">
+            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+                <button class="nav-link active" id="v-pills-tab-10-2-1" data-bs-toggle="pill"
+                    data-bs-target="#v-pills-10-2-1" type="button" role="tab" aria-controls="v-pills-10-2-1"
+                    aria-selected="true">Nationalities</button>
+
+                <button class="nav-link" id="v-pills-tab-10-2-2" data-bs-toggle="pill" data-bs-target="#v-pills-10-2-2"
+                    type="button" role="tab" aria-controls="v-pills-10-2-2" aria-selected="false">Races</button>
+            </div>
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-10-2-1" role="tabpanel"
+                    aria-labelledby="v-pills-tab-10-2-1" tabindex="0">
+
+                    <iframe src="/assets/plots/nationalities.html" width="820px" height="820px"
+                        frameborder="0"></iframe>
+
+                </div>
+
+                <div class="tab-pane fade" id="v-pills-10-2-2" role="tabpanel" aria-labelledby="v-pills-tab-10-2-2"
+                    tabindex="0">
+                    <iframe src="/assets/plots/races.html" width="820px" height="820px" frameborder="0"></iframe>
+
+                </div>
+            </div>
+        </div>
+
+        <p>
+            Previously, remakes seem to have involved crews with huge fanbases, with the total popularity score across
+            movies higher than those of originals and other movies. However, despite doing so, as we’ve seen before the
+            vote average scores for remakes were similar to the average across all movies. So, should we invite a star
+            cast? This is something we will need to think about further when doing the regression analysis.
+        </p>
+
+        <p>
+            Movies with diverse nationalities achieve higher revenues, reflecting their appeal to a broad audience.
+            However, the stark racial imbalance in representation—dominated by "White" individuals—highlights the
+            industry's shortcomings in inclusivity. To truly embrace diversity, the film industry and we as a part of
+            it, must prioritize equitable racial representation, not just nationality diversity, unlocking both ethical
+            and market potential.
+        </p>
+
+        <p>
+            Remakes tend to feature more prominent crews compared to originals and other movies, often involving
+            individuals with large fanbases. This is reflected in their higher total popularity scores. However, despite
+            this, the vote average for remakes remains similar to the overall movie average. Should we rely on a
+            star-studded cast? This is a question worth exploring further in our regression analysis.
+        </p>
+
+        <div class="chart-container">
+            <iframe src="/assets/plots/popularity_crew_plot.html" width="920px" height="620px" frameborder="0"></iframe>
+        </div>
+
+        <h2>Feature Comparison of Movie Originals vs. Their Remakes</h2>
+
+        <p>
+            While some remakes breathe new life into beloved classics, others struggle to capture the magic of their
+            predecessors. But beyond revenue and critical reviews, how do the key characteristics of remakes differ from
+            their originals? Our data-driven investigation seeks to answer this question by examining the underlying
+            features that define both versions of a film.
+        </p>
+
+        <p>
+            Consider, for example, the 2017 remake of It compared to the 1990 original miniseries. The remake featured a
+            longer runtime, and a significantly larger budget.
+        </p>
+
+        <p>
+            Our approach to this analysis is systematic and data-driven. By using statistical techniques like
+            distribution comparison and hypothesis testing, we seek to quantify how each variable differs between
+            originals and remakes.
+        </p>
+
+        <div class="chart-container">
+            <div class="row justify-content-center align-items-center mt-4" style="width: 60%;">
+                <div class="col-md-6">
+                    <img src="/assets/images/it_1.jpg" alt="It Original" style="width: 100%;">
+                </div>
+                <div class="col-md-6">
+                    <img src="/assets/images/it_2.jpg" alt="It Remake" style="width: 100%;">
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; width: 100%;">
+            Image: Original IT and its remake in 1970 and 2017, respectively.
+        </div>
+
+        <h2>
+            Visualizing and Testing Differences: Aggregate Analysis of Originals vs. Remakes
+        </h2>
+
+        <p>
+            We apply Kolmogorov-Smirnov (KS) test to determine if two distributions are significantly different. If the
+            p-value is below 0.05, we conclude that the distributions are significantly different.
+        </p>
+
+        <p>
+            Looking at the distributions, we observe notable differences between originals and remakes in terms of star
+            popularity, vote average, and budget. Specifically, movie remakes generally feature higher star popularity,
+            lower vote averages, and larger budgets compared to originals.
+        </p>
+
+        <p>
+            However, can these differences be solely attributed to whether a movie is an original or a remake? To
+            address this question, we will conduct a more in-depth analysis in the following sections.
+        </p>
+
+        <div class="d-flex align-items-start">
+            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical"
+                style="min-width: 180px;">
+                <button class="nav-link active" id="v-pills-tab-1-2-1" data-bs-toggle="pill"
+                    data-bs-target="#v-pills-1-2-1" type="button" role="tab" aria-controls="v-pills-1-2-1"
+                    aria-selected="true">Runtime</button>
+
+                <button class="nav-link" id="v-pills-tab-1-2-2" data-bs-toggle="pill" data-bs-target="#v-pills-1-2-2"
+                    type="button" role="tab" aria-controls="v-pills-1-2-2" aria-selected="false">Star
+                    Popularity</button>
+
+                <button class="nav-link" id="v-pills-tab-1-2-3" data-bs-toggle="pill" data-bs-target="#v-pills-1-2-3"
+                    type="button" role="tab" aria-controls="v-pills-1-2-3" aria-selected="false">Director
+                    Popularity</button>
+
+                <button class="nav-link" id="v-pills-tab-1-2-4" data-bs-toggle="pill" data-bs-target="#v-pills-1-2-4"
+                    type="button" role="tab" aria-controls="v-pills-1-2-4" aria-selected="false">Writer
+                    Popularity</button>
+
+                <button class="nav-link" id="v-pills-tab-1-2-5" data-bs-toggle="pill" data-bs-target="#v-pills-1-2-5"
+                    type="button" role="tab" aria-controls="v-pills-1-2-5" aria-selected="false">Producer
+                    Popularity</button>
+
+                <button class="nav-link" id="v-pills-tab-1-2-6" data-bs-toggle="pill" data-bs-target="#v-pills-1-2-6"
+                    type="button" role="tab" aria-controls="v-pills-1-2-6" aria-selected="false">Vote Average</button>
+
+                <button class="nav-link" id="v-pills-tab-1-2-7" data-bs-toggle="pill" data-bs-target="#v-pills-1-2-7"
+                    type="button" role="tab" aria-controls="v-pills-1-2-7" aria-selected="false">Vote Count</button>
+
+                <button class="nav-link" id="v-pills-tab-1-2-8" data-bs-toggle="pill" data-bs-target="#v-pills-1-2-8"
+                    type="button" role="tab" aria-controls="v-pills-1-2-8" aria-selected="false">Adjusted
+                    Revenue</button>
+
+                <button class="nav-link" id="v-pills-tab-1-2-9" data-bs-toggle="pill" data-bs-target="#v-pills-1-2-9"
+                    type="button" role="tab" aria-controls="v-pills-1-2-9" aria-selected="false">Adjusted
+                    Budget</button>
+
+                <button class="nav-link" id="v-pills-tab-1-2-10" data-bs-toggle="pill" data-bs-target="#v-pills-1-2-10"
+                    type="button" role="tab" aria-controls="v-pills-1-2-10" aria-selected="false">Sentiment
+                    Score</button>
+            </div>
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-1-2-1" role="tabpanel"
+                    aria-labelledby="v-pills-tab-1-2-1" tabindex="0">
+                    <iframe src="/assets/plots/runtime_difference_distplot.html" width="820px" height="470px"
+                        frameborder="0"></iframe>
+                </div>
+                <div class="tab-pane fade" id="v-pills-1-2-2" role="tabpanel" aria-labelledby="v-pills-tab-1-2-2"
+                    tabindex="0">
+                    <iframe src="/assets/plots/star_1_popularity_difference_distplot.html" width="820px" height="470px"
+                        frameborder="0"></iframe>
+                </div>
+                <div class="tab-pane fade" id="v-pills-1-2-3" role="tabpanel" aria-labelledby="v-pills-tab-1-2-3"
+                    tabindex="0">
+                    <iframe src="/assets/plots/Director_popularity_difference_distplot.html" width="820px"
+                        height="470px" frameborder="0"></iframe>
+                </div>
+                <div class="tab-pane fade" id="v-pills-1-2-4" role="tabpanel" aria-labelledby="v-pills-tab-1-2-4"
+                    tabindex="0">
+                    <iframe src="/assets/plots/Writer_popularity_difference_distplot.html" width="820px" height="470px"
+                        frameborder="0"></iframe>
+                </div>
+                <div class="tab-pane fade" id="v-pills-1-2-5" role="tabpanel" aria-labelledby="v-pills-tab-1-2-5"
+                    tabindex="0">
+                    <iframe src="/assets/plots/Producer_popularity_difference_distplot.html" width="820px"
+                        height="470px" frameborder="0"></iframe>
+                </div>
+                <div class="tab-pane fade" id="v-pills-1-2-6" role="tabpanel" aria-labelledby="v-pills-tab-1-2-6"
+                    tabindex="0">
+                    <iframe src="/assets/plots/vote_average_difference_distplot.html" width="820px" height="470px"
+                        frameborder="0"></iframe>
+                </div>
+                <div class="tab-pane fade" id="v-pills-1-2-7" role="tabpanel" aria-labelledby="v-pills-tab-1-2-7"
+                    tabindex="0">
+                    <iframe src="/assets/plots/vote_count_difference_distplot.html" width="820px" height="470px"
+                        frameborder="0"></iframe>
+                </div>
+                <div class="tab-pane fade" id="v-pills-1-2-8" role="tabpanel" aria-labelledby="v-pills-tab-1-2-8"
+                    tabindex="0">
+                    <iframe src="/assets/plots/adjusted_revenue_difference_distplot.html" width="820px" height="470px"
+                        frameborder="0"></iframe>
+                </div>
+                <div class="tab-pane fade" id="v-pills-1-2-9" role="tabpanel" aria-labelledby="v-pills-tab-1-2-9"
+                    tabindex="0">
+                    <iframe src="/assets/plots/adjusted_budget_difference_distplot.html" width="820px" height="470px"
+                        frameborder="0"></iframe>
+                </div>
+                <div class="tab-pane fade" id="v-pills-1-2-10" role="tabpanel" aria-labelledby="v-pills-tab-1-2-10"
+                    tabindex="0">
+                    <iframe src="/assets/plots/sentiment_score_difference_distplot.html" width="820px" height="470px"
+                        frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <h2>SOME TITLE HERE</h2>
+
+        <p>
+            Since remakes are inherently produced after the originals, it is important to consider the potential impact
+            of time on the observed differences. Over time, industry trends, audience preferences, and market conditions
+            may influence key factors such as star popularity, vote average, and budget for movies in general. To
+            investigate this, we analyze the yearly trends for the average star popularity, vote average, and budget for
+            all movies (not just remakes and originals). By plotting the mean values of these features over time, we can
+            assess whether the observed differences between originals and remakes could be partially explained by
+            broader industry shifts, rather than the nature of remakes alone.
+        </p>
+
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-4">
+                <canvas id="chart-1-3-1" width="400" height="300"></canvas>
+                <p>
+                    The mean vote average has shown variability over time, with a slight upward trend until the
+                    mid-20th century and a gradual decline in recent decades. This suggests that the lower vote
+                    averages for remakes might align with a general industry trend of declining vote averages
+                    over time, rather than being solely due to the nature of remakes.
+                </p>
+            </div>
+            <div class="col-md-4">
+                <canvas id="chart-1-3-2" width="400" height="300"></canvas>
+                <p>
+                    Star popularity has steadily increased over the decades,
+                    reflecting the growing prominence and recognition of movie stars in the industry. This trend
+                    indicates that the higher star popularity observed in remakes could be partly due to the
+                    overall increase in star popularity over time, rather than a unique characteristic of
+                    remakes.
+                </p>
+            </div>
+            <div class="col-md-4">
+                <canvas id="chart-1-3-3" width="400" height="300"></canvas>
+                <p>
+                    Movie budgets have fluctuated significantly over time, with
+                    noticeable peaks in certain periods. However, there is an overall increase in average
+                    budgets in recent decades. The higher budgets observed in remakes may therefore be
+                    influenced by this broader trend of rising production costs in the movie industry.
+                </p>
+            </div>
+        </div>
+
+        <p>
+            We will formally test the impact of time on these features using regression analysis on the next slide.
+        </p>
+
+        <h2>Assessing the Impact of Remakes: A Regression Analysis with Time Controls</h2>
+
+        <p>
+            To test whether the differences in star popularity, vote average, and budget between originals and remakes
+            are statistically significant, we perform a regression analysis. Each feature (star popularity, vote
+            average, and budget) is regressed on the following factors:
+        </p>
+
+        <p>
+            1. A dummy variable indicating whether a movie is an original (1 for original, 0 for remake). <br>
+            2. Decade dummy variables to account for temporal trends over time.
+        </p>
+
+        <p>
+            By including the decade controls, we isolate the effect of being a remake or an original while accounting
+            for broader trends across decades. The focus is on the coefficient of the original dummy variable to
+            determine if it is statistically significant. This will help us identify whether the observed differences
+            can be directly attributed to the nature of the movie (original vs. remake) or if they are better explained
+            by time-based factors.
+        </p>
+
+
+        <div class="d-flex align-items-start">
+            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+                <button class="nav-link active" id="v-pills-tab-1-4-1" data-bs-toggle="pill"
+                    data-bs-target="#v-pills-1-4-1" type="button" role="tab" aria-controls="v-pills-1-4-1"
+                    aria-selected="true">Adjusted Budget</button>
+
+                <button class="nav-link" id="v-pills-tab-1-4-2" data-bs-toggle="pill" data-bs-target="#v-pills-1-4-2"
+                    type="button" role="tab" aria-controls="v-pills-1-4-2" aria-selected="false">First Star
+                    Popularity</button>
+
+                <button class="nav-link" id="v-pills-tab-1-4-3" data-bs-toggle="pill" data-bs-target="#v-pills-1-4-3"
+                    type="button" role="tab" aria-controls="v-pills-1-4-3" aria-selected="false">Vote Average</button>
+            </div>
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-1-4-1" role="tabpanel"
+                    aria-labelledby="v-pills-tab-1-4-1" tabindex="0">
+
+                    <iframe src="/assets/plots/adjusted_budget_errorbar.html" width="720px" height="470px"
+                        frameborder="0"></iframe>
+
+                </div>
+
+                <div class="tab-pane fade" id="v-pills-1-4-2" role="tabpanel" aria-labelledby="v-pills-tab-1-4-2"
+                    tabindex="0">
+
+                    <iframe src="/assets/plots/star_popularity.html" width="720px" height="470px"
+                        frameborder="0"></iframe>
+
+                </div>
+
+                <div class="tab-pane fade" id="v-pills-1-4-3" role="tabpanel" aria-labelledby="v-pills-tab-1-4-3"
+                    tabindex="0">
+
+                    <iframe src="/assets/plots/vote_average_errorbar.html" width="720px" height="470px"
+                        frameborder="0"></iframe>
+
+                </div>
+            </div>
+        </div>
+
+        <p>
+            The regression results provide evidence on the role of originality in explaining the observed differences in
+            movie features. The key findings are as follows:
+        </p>
+
+        <ul>
+            <li>
+                Significant Originality Coefficient: Across all three regressions, the coefficient of the "original"
+                dummy variable is statistically significant (indicated in blue). This suggests that whether a movie is
+                an original or a remake has a meaningful impact on star popularity, vote average, and budget, even after
+                controlling for decade-based time trends.
+            </li>
+            <li>
+                Direction of the Effect: The coefficients for star popularity and budget are negative, indicating that
+                remakes tend to have higher values for these features compared to originals. In contrast, the
+                coefficient for vote average is positive, showing that originals tend to have slightly higher vote
+                averages than remakes. These directions are consistent with the patterns observed in the distributions
+                earlier, further confirming the differences between originals and remakes in these features.
+            </li>
+        </ul>
+
+        <p>
+            Note: The coefficients are on normalized features.
+        </p>
+
+        <h2>Pairwise Analysis of Originals and Their Remakes</h2>
+
+        <div class="row justify-content-center align-items-center mt-4">
+            <div class="col-md-8">
+                Up until now, we compared the overall distributions of features (star popularity, vote average, and
+                budget)
+                for originals and remakes as separate groups. As a next step, we shift our focus to a more granular
+                comparison by analyzing pairs of movies—each original and its corresponding remake. This pairwise
+                analysis
+                allows us to directly compare the features of remakes relative to their specific originals, providing
+                deeper
+                insights into how these features change when a movie is remade. By examining these pairs, we can better
+                understand whether the observed trends hold consistently across individual original-remake pairs or are
+                driven by broader patterns in the data.
+            </div>
+            <div class="col-md-4">
+                <img src="/assets/images/comp.jpg" alt="It Original" style="width: 100%;">
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+        <style>
+            .data-visualization-wrapper * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            .data-visualization-wrapper {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                margin: 0 auto;
+            }
+
+            .data-visualization-wrapper .container {
+                position: relative;
+            }
+
+            .data-visualization-wrapper .logos {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 15%;
+            }
+
+            .data-visualization-wrapper .logo {
+                position: relative;
+            }
+
+            .data-visualization-wrapper .logo img {
+                width: 100px;
+                cursor: pointer;
+                transition: transform 0.3s;
+                border-radius: 15px;
+                z-index: 1000;
+            }
+
+            .data-visualization-wrapper .logo img:hover {
+                transform: scale(1.05);
+            }
+
+            .data-visualization-wrapper .logo .tooltip {
+                visibility: hidden;
+                width: max-content;
+                background-color: #1dafc6;
+                color: #fff;
+                text-align: center;
+                border-radius: 5px;
+                padding: 5px 10px;
+                position: absolute;
+                bottom: 110%;
+                left: 50%;
+                transform: translateX(-50%);
+                opacity: 0;
+                z-index: 100;
+            }
+
+            .data-visualization-wrapper .logo .tooltip::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                border-width: 5px;
+                border-style: solid;
+                border-color: #333 transparent transparent transparent;
+            }
+
+            .data-visualization-wrapper .logo:hover .tooltip {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            .data-visualization-wrapper #data-table {
+                width: 100%;
+                border-collapse: collapse;
+                table-layout: fixed;
+                background-color: #fff;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                margin-bottom: 40px;
+            }
+
+            .data-visualization-wrapper #data-table th,
+            .data-visualization-wrapper #data-table td {
+                border: 1px solid #ddd;
+                padding: 12px;
+                text-align: center;
+                height: 50px;
+                word-wrap: break-word;
+                width: calc(100% / 14);
+                position: relative;
+                font-size: 8pt;
+            }
+
+            .data-visualization-wrapper #data-table th {
+                background-color: #f4f4f4;
+                transition: background-color 0.3s;
+            }
+
+            .data-visualization-wrapper #data-table th:hover {
+                background-color: #e0e0e0;
+            }
+
+            .data-visualization-wrapper #data-table th .tooltip {
+                visibility: hidden;
+                width: max-content;
+                background-color: #1dafc6;
+                color: #fff;
+                text-align: center;
+                border-radius: 5px;
+                padding: 5px 10px;
+                position: absolute;
+                top: 110%;
+                left: 50%;
+                transform: translateX(-50%);
+                opacity: 0;
+                z-index: 100;
+            }
+
+            .data-visualization-wrapper #data-table th .tooltip::after {
+                content: "";
+                position: absolute;
+                bottom: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                border-width: 5px;
+                border-style: solid;
+                border-color: transparent transparent #333 transparent;
+            }
+
+            .data-visualization-wrapper #data-table th:hover .tooltip {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            .data-visualization-wrapper .arrows {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 500px;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            .data-visualization-wrapper .arrow-line {
+                stroke: #f2f2f2;
+                stroke-width: 2;
+                transition: stroke 0.3s;
+                z-index: 0;
+            }
+
+            .data-visualization-wrapper .arrow-line.dashed {
+                stroke-dasharray: 4;
+            }
+
+            .data-visualization-wrapper .arrow-line.hovered {
+                stroke: #555;
+                z-index: 999;
+            }
+        </style>
+
+        <div class="data-visualization-wrapper">
+            <div class="container">
+                <div class="logos">
+                    <div class="logo" id="cmu-logo">
+                        <img src="/assets/images/cmu_logo.jpg" alt="CMU Movie Corpus">
+                        <div class="tooltip">CMU Movie Corpus</div>
+                    </div>
+                    <div class="logo" id="tmdb-logo">
+                        <img src="/assets/images/tmdb_logo.png" alt="TMDB">
+                        <div class="tooltip">TMDB</div>
+                    </div>
+                    <div class="logo" id="imdb-logo">
+                        <img src="/assets/images/imdb_logo.png" alt="IMDb">
+                        <div class="tooltip">IMDb
+                            information.</div>
+                    </div>
+                    <div class="logo" id="wikipedia-logo">
+                        <img src="/assets/images/wiki_logo.png" alt="Wikipedia">
+                        <div class="tooltip">Wikipedia</div>
+                    </div>
+                </div>
+
+                <table id="data-table">
+                    <thead>
+                        <tr>
+                            <th class="data-table">Name<br>📇<div class="tooltip">Title of the Movie</div>
+                            </th>
+                            <th class="data-table">Genre<br>🍿<div class="tooltip">The date when the movie was released.
+                                </div>
+                            </th>
+                            <th class="data-table">Year<br>𝟚𝟘𝟚𝟜<div class="tooltip">The release date of the movie.
+                                </div>
+                            </th>
+                            <th class="data-table">Type<br>🅾️🅰️🅱️<div class="tooltip">Whether is this a regular,
+                                    short, or ...
+                                    movie.</div>
+                            </th>
+                            <th class="data-table">Country<br>🇨🇭<div class="tooltip">The origin of the movie.</div>
+                            </th>
+                            <th class="data-table">Lang<br>㍻<div class="tooltip">The language of the movie.</div>
+                            </th>
+                            <th class="data-table">Runtime<br>⏱️<div class="tooltip">The duration of a movie.</div>
+                            </th>
+                            <th class="data-table">Budget<br>💵<div class="tooltip">The budget expended for the
+                                    production.</div>
+                            </th>
+                            <th class="data-table">Rev.<br>🤑<div class="tooltip">The revenue of the movie.</div>
+                            </th>
+                            <th class="data-table">Votes<br>🗳️<div class="tooltip">The number and average votes of
+                                    people for the
+                                    movie.</div>
+                            </th class="data-table">
+                            <th>Crew<br>✨<div class="tooltip">The stars and crew of the movie.</div>
+                            </th class="data-table">
+                            <th class="data-table">Adult<br>🔞<div class="tooltip">If the movie is for adults only</div>
+                            </th>
+                            <th class="data-table">Plot<br>🗺️<div class="tooltip">The summary of the plot.</div>
+                            </th>
+                            <th class="data-table">Remake<br>♻️<div class="tooltip">Whether is the movie remade or is a
+                                    reference
+                                    for a remake.</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <svg class="arrows" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                            <path d="M0,0 L10,3.5 L0,7 Z" fill="#555" />
+                        </marker>
+                    </defs>
+                </svg>
             </div>
         </div>
 
         <script>
-            document.addEventListener('mousemove', (event) => {
-                const section = document.querySelector('#section1');
-                const { clientX, clientY } = event; // Get the mouse position
-                const { innerWidth, innerHeight } = window; // Get the window size
+            window.addEventListener('load', () => {
+                const svg = document.querySelector('.arrows');
+                const logos = document.querySelectorAll('.logo');
+                const table = document.getElementById('data-table');
+                const headers = table.querySelectorAll('th');
 
-                // Calculate the percentage of mouse position relative to window
-                const mouseXPercent = clientX / innerWidth;
-                const mouseYPercent = clientY / innerHeight;
+                const sourceToColumns = {
+                    'cmu-logo': [{ column: 12, type: 'solid' }, { column: 1, type: 'solid' }, { column: 4, type: 'solid' }, { column: 6, type: 'dashed' }, { column: 8, type: 'solid' }, { column: 11, type: 'solid' }, { column: 2, type: 'solid' }, { column: 0, type: 'solid' },],
+                    'tmdb-logo': [{ column: 12, type: 'dashed' }, { column: 1, type: 'dashed' }, { column: 4, type: 'dashed' }, { column: 6, type: 'solid' }, { column: 7, type: 'solid' }, { column: 8, type: 'dashed' }, { column: 9, type: 'dashed' }, { column: 2, type: 'dashed' }],
+                    'imdb-logo': [{ column: 1, type: 'dashed' }, { column: 6, type: 'dashed' }, { column: 5, type: 'solid' }, { column: 11, type: 'dashed' }, { column: 10, type: 'solid' }, { column: 9, type: 'solid' }, { column: 3, type: 'solid' }, { column: 2, type: 'dashed' }],
+                    'wikipedia-logo': [{ column: 13, type: 'solid' }]
+                };
 
-                // Calculate new background position based on mouse movement
-                const posX = (mouseXPercent - 0.5) * 100; // Adjust sensitivity as needed
-                const posY = (mouseYPercent - 0.5) * 100;
+                logos.forEach(logo => {
+                    const logoId = logo.id;
+                    const mappings = sourceToColumns[logoId];
+                    if (mappings) {
+                        mappings.forEach(({ column, type }) => {
+                            drawLine(logo, headers[column], type);
+                        });
+                    }
 
-                section.style.backgroundPosition = `${50 + posX}% ${50 + posY}%`;
+                    logo.addEventListener('mouseover', () => {
+                        highlightLinesBySource(logoId, true);
+                    });
+
+                    logo.addEventListener('mouseout', () => {
+                        highlightLinesBySource(logoId, false);
+                    });
+                });
+
+                headers.forEach((header, colIndex) => {
+                    header.addEventListener('mouseover', () => {
+                        highlightLinesByColumn(colIndex, true);
+                    });
+
+                    header.addEventListener('mouseout', () => {
+                        highlightLinesByColumn(colIndex, false);
+                    });
+                });
+
+                function drawLine(sourceElement, targetElement, lineType) {
+                    const svgNS = "http://www.w3.org/2000/svg";
+
+                    const sourceRect = sourceElement.getBoundingClientRect();
+                    const targetRect = targetElement.getBoundingClientRect();
+                    const containerRect = document.querySelector('.data-visualization-wrapper').getBoundingClientRect();
+
+                    const startX = sourceRect.left + sourceRect.width / 2 - containerRect.left;
+                    const startY = sourceRect.bottom - containerRect.top;
+                    const endX = targetRect.left + targetRect.width / 2 - containerRect.left;
+                    const endY = targetRect.top - containerRect.top;
+
+                    const line = document.createElementNS(svgNS, 'line');
+                    line.setAttribute('x1', startX);
+                    line.setAttribute('y1', startY);
+                    line.setAttribute('x2', endX);
+                    line.setAttribute('y2', endY);
+                    line.classList.add('arrow-line');
+                    if (lineType === 'dashed') {
+                        line.classList.add('dashed');
+                    }
+                    line.dataset.source = sourceElement.id;
+                    line.dataset.target = targetElement.cellIndex;
+
+                    svg.appendChild(line);
+                }
+
+                function highlightLinesBySource(sourceId, highlight) {
+                    const lines = document.querySelectorAll(`.arrow-line[data-source="${sourceId}"]`);
+                    lines.forEach(line => {
+                        line.classList.toggle('hovered', highlight);
+                    });
+                }
+
+                function highlightLinesByColumn(columnIndex, highlight) {
+                    const lines = document.querySelectorAll(`.arrow-line[data-target="${columnIndex}"]`);
+                    lines.forEach(line => {
+                        line.classList.toggle('hovered', highlight);
+                    });
+                }
             });
         </script>
 
-        <div class="section" id="section0-1">
-            <div class="container text-center">
-                <h2>Introduction</h2>
-                <!-- <h4>One</h4> -->
 
-                <div class="row justify-content-center mt-4">
-                    <div class="col-md-6" style="text-align: left;">
-                        <p>
-                            You are a film director working for a well-known company - “Lausanne pictures”. It’s been a
-                            while
-                            since
-                            you shot your last movie that took people’s breaths away and you wish to get back into the
-                            spotlight
-                            without “dropping the ball”. But …. you are out of original ideas. “What if I take an
-                            already
-                            existing
-                            storyline but make it bigger, better?”, you think to yourself. “But then, what movie should
-                            I choose
-                            to
-                            reenact so that success is inevitable?”. Tough question. And here is where our team comes to
-                            assist
-                            you.
-                            MADAYAM is about to unravel the MAD secrets of the remake industry “what movie should you
-                            remake? is
-                            the appropriate time to do so now?” - these are the questions we will answer for you based
-                            on the
-                            data across years of evolution and development of film industry.
-                        </p>
 
-                        <p>
-                            Are you ready for the most comprehensive analysis involving the most popular movie datasets?
-                        </p>
-                    </div>
-                    <div class="col-md-6">
-                        <img src="/assets/images/intro.webp" alt="Introduction" class="img-fluid">
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="section" id="team-section">
-            <div class="container text-center">
-                <h2>Meet Our Team</h2>
-                <p>(randomized order)</p>
-                <div class="row justify-content-center" id="team-container">
-                    {% for member in site.data.team %}
-                    <div class="col-md-4 text-center team-member" data-order="{{ forloop.index }}">
-                        <img src="/assets/images/{{ member.photo }}" alt="{{ member.name }}" class="team-photo">
-                        <h3>{{ member.name }}</h3>
-                        {{ member.status }}
-                        <!-- icon for mail, github, linkedin, X, homepage -->
-                        <div class="team-social">
-                            {% if member.homepage %}
-                            <a href="{{ member.homepage }}"><i class="fas fa-home"></i></a>
-                            {% endif %}
-                            {% if member.google_scholar %}
-                            <a href="{{ member.google_scholar }}"><i class="fas fa-graduation-cap"></i></a>
-                            {% endif %}
-                            {% if member.email %}
-                            <a href="mailto:{{ member.email }}"><i class="fas fa-envelope"></i></a>
-                            {% endif %}
-                            {% if member.github %}
-                            <a href="https://github.com/{{ member.github }}"><i class="fab fa-github"></i></a>
-                            {% endif %}
-                            {% if member.linkedin %}
-                            <a href="{{ member.linkedin }}"><i class="fab fa-linkedin"></i></a>
-                            {% endif %}
-                            {% if member.twitter %}
-                            <a href="{{ member.twitter }}"><i class="fab fa-twitter"></i></a>
-                            {% endif %}
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
 
-        <div class="section" id="section0-1">
-            <div class="container text-center">
-                <h2>Remakes and movies through chronus</h2>
 
-                <div class="row justify-content-center mt-4">
-                    <div class="col-md-7">
-                        <div class="d-flex align-items-start">
-                            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist"
-                                aria-orientation="vertical">
 
-                                <button class="nav-link active" id="v-pills-tab-0-1-1" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-0-1-1" type="button" role="tab"
-                                    aria-controls="v-pills-0-1-1" aria-selected="true">Remake</button>
-
-                                <button class="nav-link" id="v-pills-tab-0-1-2" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-0-1-2" type="button" role="tab"
-                                    aria-controls="v-pills-0-1-2" aria-selected="false">Original</button>
-
-                                <button class="nav-link" id="v-pills-tab-0-1-3" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-0-1-3" type="button" role="tab"
-                                    aria-controls="v-pills-0-1-3" aria-selected="false">Rest</button>
-
-                                <button class="nav-link" id="v-pills-tab-0-1-4" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-0-1-4" type="button" role="tab"
-                                    aria-controls="v-pills-0-1-4" aria-selected="false">Whole</button>
-                            </div>
-                            <div class="tab-content" id="v-pills-tabContent">
-                                <div class="tab-pane fade show active" id="v-pills-0-1-1" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-0-1-1" tabindex="0">
-
-                                    <iframe src="/assets/plots/interactive_yearly_distribution_remake.html"
-                                        width="720px" height="470px" frameborder="0"></iframe>
-
-                                </div>
-
-                                <div class="tab-pane fade" id="v-pills-0-1-2" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-0-1-2" tabindex="0">
-
-                                    <iframe src="/assets/plots/interactive_yearly_distribution_original.html"
-                                        width="720px" height="470px" frameborder="0"></iframe>
-
-                                </div>
-
-                                <div class="tab-pane fade" id="v-pills-0-1-3" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-0-1-3" tabindex="0">
-
-                                    <iframe src="/assets/plots/interactive_yearly_distribution_rest.html" width="720px"
-                                        height="470px" frameborder="0"></iframe>
-
-                                </div>
-
-                                <div class="tab-pane fade" id="v-pills-0-1-4" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-0-1-4" tabindex="0">
-
-                                    <iframe src="/assets/plots/interactive_yearly_distribution_whole.html" width="720px"
-                                        height="470px" frameborder="0"></iframe>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-5" style="text-align: left;">
-                        <p>
-                            Let’s dive deeper into the world of films and remakes. First, you might as a question “How
-                            many remakes have been made throughout the filmographic history? Is there a difference in
-                            the number of films made across the decades? How about remakes?” All of these are valid
-                            questions. And let me tell you, there is a difference. While there are more remakes and more
-                            films made each year, the number of original movies are worth re-capturing seems to decline.
-                            Well, at least you are not tricking yourself by choosing to re-shoot the film instead of
-                            trying to aimlessly search for worthy new ideas. This is different with remakes and the
-                            whole dataset: more movies are made - more remakes are produced. Cooking some statistics to
-                            see how close our power law fits the log-log distributions, we observe that R2 metric for
-                            the whole dataset is 0.86 suggesting that the fitted power law distribution explains the
-                            data well. This is not the case for the remakes and originals with only 0.58 and 0.18
-                            respectively.
-                        </p>
-                        <p>
-                            Finally, we can notice that the mean number of remakes across the cinematic history is much
-                            more recent than for the whole dataset. Understandably, before you shoot a remake you have
-                            to shoot an original.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section" id="section0-2">
-            <div class="container text-center">
-                <h2>How long should our creative struggle take? Or runtimes</h2>
-
-                <div class="row justify-content-center mt-4">
-                    <div class="col-md-5" style="text-align: left;">
-                        <p>
-                            Well, ok, we have more remakes. But it is not about quantity but quality of those, mes amis,
-                            that we are interested in. To start us off, we should constrain our movie to a reasonable
-                            time. Compared to the whole dataset, there are not so many outliers and there is not a
-                            single remake exceeding 200 minutes.
-                        </p>
-                    </div>
-                    <div class="col-md-7">
-                        <div class="d-flex align-items-start">
-                            <div class="tab-content" id="v-pills-tabContent">
-                                <div class="tab-pane fade show active" id="v-pills-0-2-1" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-0-2-1" tabindex="0">
-
-                                    <iframe src="/assets/plots/boxplots_remakes.html" width="720px" height="470px"
-                                        frameborder="0"></iframe>
-
-                                </div>
-
-                                <div class="tab-pane fade" id="v-pills-0-2-2" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-0-2-2" tabindex="0">
-
-                                    <iframe src="/assets/plots/boxplots_originals.html" width="720px" height="470px"
-                                        frameborder="0"></iframe>
-
-                                </div>
-
-                                <div class="tab-pane fade" id="v-pills-0-2-3" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-0-2-3" tabindex="0">
-
-                                    <iframe src="/assets/plots/boxplots_rest.html" width="720px" height="470px"
-                                        frameborder="0"></iframe>
-
-                                </div>
-
-                                <div class="tab-pane fade" id="v-pills-0-2-4" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-0-2-4" tabindex="0">
-
-                                    <iframe src="/assets/plots/boxplots_whole.html" width="720px" height="470px"
-                                        frameborder="0"></iframe>
-
-                                </div>
-                            </div>
-                            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist"
-                                aria-orientation="vertical">
-
-                                <button class="nav-link active" id="v-pills-tab-0-2-1" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-0-2-1" type="button" role="tab"
-                                    aria-controls="v-pills-0-2-1" aria-selected="true">Remake</button>
-
-                                <button class="nav-link" id="v-pills-tab-0-2-2" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-0-2-2" type="button" role="tab"
-                                    aria-controls="v-pills-0-2-2" aria-selected="false">Original</button>
-
-                                <button class="nav-link" id="v-pills-tab-0-2-3" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-0-2-3" type="button" role="tab"
-                                    aria-controls="v-pills-0-2-3" aria-selected="false">Rest</button>
-
-                                <button class="nav-link" id="v-pills-tab-0-2-4" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-0-2-4" type="button" role="tab"
-                                    aria-controls="v-pills-0-2-4" aria-selected="false">Whole</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section" id="section2">
-            <div class="container text-center">
-                <h2>Data</h2>
-                <p>hover on the sources or columns!</p>
-                <div style="height: 40px;"></div>
-                <style>
-                    .data-visualization-wrapper * {
-                        box-sizing: border-box;
-                        margin: 0;
-                        padding: 0;
-                    }
-
-                    .data-visualization-wrapper {
-                        font-family: Arial, sans-serif;
-                        margin: 20px;
-                        margin: 0 auto;
-                    }
-
-                    .data-visualization-wrapper .container {
-                        position: relative;
-                    }
-
-                    .data-visualization-wrapper .logos {
-                        display: flex;
-                        justify-content: space-between;
-                        margin-bottom: 15%;
-                    }
-
-                    .data-visualization-wrapper .logo {
-                        position: relative;
-                    }
-
-                    .data-visualization-wrapper .logo img {
-                        width: 100px;
-                        cursor: pointer;
-                        transition: transform 0.3s;
-                        border-radius: 15px;
-                        z-index: 1000;
-                    }
-
-                    .data-visualization-wrapper .logo img:hover {
-                        transform: scale(1.05);
-                    }
-
-                    .data-visualization-wrapper .logo .tooltip {
-                        visibility: hidden;
-                        width: max-content;
-                        background-color: #1dafc6;
-                        color: #fff;
-                        text-align: center;
-                        border-radius: 5px;
-                        padding: 5px 10px;
-                        position: absolute;
-                        bottom: 110%;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        opacity: 0;
-                        z-index: 100;
-                    }
-
-                    .data-visualization-wrapper .logo .tooltip::after {
-                        content: "";
-                        position: absolute;
-                        top: 100%;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        border-width: 5px;
-                        border-style: solid;
-                        border-color: #333 transparent transparent transparent;
-                    }
-
-                    .data-visualization-wrapper .logo:hover .tooltip {
-                        visibility: visible;
-                        opacity: 1;
-                    }
-
-                    .data-visualization-wrapper #data-table {
-                        width: 100%;
-                        border-collapse: collapse;
-                        table-layout: fixed;
-                        background-color: #fff;
-                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                        margin-bottom: 40px;
-                    }
-
-                    .data-visualization-wrapper #data-table th,
-                    .data-visualization-wrapper #data-table td {
-                        border: 1px solid #ddd;
-                        padding: 12px;
-                        text-align: center;
-                        height: 50px;
-                        word-wrap: break-word;
-                        width: calc(100% / 14);
-                        position: relative;
-                    }
-
-                    .data-visualization-wrapper #data-table th {
-                        background-color: #f4f4f4;
-                        transition: background-color 0.3s;
-                    }
-
-                    .data-visualization-wrapper #data-table th:hover {
-                        background-color: #e0e0e0;
-                    }
-
-                    .data-visualization-wrapper #data-table th .tooltip {
-                        visibility: hidden;
-                        width: max-content;
-                        background-color: #1dafc6;
-                        color: #fff;
-                        text-align: center;
-                        border-radius: 5px;
-                        padding: 5px 10px;
-                        position: absolute;
-                        top: 110%;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        opacity: 0;
-                        z-index: 100;
-                    }
-
-                    .data-visualization-wrapper #data-table th .tooltip::after {
-                        content: "";
-                        position: absolute;
-                        bottom: 100%;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        border-width: 5px;
-                        border-style: solid;
-                        border-color: transparent transparent #333 transparent;
-                    }
-
-                    .data-visualization-wrapper #data-table th:hover .tooltip {
-                        visibility: visible;
-                        opacity: 1;
-                    }
-
-                    .data-visualization-wrapper .arrows {
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 500px;
-                        pointer-events: none;
-                        z-index: 0;
-                    }
-
-                    .data-visualization-wrapper .arrow-line {
-                        stroke: #f2f2f2;
-                        stroke-width: 2;
-                        transition: stroke 0.3s;
-                        z-index: 0;
-                    }
-
-                    .data-visualization-wrapper .arrow-line.dashed {
-                        stroke-dasharray: 4;
-                    }
-
-                    .data-visualization-wrapper .arrow-line.hovered {
-                        stroke: #555;
-                        z-index: 999;
-                    }
-                </style>
-
-                <div class="data-visualization-wrapper">
-                    <div class="container">
-                        <div class="logos">
-                            <div class="logo" id="cmu-logo">
-                                <img src="/assets/images/cmu_logo.jpg" alt="CMU Movie Corpus">
-                                <div class="tooltip">CMU Movie Corpus</div>
-                            </div>
-                            <div class="logo" id="tmdb-logo">
-                                <img src="/assets/images/tmdb_logo.png" alt="TMDB">
-                                <div class="tooltip">TMDB</div>
-                            </div>
-                            <div class="logo" id="imdb-logo">
-                                <img src="/assets/images/imdb_logo.png" alt="IMDb">
-                                <div class="tooltip">IMDb
-                                    information.</div>
-                            </div>
-                            <div class="logo" id="wikipedia-logo">
-                                <img src="/assets/images/wiki_logo.png" alt="Wikipedia">
-                                <div class="tooltip">Wikipedia</div>
-                            </div>
-                        </div>
-
-                        <table id="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Name<br>📇<div class="tooltip">Title of the Movie</div>
-                                    </th>
-                                    <th>Genre<br>🍿<div class="tooltip">The date when the movie was released.</div>
-                                    </th>
-                                    <th>Year<br>𝟚𝟘𝟚𝟜<div class="tooltip">The release date of the movie.</div>
-                                    </th>
-                                    <th>Type<br>🅾️🅰️🅱️<div class="tooltip">Whether is this a regular, short, or ...
-                                            movie.</div>
-                                    </th>
-                                    <th>Country<br>🇨🇭<div class="tooltip">The origin of the movie.</div>
-                                    </th>
-                                    <th>Lang<br>㍻<div class="tooltip">The language of the movie.</div>
-                                    </th>
-                                    <th>Runtime<br>⏱️<div class="tooltip">The duration of a movie.</div>
-                                    </th>
-                                    <th>Budget<br>💵<div class="tooltip">The budget expended for the production.</div>
-                                    </th>
-                                    <th>Revenue<br>🤑<div class="tooltip">The revenue of the movie.</div>
-                                    </th>
-                                    <th>Votes<br>🗳️<div class="tooltip">The number and average votes of people for the
-                                            movie.</div>
-                                    </th>
-                                    <th>Crew<br>✨<div class="tooltip">The stars and crew of the movie.</div>
-                                    </th>
-                                    <th>Adult<br>🔞<div class="tooltip">If the movie is for adults only</div>
-                                    </th>
-                                    <th>Plot<br>🗺️<div class="tooltip">The summary of the plot.</div>
-                                    </th>
-                                    <th>Remake<br>♻️<div class="tooltip">Whether is the movie remade or is a reference
-                                            for a remake.</div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <svg class="arrows" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5"
-                                    orient="auto">
-                                    <path d="M0,0 L10,3.5 L0,7 Z" fill="#555" />
-                                </marker>
-                            </defs>
-                        </svg>
-                    </div>
-                </div>
-
-                <script>
-                    window.addEventListener('load', () => {
-                        const svg = document.querySelector('.arrows');
-                        const logos = document.querySelectorAll('.logo');
-                        const table = document.getElementById('data-table');
-                        const headers = table.querySelectorAll('th');
-
-                        const sourceToColumns = {
-                            'cmu-logo': [{ column: 12, type: 'solid' }, { column: 1, type: 'solid' }, { column: 4, type: 'solid' }, { column: 6, type: 'dashed' }, { column: 8, type: 'solid' }, { column: 11, type: 'solid' }, { column: 2, type: 'solid' }, { column: 0, type: 'solid' },],
-                            'tmdb-logo': [{ column: 12, type: 'dashed' }, { column: 1, type: 'dashed' }, { column: 4, type: 'dashed' }, { column: 6, type: 'solid' }, { column: 7, type: 'solid' }, { column: 8, type: 'dashed' }, { column: 9, type: 'dashed' }, { column: 2, type: 'dashed' }],
-                            'imdb-logo': [{ column: 1, type: 'dashed' }, { column: 6, type: 'dashed' }, { column: 5, type: 'solid' }, { column: 11, type: 'dashed' }, { column: 10, type: 'solid' }, { column: 9, type: 'solid' }, { column: 3, type: 'solid' }, { column: 2, type: 'dashed' }],
-                            'wikipedia-logo': [{ column: 13, type: 'solid' }]
-                        };
-
-                        logos.forEach(logo => {
-                            const logoId = logo.id;
-                            const mappings = sourceToColumns[logoId];
-                            if (mappings) {
-                                mappings.forEach(({ column, type }) => {
-                                    drawLine(logo, headers[column], type);
-                                });
-                            }
-
-                            logo.addEventListener('mouseover', () => {
-                                highlightLinesBySource(logoId, true);
-                            });
-
-                            logo.addEventListener('mouseout', () => {
-                                highlightLinesBySource(logoId, false);
-                            });
-                        });
-
-                        headers.forEach((header, colIndex) => {
-                            header.addEventListener('mouseover', () => {
-                                highlightLinesByColumn(colIndex, true);
-                            });
-
-                            header.addEventListener('mouseout', () => {
-                                highlightLinesByColumn(colIndex, false);
-                            });
-                        });
-
-                        function drawLine(sourceElement, targetElement, lineType) {
-                            const svgNS = "http://www.w3.org/2000/svg";
-
-                            const sourceRect = sourceElement.getBoundingClientRect();
-                            const targetRect = targetElement.getBoundingClientRect();
-                            const containerRect = document.querySelector('.data-visualization-wrapper').getBoundingClientRect();
-
-                            const startX = sourceRect.left + sourceRect.width / 2 - containerRect.left;
-                            const startY = sourceRect.bottom - containerRect.top;
-                            const endX = targetRect.left + targetRect.width / 2 - containerRect.left;
-                            const endY = targetRect.top - containerRect.top;
-
-                            const line = document.createElementNS(svgNS, 'line');
-                            line.setAttribute('x1', startX);
-                            line.setAttribute('y1', startY);
-                            line.setAttribute('x2', endX);
-                            line.setAttribute('y2', endY);
-                            line.classList.add('arrow-line');
-                            if (lineType === 'dashed') {
-                                line.classList.add('dashed');
-                            }
-                            line.dataset.source = sourceElement.id;
-                            line.dataset.target = targetElement.cellIndex;
-
-                            svg.appendChild(line);
-                        }
-
-                        function highlightLinesBySource(sourceId, highlight) {
-                            const lines = document.querySelectorAll(`.arrow-line[data-source="${sourceId}"]`);
-                            lines.forEach(line => {
-                                line.classList.toggle('hovered', highlight);
-                            });
-                        }
-
-                        function highlightLinesByColumn(columnIndex, highlight) {
-                            const lines = document.querySelectorAll(`.arrow-line[data-target="${columnIndex}"]`);
-                            lines.forEach(line => {
-                                line.classList.toggle('hovered', highlight);
-                            });
-                        }
-                    });
-                </script>
-            </div>
-        </div>
-
-
-        <div class="section" id="section0-3">
-            <div class="container text-center">
-                <h2>Maria's 1</h2>
-                <h4>Three</h4>
-            </div>
-        </div>
-
-        <div class="section" id="section0-4">
-            <div class="container text-center">
-                <h2>Maria's 1</h2>
-                <h4>Four</h4>
-            </div>
-        </div>
-
-        <div class="section" id="section0-5">
-            <div class="container text-center">
-                <h2>Maria's 1</h2>
-                <h4>Five</h4>
-            </div>
-        </div>
-
-        <div class="section" id="section0-6">
-            <div class="container text-center">
-                <h2>Maria's 1</h2>
-                <h4>Six</h4>
-            </div>
-        </div>
-
-        <div class="section" id="section0-7">
-            <div class="container text-center">
-                <h2>Maria's 1</h2>
-                <h4>Seven</h4>
-            </div>
-        </div>
-
-        <div class="section" id="section0-8">
-            <div class="container text-center">
-                <h2>Maria's 1</h2>
-                <h4>Eight</h4>
-            </div>
-        </div>
-
-        <div class="section" id="section1-1">
-            <div class="container text-center">
-                <h2>Feature Comparison of Movie Originals vs. Their Remakes</h2>
-                <p>A Statistical and Visual Analysis</p>
-                <br>
-                <div class="row justify-content-center mt-4">
-                    <div class="col-md-6">
-                        <p>While some remakes breathe new life into beloved classics, others struggle to capture the
-                            magic of
-                            their predecessors. But beyond revenue and critical reviews, how do the key characteristics
-                            of
-                            remakes differ from their originals? Our data-driven investigation seeks to answer this
-                            question by
-                            examining the underlying features that define both versions of a film.</p>
-                        <p>Consider, for example, the 2017 remake of It compared to the 1990 original miniseries. The
-                            remake
-                            featured a longer runtime, and a significantly larger budget.</p>
-                        <p>Our approach to this analysis is systematic and data-driven. By using statistical techniques
-                            like
-                            distribution comparison and hypothesis testing, we seek to quantify how each variable
-                            differs
-                            between originals and remakes.</p>
-                        <strong>
-                            Image: Original IT and its remake in 1970 and 2017, respectively.</strong>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="row justify-content-center mt-4">
-                            <div class="col-md-6">
-                                <img src="/assets/images/it_1.jpg" alt="It Original" class="img-fluid">
-                            </div>
-                            <div class="col-md-6">
-                                <img src="/assets/images/it_2.jpg" alt="It Remake" class="img-fluid">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section" id="section1-2">
-            <div class="container text-center">
-                <h2>Feature Comparison of Movie Originals vs. Their Remakes (Cnt'd)</h2>
-                <h4>Visualizing and Testing Differences: Aggregate Analysis of Originals vs. Remakes</h4>
-
-                <div class="row justify-content-center mt-4">
-                    <div class="col-md-7">
-                        <div class="d-flex align-items-start">
-                            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist"
-                                aria-orientation="vertical">
-                                <button class="nav-link active" id="v-pills-tab-1-2-1" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-1-2-1" type="button" role="tab"
-                                    aria-controls="v-pills-1-2-1" aria-selected="true">Runtime</button>
-
-                                <button class="nav-link" id="v-pills-tab-1-2-2" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-1-2-2" type="button" role="tab"
-                                    aria-controls="v-pills-1-2-2" aria-selected="false">Star Popularity</button>
-
-                                <button class="nav-link" id="v-pills-tab-1-2-3" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-1-2-3" type="button" role="tab"
-                                    aria-controls="v-pills-1-2-3" aria-selected="false">Director Popularity</button>
-
-                                <button class="nav-link" id="v-pills-tab-1-2-4" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-1-2-4" type="button" role="tab"
-                                    aria-controls="v-pills-1-2-4" aria-selected="false">Writer Popularity</button>
-
-                                <button class="nav-link" id="v-pills-tab-1-2-5" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-1-2-5" type="button" role="tab"
-                                    aria-controls="v-pills-1-2-5" aria-selected="false">Producer Popularity</button>
-
-                                <button class="nav-link" id="v-pills-tab-1-2-6" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-1-2-6" type="button" role="tab"
-                                    aria-controls="v-pills-1-2-6" aria-selected="false">Vote Average</button>
-
-                                <button class="nav-link" id="v-pills-tab-1-2-7" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-1-2-7" type="button" role="tab"
-                                    aria-controls="v-pills-1-2-7" aria-selected="false">Vote Count</button>
-
-                                <button class="nav-link" id="v-pills-tab-1-2-8" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-1-2-8" type="button" role="tab"
-                                    aria-controls="v-pills-1-2-8" aria-selected="false">Adjusted Revenue</button>
-
-                                <button class="nav-link" id="v-pills-tab-1-2-9" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-1-2-9" type="button" role="tab"
-                                    aria-controls="v-pills-1-2-9" aria-selected="false">Adjusted Budget</button>
-
-                                <button class="nav-link" id="v-pills-tab-1-2-10" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-1-2-10" type="button" role="tab"
-                                    aria-controls="v-pills-1-2-10" aria-selected="false">Sentiment Score</button>
-                            </div>
-                            <div class="tab-content" id="v-pills-tabContent">
-                                <div class="tab-pane fade show active" id="v-pills-1-2-1" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-1-2-1" tabindex="0">
-                                    1
-                                    <canvas id="chart-1-2-1" width="400px" height="300px"></canvas>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-1-2-2" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-1-2-2" tabindex="0">
-                                    2
-                                    <canvas id="chart-1-2-2" width="400" height="200"></canvas>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-1-2-3" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-1-2-3" tabindex="0">
-                                    3
-                                    <canvas id="chart-1-2-3" width="400" height="200"></canvas>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-1-2-4" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-1-2-4" tabindex="0">
-                                    4
-                                    <canvas id="chart-1-2-4" width="400" height="200"></canvas>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-1-2-5" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-1-2-5" tabindex="0">
-                                    5
-                                    <canvas id="chart-1-2-5" width="400" height="200"></canvas>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-1-2-6" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-1-2-6" tabindex="0">
-                                    6
-                                    <canvas id="chart-1-2-6" width="400" height="200"></canvas>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-1-2-7" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-1-2-7" tabindex="0">
-                                    7
-                                    <canvas id="chart-1-2-7" width="400" height="200"></canvas>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-1-2-8" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-1-2-8" tabindex="0">
-                                    8
-                                    <canvas id="chart-1-2-8" width="400" height="200"></canvas>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-1-2-9" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-1-2-9" tabindex="0">
-                                    9
-                                    <canvas id="chart-1-2-9" width="400" height="200"></canvas>
-                                </div>
-                                <div class="tab-pane fade" id="v-pills-1-2-10" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-1-2-10" tabindex="0">
-                                    10
-                                    <canvas id="chart-1-2-10" width="400" height="200"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <p>
-                            We apply Kolmogorov-Smirnov (KS) test to determine if two distributions are significantly
-                            different. If the p-value is below 0.05, we conclude that the distributions are
-                            significantly different.
-                        </p>
-                        <p>
-                            Looking at the distributions, we observe notable differences between originals and remakes
-                            in terms of star popularity, vote average, and budget. Specifically, movie remakes generally
-                            feature higher star popularity, lower vote averages, and larger budgets compared to
-                            originals.
-                        </p>
-                        <p>
-                            However, can these differences be solely attributed to whether a movie is an original or a
-                            remake? To address this question, we will conduct a more in-depth analysis in the following
-                            sections.
-                        </p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="section" id="section1-3">
-            <div class="container text-center">
-                <h2>Feature Comparison of Movie Originals vs. Their Remakes (Cnt'd)</h2>
-                <h4></h4>
-
-                <p>
-                    Since remakes are inherently produced after the originals, it is important to consider the potential
-                    impact of time on the observed differences. Over time, industry trends, audience preferences, and
-                    market conditions may influence key factors such as star popularity, vote average, and budget for
-                    movies in general.
-                    To investigate this, we analyze the yearly trends for the average star popularity, vote average, and
-                    budget for all movies (not just remakes and originals). By plotting the mean values of these
-                    features over time, we can assess whether the observed differences between originals and remakes
-                    could be partially explained by broader industry shifts, rather than the nature of remakes alone.
-                </p>
-
-                <div class="row justify-content-center mt-4">
-                    <div class="col-md-4">
-                        <canvas id="chart-1-3-1" width="400" height="300"></canvas>
-                        <p>
-                            The mean vote average has shown variability over time, with a slight upward trend until the
-                            mid-20th century and a gradual decline in recent decades. This suggests that the lower vote
-                            averages for remakes might align with a general industry trend of declining vote averages
-                            over time, rather than being solely due to the nature of remakes.
-                        </p>
-                    </div>
-                    <div class="col-md-4">
-                        <canvas id="chart-1-3-2" width="400" height="300"></canvas>
-                        <p>
-                            Star popularity has steadily increased over the decades,
-                            reflecting the growing prominence and recognition of movie stars in the industry. This trend
-                            indicates that the higher star popularity observed in remakes could be partly due to the
-                            overall increase in star popularity over time, rather than a unique characteristic of
-                            remakes.
-                        </p>
-                    </div>
-                    <div class="col-md-4">
-                        <canvas id="chart-1-3-3" width="400" height="300"></canvas>
-                        <p>
-                            Movie budgets have fluctuated significantly over time, with
-                            noticeable peaks in certain periods. However, there is an overall increase in average
-                            budgets in recent decades. The higher budgets observed in remakes may therefore be
-                            influenced by this broader trend of rising production costs in the movie industry.
-                        </p>
-                    </div>
-                    <p>
-                        We will formally test the impact of time on these features using regression analysis on the next
-                        slide.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="section" id="section1-4">
-            <div class="container text-center">
-                <h2>Feature Comparison of Movie Originals vs. Their Remakes (Cnt'd)</h2>
-                <h4>Assessing the Impact of Remakes: A Regression Analysis with Time Controls</h4>
-                <br>
-
-                <div style="text-align: left;">
-                    <p>
-                        To test whether the differences in star popularity, vote average, and budget between originals
-                        and
-                        remakes are statistically significant, we perform a regression analysis. Each feature (star
-                        popularity, vote average, and budget) is regressed on the following factors:
-                    </p>
-
-                    <p>
-                        1. A dummy variable indicating whether a movie is an original (1 for original, 0 for remake).
-                        <br>
-                        2. Decade dummy variables to account for temporal trends over time.
-                    </p>
-
-                    <p>
-                        By including the decade controls, we isolate the effect of being a remake or an original while
-                        accounting for broader trends across decades. The focus is on the coefficient of the original
-                        dummy
-                        variable to determine if it is statistically significant. This will help us identify whether the
-                        observed differences can be directly attributed to the nature of the movie (original vs. remake)
-                        or
-                        if they are better explained by time-based factors.
-                    </p>
-                </div>
-
-                <div class="row justify-content-center mt-4">
-                    <div class="col-md-8">
-                        <div class="d-flex align-items-start">
-                            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist"
-                                aria-orientation="vertical">
-
-                                <button class="nav-link active" id="v-pills-tab-1-4-1" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-1-4-1" type="button" role="tab"
-                                    aria-controls="v-pills-1-4-1" aria-selected="true">Adjusted Budget</button>
-
-                                <button class="nav-link" id="v-pills-tab-1-4-2" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-1-4-2" type="button" role="tab"
-                                    aria-controls="v-pills-1-4-2" aria-selected="false">First Star Popularity</button>
-
-                                <button class="nav-link" id="v-pills-tab-1-4-3" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-1-4-3" type="button" role="tab"
-                                    aria-controls="v-pills-1-4-3" aria-selected="false">Vote Average</button>
-                            </div>
-                            <div class="tab-content" id="v-pills-tabContent">
-                                <div class="tab-pane fade show active" id="v-pills-1-4-1" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-1-4-1" tabindex="0">
-
-                                    <iframe src="/assets/plots/adjusted_budget_errorbar.html" width="720px"
-                                        height="470px" frameborder="0"></iframe>
-
-                                </div>
-
-                                <div class="tab-pane fade" id="v-pills-1-4-2" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-1-4-2" tabindex="0">
-
-                                    <iframe src="/assets/plots/star_popularity.html" width="720px" height="470px"
-                                        frameborder="0"></iframe>
-
-                                </div>
-
-                                <div class="tab-pane fade" id="v-pills-1-4-3" role="tabpanel"
-                                    aria-labelledby="v-pills-tab-1-4-3" tabindex="0">
-
-                                    <iframe src="/assets/plots/vote_average_errorbar.html" width="720px" height="470px"
-                                        frameborder="0"></iframe>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4" style="text-align: left;">
-                        <p>
-                            The regression results provide evidence on the role of originality in explaining the
-                            observed differences in movie features. The key findings are as follows:
-                        </p>
-
-                        <ul>
-                            <li>
-                                Significant Originality Coefficient: Across all three regressions, the coefficient of
-                                the "original" dummy variable is statistically significant (indicated in blue). This
-                                suggests that whether a movie is an
-                                original or a remake has a meaningful impact on star popularity, vote average, and
-                                budget, even after controlling for decade-based time trends.
-                            </li>
-                            <li>
-                                Direction of the Effect: The coefficients for star popularity and budget are negative,
-                                indicating that remakes tend
-                                to have higher values for these features compared to originals. In contrast, the
-                                coefficient
-                                for vote average is positive, showing that originals tend to have slightly higher vote
-                                averages than remakes. These directions are consistent with the patterns observed in the
-                                distributions earlier, further confirming the differences between originals and remakes
-                                in these features.
-
-                            </li>
-                        </ul>
-
-                        Note: The coefficients are on normalized features.
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section" id="section1-5">
-            <div class="container text-center">
-                <h2>Feature Comparison of Movie Originals vs. Their Remakes (Cnt'd)</h2>
-                <h4>Pairwise Analysis of Originals and Their Remakes</h4>
-
-                <div class="row justify-content-center align-items-center mt-4">
-                    <div class="col-md-7">
-                        Up until now, we compared the overall distributions of features (star popularity, vote average,
-                        and budget) for originals and remakes as separate groups. As a next step, we shift our focus to
-                        a more granular comparison by analyzing pairs of movies—each original and its corresponding
-                        remake. This pairwise analysis allows us to directly compare the features of remakes relative to
-                        their specific originals, providing deeper insights into how these features change when a movie
-                        is remade. By examining these pairs, we can better understand whether the observed trends hold
-                        consistently across individual original-remake pairs or are driven by broader patterns in the
-                        data.
-                    </div>
-                    <div class="col-md-5">
-                        <img src="/assets/images/comp.jpg" alt="original vs. remake" class="img-fluid">
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="section" id="section1-6">
-            <div class="container text-center">
-                <h2></h2>
-                <h4></h4>
-
-            </div>
-        </div>
-
-        <div class="section" id="section1-7">
-            <div class="container text-center">
-                <h2></h2>
-                <h4></h4>
-
-            </div>
-        </div>
-
-
-
-        <div class="section" id="footer-section">
-            <div class="container text-center" style="font-size: 14pt;">
-                <p>This project has been presented as the course project of CS-401: Applied Data Analysis course in Fall
-                    2024 at EPFL.</p>
-                <p><code>Code</code> 💻 and analysis 🧐 with ❤️ by the team.</p>
-                <!-- epfl and ada course logo -->
-                <div class="footer-logo">
-                    <img src="/assets/images/epfl.png" alt="EPFL Logo" class="epfl-logo" style="height: 100px;">
-                    <img src="/assets/images/ada.svg" alt="ADA Course Logo" class="ada-logo" style="height: 100px;">
-                </div>
-            </div>
-        </div>
+        <footer>
+            <p>&copy; 2024. All rights reserved.</p>
+            <p>
+                This project has been presented as the course project of CS-401: Applied Data Analysis course in Fall
+                2024 at EPFL.
+            </p>
+            <p>
+                Code 💻 and analysis 🧐 with ❤️ by the team.
+            </p>
+        </footer>
 
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/4.0.21/fullpage.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            new fullpage('#fullpage', {
-                autoScrolling: true,
-                scrollHorizontally: false,
-                navigation: true,
-                navigationPosition: 'right',
-                showActiveTooltip: true,
-            });
-        });
-    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
