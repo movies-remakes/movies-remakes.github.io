@@ -794,7 +794,8 @@
         </p>
 
         <p>
-            Now, let’s go back to the analysis. Even though the sentiment labels for whole movie dataset are more or less evenly split, when it comes to
+            Now, let’s go back to the analysis. Even though the sentiment labels for whole movie dataset are more or
+            less evenly split, when it comes to
             remakes and originals there seems to be a prevalence of movies with sad or negative plots. Sad stories often
             have a strong emotional core that can resonate deeply with audiences, providing a built-in emotional
             investment and a higher potential for audience engagement. Due to nostalgic factor and emotional depth,
@@ -1533,25 +1534,156 @@
             aspects of their originals, such as financial success and audience reception.
         </p>
 
+        <h2>
+            Regression Analysis and Causal Inference of Having or Being a Remake
+        </h2>
 
+        <p>
+            Before conducting regression analysis, we performed feature engineering on the dataset. First, we calculated
+            the maximum popularity of the crew and the average popularity of the top three cast members, as they are the
+            most influential individuals in a movie. We then identified the most common genres and created dummy
+            variables for them. Additionally, we incorporated the sentiment score of the movie, its language, and the
+            country of origin, specifically noting whether it was from the USA.
+        </p>
 
+        <p>
+            We also considered the release year of the movie and grouped it into intervals. Based on prior regression
+            analysis, we observed that remakes or movies with remakes are more common before the 1980s, a period
+            associated with the advent of color television. Budget and revenue were also included, with a new feature
+            created as the logarithm of the revenue-to-budget ratio. Revenue itself was excluded since we were primarily
+            interested in its proportional relationship to the budget.
+        </p>
 
-
-
-
-
-
-
-
-
+        <p>
+            We perform regression analysis on the dataset, considering the presence of remakes and movies with remakes
+            as the dependent variables. We then plot the significance of the coefficients and their confidence
+            intervals. We then try to verify the causal effect of having a remake or being a remake on the feature that
+            we see their significance. We consider those as significant if their p-values are less than 0.05. The null
+            hypothesis is that the coefficient is zero.
+        </p>
 
         <iframe src="/assets/plots/is_remake.html" width="820px" height="620px" frameborder="0"></iframe>
 
         <iframe src="/assets/plots/has_remake.html" width="820px" height="620px" frameborder="0"></iframe>
 
+        <p>
+            To assess the impact of being a remake or having a remake on the significance of specific features, we
+            proceed as follows: for each column, we regress the feature of being a remake or having a remake. Next, we
+            compute propensity scores and match samples accordingly. We then plot the average treatment effect (ATE) for
+            the treated and control groups, including 95% confidence intervals. A feature is deemed to have a causal
+            relationship with being a remake or having a remake if the ATE confidence interval excludes zero and the
+            corresponding regression coefficient is statistically significant.
+        </p>
+
+        <p>
+            Here, treated samples are remakes or movies with remakes, and control samples are the rest. The outcome for
+            the categorical variable is their value, and for the continuous variable, it is if the value is above the
+            mean plus two times the standard deviation. This value is chosen to ensure to see if the feature has a
+            significant effect on the outcome. We assess the validity of the causal relationship using the bounded odds
+            ratio (OR). Specifically, we constrain the matched pairs to have an upper bound of 5 for the odds ratio. To
+            evaluate sensitivity, we plot a histogram of the odds ratios for the matched samples. The causal
+            relationship is considered valid if the odds ratio is below 4, with the majority of matched samples
+            exhibiting an odds ratio less than 2.
+        </p>
+
         <iframe src="/assets/plots/casual_is_remake_ate.html" width="820px" height="620px" frameborder="0"></iframe>
 
         <iframe src="/assets/plots/casual_has_remake_ate.html" width="820px" height="620px" frameborder="0"></iframe>
+
+        <p>
+            To conclude, when considering movies that have at least one subsequent remake, the following features showed
+            a significant causal relationship:
+        </p>
+
+        <ul>
+            <li>
+                High Vote Average: Movies that receive higher viewer ratings are more likely to inspire a remake. A
+                possible interpretation is that higher-quality or more critically acclaimed films are deemed valuable
+                intellectual property worth revisiting or updating for newer audiences.
+            </li>
+            <li>
+                Being in Specific Genres (Comedy, Thriller, Romance): Certain genres appear more likely to inspire
+                remakes.
+                <ul>
+                    <li>
+                        Comedy: Comedies that resonate well with audiences may be remade to align with contemporary
+                        humor, and cultural shifts, or to reach new demographic segments.
+                    </li>
+                    <li>
+                        Romance: Romantic films that achieve a timeless emotional resonance may be reinterpreted for new
+                        eras or cultural backdrops.
+                    </li>
+                    <li>
+                        Thriller: Thrillers can be easily adapted to modern contexts and technologies, keeping their
+                        suspense elements fresh.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Black and White Movies: Historically, many black-and-white classics have been remade in color or updated
+                to reflect modern production values. This suggests that older, iconic films (often black and white)
+                serve as prime candidates for remaking, potentially due to nostalgia, cinematic legacy, or the desire to
+                revitalize stories for contemporary audiences.
+            </li>
+            <li>
+                Made in the USA: U.S.-produced films—given the global prominence of Hollywood—are more likely to be
+                remade. This may stem from the wide international reach, market potential, and cultural influence of
+                American cinema.
+            </li>
+            <li>
+                Made Before 1980: Older films, particularly from before 1980, are more frequently remade. As time
+                passes, production values, storytelling techniques, and audience expectations shift, making these older
+                stories appealing targets for modern reinterpretation.
+            </li>
+            <li>
+                High Log of the Revenue-to-Budget Ratio: Films that proved financially successful relative to their
+                production costs are likely to catch the attention of filmmakers and studios looking for profitable
+                properties to revisit. This financial indicator suggests that the perceived commercial viability drives
+                the decision to invest in a remake.
+            </li>
+        </ul>
+
+        <p>
+            For movies that are themselves remakes of earlier works, the following features have a significant causal
+            relationship:
+        </p>
+
+        <ul>
+            <li>
+                Negative Sentiment: Remakes tend to arise even when the original film had lower sentiment or mixed
+                reception. This might occur if the narrative concept is strong but the original execution was flawed,
+                prompting a re-imagined attempt to “fix” or improve upon the original’s shortcomings.
+            </li>
+            <li>
+                High Budget: Modern remakes are often given higher budgets, possibly to leverage updated technology,
+                special effects, or star power. Studios may feel more confident investing heavily in known intellectual
+                property, anticipating stronger box-office returns due to brand recognition.
+            </li>
+            <li>
+                High Average Popularity of the First Three Cast Members: Remakes often get well-known or rising star
+                actors to generate publicity and attract audiences. Casting high-profile talent can rekindle interest in
+                a familiar story and differentiate the remake from its predecessor.
+            </li>
+            <li>
+                Being in Specific Genres (Thriller, Romance): Similar to the pattern seen for having a remake, certain
+                genres—thrillers and romances—are common subjects of remakes. These genres rely on timeless emotional or
+                suspenseful narratives, making them ripe for re-interpretation and modernization.
+            </li>
+            <li>
+                Made in the USA: The U.S. film industry’s influence is again evident. Remakes are frequently developed
+                within Hollywood, likely due to the robust infrastructure, global distribution networks, and a history
+                of successful adaptations.
+            </li>
+        </ul>
+
+        <p>
+            The analysis suggests that certain film characteristics are causally linked to the likelihood of a movie
+            having a remake or being a remake. Films that are older, successful, and produced in the U.S., and that
+            belong to certain genres, appear more likely to inspire future remakes. For movies that are themselves
+            remakes, factors like higher budgets, star-studded casts, and fitting into “remake-friendly” genres are
+            associated with their production. Additionally, the sensitivity checks reinforce the credibility of these
+            findings, indicating that these relationships are robust to concerns about potential unobserved confounders.
+        </p>
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
