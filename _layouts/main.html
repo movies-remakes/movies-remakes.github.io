@@ -197,6 +197,302 @@
             {% endfor %}
         </div>
 
+        <h2>The Data</h2>
+
+        <p>
+            First, to provide you with the most accurate advice on which movies to remake, we need access to the best
+            and most comprehensive data. Unfortunately, no single dataset offers a complete picture of the film
+            industry. Therefore, we’ve combined several datasets, carefully merging and cleaning them to ensure the
+            analysis is both robust and reliable. Continuous lines mean the main source of the data and dashed lines
+            are complementary sources which have been used to enrich the dataset.
+        </p>
+
+        <style>
+            .data-visualization-wrapper * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            .data-visualization-wrapper {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                margin: 0 auto;
+            }
+
+            .data-visualization-wrapper .container {
+                position: relative;
+            }
+
+            .data-visualization-wrapper .logos {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 15%;
+            }
+
+            .data-visualization-wrapper .logo {
+                position: relative;
+            }
+
+            .data-visualization-wrapper .logo img {
+                width: 100px;
+                cursor: pointer;
+                transition: transform 0.3s;
+                border-radius: 15px;
+                z-index: 1000;
+            }
+
+            .data-visualization-wrapper .logo img:hover {
+                transform: scale(1.05);
+            }
+
+            .data-visualization-wrapper .logo .tooltip {
+                visibility: hidden;
+                width: max-content;
+                background-color: #1dafc6;
+                color: #fff;
+                text-align: center;
+                border-radius: 5px;
+                padding: 5px 10px;
+                position: absolute;
+                bottom: 110%;
+                left: 50%;
+                transform: translateX(-50%);
+                opacity: 0;
+                z-index: 100;
+            }
+
+            .data-visualization-wrapper .logo .tooltip::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                border-width: 5px;
+                border-style: solid;
+                border-color: #333 transparent transparent transparent;
+            }
+
+            .data-visualization-wrapper .logo:hover .tooltip {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            .data-visualization-wrapper #data-table {
+                width: 100%;
+                border-collapse: collapse;
+                table-layout: fixed;
+                background-color: #fff;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                margin-bottom: 40px;
+            }
+
+            .data-visualization-wrapper #data-table th,
+            .data-visualization-wrapper #data-table td {
+                border: 1px solid #ddd;
+                padding: 12px;
+                text-align: center;
+                height: 50px;
+                word-wrap: break-word;
+                width: calc(100% / 14);
+                position: relative;
+                font-size: 8pt;
+            }
+
+            .data-visualization-wrapper #data-table th {
+                background-color: #f4f4f4;
+                transition: background-color 0.3s;
+            }
+
+            .data-visualization-wrapper #data-table th:hover {
+                background-color: #e0e0e0;
+            }
+
+            .data-visualization-wrapper #data-table th .tooltip {
+                visibility: hidden;
+                width: max-content;
+                background-color: #1dafc6;
+                color: #fff;
+                text-align: center;
+                border-radius: 5px;
+                padding: 5px 10px;
+                position: absolute;
+                top: 110%;
+                left: 50%;
+                transform: translateX(-50%);
+                opacity: 0;
+                z-index: 100;
+            }
+
+            .data-visualization-wrapper #data-table th .tooltip::after {
+                content: "";
+                position: absolute;
+                bottom: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                border-width: 5px;
+                border-style: solid;
+                border-color: transparent transparent #333 transparent;
+            }
+
+            .data-visualization-wrapper #data-table th:hover .tooltip {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            .data-visualization-wrapper .arrows {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 500px;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            .data-visualization-wrapper .arrow-line {
+                stroke: #f2f2f2;
+                stroke-width: 2;
+                transition: stroke 0.3s;
+                z-index: 0;
+            }
+
+            .data-visualization-wrapper .arrow-line.dashed {
+                stroke-dasharray: 4;
+            }
+
+            .data-visualization-wrapper .arrow-line.hovered {
+                stroke: #555;
+                z-index: 999;
+            }
+        </style>
+
+        <div class="data-visualization-wrapper">
+            <div class="container">
+                <div class="logos">
+                    <div class="logo" id="cmu-logo">
+                        <img src="/assets/images/cmu_logo.jpg" alt="CMU Movie Corpus">
+                        <div class="tooltip">CMU Movie Corpus</div>
+                    </div>
+                    <div class="logo" id="tmdb-logo">
+                        <img src="/assets/images/tmdb_logo.png" alt="TMDB">
+                        <div class="tooltip">TMDB</div>
+                    </div>
+                    <div class="logo" id="imdb-logo">
+                        <img src="/assets/images/imdb_logo.png" alt="IMDb">
+                        <div class="tooltip">IMDb
+                            information.</div>
+                    </div>
+                    <div class="logo" id="wikipedia-logo">
+                        <img src="/assets/images/wiki_logo.png" alt="Wikipedia">
+                        <div class="tooltip">Wikipedia</div>
+                    </div>
+                </div>
+
+                <table id="data-table">
+                    <thead>
+                        <tr>
+                            <th class="data-table">Name<br>📇<div class="tooltip">Title of the Movie</div>
+                            </th>
+                            <th class="data-table">Genre<br>🍿<div class="tooltip">The date when the movie was released.
+                                </div>
+                            </th>
+                            <th class="data-table">Year<br>𝟚𝟘𝟚𝟜<div class="tooltip">The release date of the movie.
+                                </div>
+                            </th>
+                            <th class="data-table">Type<br>🅾️🅰️🅱️<div class="tooltip">Whether is this a regular,
+                                    short, or ...
+                                    movie.</div>
+                            </th>
+                            <th class="data-table">Country<br>🇨🇭<div class="tooltip">The origin of the movie.</div>
+                            </th>
+                            <th class="data-table">Lang<br>㍻<div class="tooltip">The language of the movie.</div>
+                            </th>
+                            <th class="data-table">Runtime<br>⏱️<div class="tooltip">The duration of a movie.</div>
+                            </th>
+                            <th class="data-table">Budget<br>💵<div class="tooltip">The budget expended for the
+                                    production.</div>
+                            </th>
+                            <th class="data-table">Rev.<br>🤑<div class="tooltip">The revenue of the movie.</div>
+                            </th>
+                            <th class="data-table">Votes<br>🗳️<div class="tooltip">The number and average votes of
+                                    people for the
+                                    movie.</div>
+                            </th class="data-table">
+                            <th>Crew<br>✨<div class="tooltip">The stars and crew of the movie.</div>
+                            </th class="data-table">
+                            <th class="data-table">Adult<br>🔞<div class="tooltip">If the movie is for adults only</div>
+                            </th>
+                            <th class="data-table">Plot<br>🗺️<div class="tooltip">The summary of the plot.</div>
+                            </th>
+                            <th class="data-table">Remake<br>♻️<div class="tooltip">Whether is the movie remade or is a
+                                    reference
+                                    for a remake.</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <svg class="arrows" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                            <path d="M0,0 L10,3.5 L0,7 Z" fill="#555" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+        </div>
+
         <h2>Remakes and Movies Through Chronus</h2>
 
         <p>
@@ -793,299 +1089,6 @@
             </div>
             <div class="col-md-4">
                 <img src="/assets/images/comp.jpg" alt="It Original" style="width: 100%;">
-            </div>
-        </div>
-
-
-
-
-
-
-
-
-        <style>
-            .data-visualization-wrapper * {
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-            }
-
-            .data-visualization-wrapper {
-                font-family: Arial, sans-serif;
-                margin: 20px;
-                margin: 0 auto;
-            }
-
-            .data-visualization-wrapper .container {
-                position: relative;
-            }
-
-            .data-visualization-wrapper .logos {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 15%;
-            }
-
-            .data-visualization-wrapper .logo {
-                position: relative;
-            }
-
-            .data-visualization-wrapper .logo img {
-                width: 100px;
-                cursor: pointer;
-                transition: transform 0.3s;
-                border-radius: 15px;
-                z-index: 1000;
-            }
-
-            .data-visualization-wrapper .logo img:hover {
-                transform: scale(1.05);
-            }
-
-            .data-visualization-wrapper .logo .tooltip {
-                visibility: hidden;
-                width: max-content;
-                background-color: #1dafc6;
-                color: #fff;
-                text-align: center;
-                border-radius: 5px;
-                padding: 5px 10px;
-                position: absolute;
-                bottom: 110%;
-                left: 50%;
-                transform: translateX(-50%);
-                opacity: 0;
-                z-index: 100;
-            }
-
-            .data-visualization-wrapper .logo .tooltip::after {
-                content: "";
-                position: absolute;
-                top: 100%;
-                left: 50%;
-                transform: translateX(-50%);
-                border-width: 5px;
-                border-style: solid;
-                border-color: #333 transparent transparent transparent;
-            }
-
-            .data-visualization-wrapper .logo:hover .tooltip {
-                visibility: visible;
-                opacity: 1;
-            }
-
-            .data-visualization-wrapper #data-table {
-                width: 100%;
-                border-collapse: collapse;
-                table-layout: fixed;
-                background-color: #fff;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                margin-bottom: 40px;
-            }
-
-            .data-visualization-wrapper #data-table th,
-            .data-visualization-wrapper #data-table td {
-                border: 1px solid #ddd;
-                padding: 12px;
-                text-align: center;
-                height: 50px;
-                word-wrap: break-word;
-                width: calc(100% / 14);
-                position: relative;
-                font-size: 8pt;
-            }
-
-            .data-visualization-wrapper #data-table th {
-                background-color: #f4f4f4;
-                transition: background-color 0.3s;
-            }
-
-            .data-visualization-wrapper #data-table th:hover {
-                background-color: #e0e0e0;
-            }
-
-            .data-visualization-wrapper #data-table th .tooltip {
-                visibility: hidden;
-                width: max-content;
-                background-color: #1dafc6;
-                color: #fff;
-                text-align: center;
-                border-radius: 5px;
-                padding: 5px 10px;
-                position: absolute;
-                top: 110%;
-                left: 50%;
-                transform: translateX(-50%);
-                opacity: 0;
-                z-index: 100;
-            }
-
-            .data-visualization-wrapper #data-table th .tooltip::after {
-                content: "";
-                position: absolute;
-                bottom: 100%;
-                left: 50%;
-                transform: translateX(-50%);
-                border-width: 5px;
-                border-style: solid;
-                border-color: transparent transparent #333 transparent;
-            }
-
-            .data-visualization-wrapper #data-table th:hover .tooltip {
-                visibility: visible;
-                opacity: 1;
-            }
-
-            .data-visualization-wrapper .arrows {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 500px;
-                pointer-events: none;
-                z-index: 0;
-            }
-
-            .data-visualization-wrapper .arrow-line {
-                stroke: #f2f2f2;
-                stroke-width: 2;
-                transition: stroke 0.3s;
-                z-index: 0;
-            }
-
-            .data-visualization-wrapper .arrow-line.dashed {
-                stroke-dasharray: 4;
-            }
-
-            .data-visualization-wrapper .arrow-line.hovered {
-                stroke: #555;
-                z-index: 999;
-            }
-        </style>
-
-        <div class="data-visualization-wrapper">
-            <div class="container">
-                <div class="logos">
-                    <div class="logo" id="cmu-logo">
-                        <img src="/assets/images/cmu_logo.jpg" alt="CMU Movie Corpus">
-                        <div class="tooltip">CMU Movie Corpus</div>
-                    </div>
-                    <div class="logo" id="tmdb-logo">
-                        <img src="/assets/images/tmdb_logo.png" alt="TMDB">
-                        <div class="tooltip">TMDB</div>
-                    </div>
-                    <div class="logo" id="imdb-logo">
-                        <img src="/assets/images/imdb_logo.png" alt="IMDb">
-                        <div class="tooltip">IMDb
-                            information.</div>
-                    </div>
-                    <div class="logo" id="wikipedia-logo">
-                        <img src="/assets/images/wiki_logo.png" alt="Wikipedia">
-                        <div class="tooltip">Wikipedia</div>
-                    </div>
-                </div>
-
-                <table id="data-table">
-                    <thead>
-                        <tr>
-                            <th class="data-table">Name<br>📇<div class="tooltip">Title of the Movie</div>
-                            </th>
-                            <th class="data-table">Genre<br>🍿<div class="tooltip">The date when the movie was released.
-                                </div>
-                            </th>
-                            <th class="data-table">Year<br>𝟚𝟘𝟚𝟜<div class="tooltip">The release date of the movie.
-                                </div>
-                            </th>
-                            <th class="data-table">Type<br>🅾️🅰️🅱️<div class="tooltip">Whether is this a regular,
-                                    short, or ...
-                                    movie.</div>
-                            </th>
-                            <th class="data-table">Country<br>🇨🇭<div class="tooltip">The origin of the movie.</div>
-                            </th>
-                            <th class="data-table">Lang<br>㍻<div class="tooltip">The language of the movie.</div>
-                            </th>
-                            <th class="data-table">Runtime<br>⏱️<div class="tooltip">The duration of a movie.</div>
-                            </th>
-                            <th class="data-table">Budget<br>💵<div class="tooltip">The budget expended for the
-                                    production.</div>
-                            </th>
-                            <th class="data-table">Rev.<br>🤑<div class="tooltip">The revenue of the movie.</div>
-                            </th>
-                            <th class="data-table">Votes<br>🗳️<div class="tooltip">The number and average votes of
-                                    people for the
-                                    movie.</div>
-                            </th class="data-table">
-                            <th>Crew<br>✨<div class="tooltip">The stars and crew of the movie.</div>
-                            </th class="data-table">
-                            <th class="data-table">Adult<br>🔞<div class="tooltip">If the movie is for adults only</div>
-                            </th>
-                            <th class="data-table">Plot<br>🗺️<div class="tooltip">The summary of the plot.</div>
-                            </th>
-                            <th class="data-table">Remake<br>♻️<div class="tooltip">Whether is the movie remade or is a
-                                    reference
-                                    for a remake.</div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <svg class="arrows" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-                            <path d="M0,0 L10,3.5 L0,7 Z" fill="#555" />
-                        </marker>
-                    </defs>
-                </svg>
             </div>
         </div>
 
