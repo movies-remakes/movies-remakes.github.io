@@ -154,9 +154,51 @@
             cursor: pointer;
         }
     </style>
+
+    <style>
+        /* Style for the loading screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #loading-screen.hidden {
+            display: none;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(0, 0, 0, 0.2);
+            border-top: 5px solid #000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <div id="loading-screen">
+        <div class="spinner"></div>
+    </div>
 
     <div class="cover">
         <div class="cover-content">
@@ -1431,7 +1473,7 @@
             });
         </script>
 
-        
+
 
         <iframe src="/assets/plots/is_remake.html" width="820px" height="620px" frameborder="0"></iframe>
 
@@ -1464,6 +1506,15 @@
             items.forEach((item) => {
                 container.appendChild(item);
             });
+        });
+    </script>
+
+    <script>
+        window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loading-screen');
+            loadingScreen.classList.add('hidden');
+            const content = document.getElementById('content');
+            content.style.display = 'block';
         });
     </script>
 </body>
