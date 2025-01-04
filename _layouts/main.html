@@ -1901,31 +1901,22 @@
         </footer>
     </div>
 
-    <!-- Optionally place a footer or more content here -->
-    <!-- <footer> ... </footer> -->
-
-    <!-- Your main.js or custom scripts (optional reference) -->
     <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
 
     <script>
-        /********** Hide Loading Screen & Trigger Typing Animation **********/
         window.addEventListener('load', () => {
-            // Hide loading screen
             const loadingScreen = document.getElementById('loading-screen');
             loadingScreen.classList.add('hidden');
 
-            // If there's a content element you want to show after loading
             const content = document.getElementById('content');
             if (content) {
                 content.style.display = 'block';
             }
 
-            // START the typing animation AFTER the loading screen disappears
             const mainTitle = document.getElementById('main-title');
             mainTitle.classList.add('start-typing');
         });
 
-        /********** Team Container Shuffle (if you have a #team-container) **********/
         document.addEventListener('DOMContentLoaded', function () {
             const container = document.getElementById('team-container');
             if (container) {
@@ -1937,23 +1928,18 @@
             }
         });
 
-        /********** Parallax-Like Mouse Movement **********/
         document.addEventListener('DOMContentLoaded', () => {
             const cover = document.querySelector('.cover');
 
             document.addEventListener('mousemove', (e) => {
-                // Get mouse position as fraction of the screen
                 const xPos = (e.clientX / window.innerWidth) - 0.5;
                 const yPos = (e.clientY / window.innerHeight) - 0.5;
 
-                // Control how much movement you get (larger = faster movement)
                 const moveFactor = 20;
 
-                // Calculate final background positions (50% is center)
                 const xOffset = 50 + xPos * moveFactor;
                 const yOffset = 50 + yPos * moveFactor * 3;
 
-                // Update the background-position in percentage terms
                 cover.style.backgroundPosition = `${xOffset}% ${yOffset}%`;
             });
         });
