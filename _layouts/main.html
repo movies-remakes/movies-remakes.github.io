@@ -60,7 +60,7 @@
             }
         }
 
-        h2 {
+        h2, h3, h4 {
             padding-top: 60px;
         }
 
@@ -283,6 +283,33 @@
                             <li><a class="dropdown-item" href="#eda-sentiment">Feelings</a></li>
                             <li><a class="dropdown-item" href="#eda-cast">Cast</a></li>
                             <li><a class="dropdown-item" href="#directions">Directions</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdownMenu" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Org. vs Remake
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                            <li><a class="dropdown-item" href="#org-vs-remake-intro">Intro</a></li>
+                            <li><a class="dropdown-item" href="#org-vs-remake-agg">Aggregate Analysis</a></li>
+                            <li><a class="dropdown-item" href="#org-vs-remake-pair">Pairwise Analysis</a></li>
+                            <li><a class="dropdown-item" href="#org-vs-remake-insights">Insights</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdownMenu" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            What to Remake?
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                            <li><a class="dropdown-item" href="#rmd-intro">Intro</a></li>
+                            <li><a class="dropdown-item" href="#rmd-feat">Feature Engineering</a></li>
+                            <li><a class="dropdown-item" href="#rmd-reg">Regression Analysis with All Features</a></li>
+                            <li><a class="dropdown-item" href="#rmd-caus">Causal Analysis</a></li>
+                            <li><a class="dropdown-item" href="#rmd-conc">Conclusion</a></li>
                         </ul>
                     </li>
 
@@ -1147,7 +1174,7 @@
 
         <section id="directions">
             <h2>Future Directions</h2>
-            
+
             <p>
                 Following our exploratory data analysis (EDA) and initial investigation into patterns and differences between movie remakes, originals, and other movies, we delve deeper into two key areas of analysis:
             </p>
@@ -1164,6 +1191,8 @@
 
             These sections build on our EDA findings, offering a deeper understanding of the remake industry and actionable insights for filmmakers and industry professionals.
         </section>
+
+        <section id="org-vs-remake-intro">
 
         <h2>Feature Comparison of Movie Originals vs. Their Remakes</h2>
 
@@ -1199,9 +1228,13 @@
             Image: Original IT and its remake in 1970 and 2017, respectively.
         </div>
 
-        <h2>
-            1. Visualizing and Testing Differences: Aggregate Analysis of Originals vs. Remakes
-        </h2>
+        </section>
+
+        <section id="org-vs-remake-agg">
+
+        <h3>
+            Visualizing and Testing Differences: Aggregate Analysis of Originals vs. Remakes
+        </h3>
 
         <p>
             We apply Kolmogorov-Smirnov (KS) test to determine if two distributions are significantly different. If the
@@ -1324,7 +1357,7 @@
             </div>
         </div>
 
-        <h2>1.1. The Role of Time: Investigating Industry Trends and Their Impact</h2>
+        <h4>The Role of Time: Investigating Industry Trends and Their Impact</h4>
 
         <p>
             Since remakes are inherently produced after the originals, it is important to consider the potential impact
@@ -1371,7 +1404,7 @@
             We will formally test the impact of time on these features using regression analysis on the next slide.
         </p>
 
-        <h2>1.2. Assessing the Impact of Remakes: A Regression Analysis with Time Controls</h2>
+        <h4>Assessing the Impact of Remakes: A Regression Analysis with Time Controls</h4>
 
         <p>
             To test whether the differences in star popularity, vote average, and budget between originals and remakes
@@ -1459,7 +1492,11 @@
             Note: The coefficients are on normalized features.
         </p>
 
-        <h2>2. Pairwise Analysis of Originals and Their Remakes</h2>
+        </section>
+
+        <section id="org-vs-remake-pair">
+
+        <h3>Pairwise Analysis of Originals and Their Remakes</h3>
 
         <div class="row justify-content-center align-items-center mt-4">
             <div class="col-md-8">
@@ -1479,11 +1516,7 @@
             </div>
         </div>
 
-
-
-
-
-        <h2>2.1. Testing for Differences: Mean and Median Analysis</h2>
+        <h4>Testing for Differences: Mean and Median Analysis</h4>
 
         <p>
             In this analysis, we examine whether the mean and median of the differences between features of original
@@ -1537,7 +1570,7 @@
                 <div class="tab-pane fade show active" id="v-pills-11-2-1" role="tabpanel"
                     aria-labelledby="v-pills-tab-11-2-1" tabindex="0">
                     <em>Mean and Median are significantly less than zero (p = 0.0002, p = 0.0004).</em>
-                    ‍
+                
                     <iframe src="/assets/plots/runtime_difference_distplot.html" width="820px" height="470px"
                         frameborder="0"></iframe>
                 </div>
@@ -1610,7 +1643,7 @@
             reflecting variability.
         </p>
 
-        <h2>2.2. Analyzing Original Features that Influence Remake Features</h2>
+        <h4>Analyzing Original Features that Influence Remake Features</h4>
 
         <p>
             To understand how original movie features influence remakes, we performed regression analyses on a selected
@@ -1702,7 +1735,11 @@
             originals and remakes.
         </p>
 
-        <h2>3. Key Insights from Original vs. Remake Analysis</h2>
+        </section>
+
+        <section id="org-vs-remake-insights">
+
+        <h3>Key Insights from Original vs. Remake Analysis</h3>
 
         <p>
             The analysis reveals significant differences between movie originals and their remakes across several
@@ -1718,6 +1755,10 @@
             This suggests that while remakes are shaped by modern industry dynamics, they also carry forward critical
             aspects of their originals, such as financial success and audience reception.
         </p>
+
+        </section>
+
+        <section id="rmd-intro">
 
         <h2>
             What Movie Should I Build From, and How Should I Make It?
@@ -1742,6 +1783,10 @@
             through regression using causal analysis and treatment effect estimation to confirm their significance.
         </p>
 
+        </section>
+
+        <section id="rmd-feat">
+
         <h3>
             Feature Engineering
         </h3>
@@ -1763,6 +1808,10 @@
             interested in its proportional relationship to the budget.
         </p>
 
+        </section>
+
+        <section id="rmd-reg">
+
         <h3>
             Regression Analysis with All Features
         </h3>
@@ -1780,6 +1829,10 @@
         <iframe src="/assets/plots/is_remake.html" width="820px" height="620px" frameborder="0"></iframe>
 
         <iframe src="/assets/plots/has_remake.html" width="820px" height="620px" frameborder="0"></iframe>
+
+        </section>
+
+        <section id="rmd-caus">
 
         <h3>
             Causal Analysis
@@ -1808,6 +1861,10 @@
         <iframe src="/assets/plots/casual_is_remake_ate.html" width="820px" height="620px" frameborder="0"></iframe>
 
         <iframe src="/assets/plots/casual_has_remake_ate.html" width="820px" height="620px" frameborder="0"></iframe>
+
+        </section>
+
+        <section id="rmd-conc">
 
         <h3>
             Let’s Cook!
@@ -1909,6 +1966,8 @@
             reinforce the credibility of these findings, indicating that these relationships are robust to concerns
             about potential unobserved confounders.
         </p>
+
+        </section>
 
         <section id="conclusion">
                 
