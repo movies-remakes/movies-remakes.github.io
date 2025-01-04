@@ -5,14 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Remakes Data Story</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script type="text/javascript" id="MathJax-script" async
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-        </script>
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -23,14 +24,63 @@
             padding: 0;
         }
 
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #loading-screen.hidden {
+            display: none;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(0, 0, 0, 0.2);
+            border-top: 5px solid #000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        h2, h3, h4 {
+            padding-top: 60px;
+        }
+
         .cover {
             height: 100vh;
-            background: url('/assets/images/cover_1.webp') no-repeat center center/cover;
+            background: url('/assets/images/cover_1.webp') no-repeat center center;
+            background-size: 110% auto;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             text-align: center;
+            overflow: hidden;
+        }
+
+        .cover-content {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
         }
 
         .cover h1 {
@@ -41,7 +91,6 @@
             white-space: nowrap;
             margin: 0 auto;
             letter-spacing: .15em;
-            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
         }
 
         .cover p {
@@ -50,11 +99,11 @@
 
         @keyframes typing {
             from {
-                width: 0
+                width: 0;
             }
 
             to {
-                width: 100%
+                width: 100%;
             }
         }
 
@@ -62,12 +111,16 @@
 
             from,
             to {
-                border-color: transparent
+                border-color: transparent;
             }
 
             50% {
                 border-color: white;
             }
+        }
+
+        .start-typing {
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
         }
 
         .content {
@@ -76,29 +129,12 @@
             padding: 20px;
         }
 
-        .cover-content {
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            border-radius: 8px;
-            /* blur */
-            backdrop-filter: blur(5px);
-        }
-
         h1 {
             text-align: center;
             margin-bottom: 20px;
         }
 
-        h2 {
-            margin-top: 30px;
-        }
-
-        p {
-            margin-bottom: 20px;
-        }
-
         .chart-container {
-            /* center align */
             display: flex;
             justify-content: center;
         }
@@ -110,6 +146,16 @@
             background-color: #890505;
             color: #fff;
             border-radius: 8px;
+        }
+
+        .nav-container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .sticky-top {
+            z-index: 1030;
+            background-color: #f8f9fa;
         }
 
         .team-photo {
@@ -157,450 +203,617 @@
             background-color: #f8f9fa;
             cursor: pointer;
         }
-    </style>
 
-    <style>
-        /* Style for the loading screen */
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
-        #loading-screen.hidden {
-            display: none;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(0, 0, 0, 0.2);
-            border-top: 5px solid #000;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
+        @media (max-width: 576px) {
+            .cover {
+                height: auto;
+                padding: 50px 20px;
+                background-size: 120% auto;
             }
 
-            100% {
-                transform: rotate(360deg);
+            .cover h1 {
+                font-size: 2rem;
+                border-right: none;
+                animation: none;
+                white-space: normal;
+                letter-spacing: 0.05em;
+                line-height: 1.2;
+                margin-bottom: 15px;
+            }
+
+            .cover p {
+                font-size: 1rem;
+                line-height: 1.4;
             }
         }
     </style>
 </head>
 
-<body>
+<body data-bs-spy="scroll" data-bs-target="#navbarScrollSpy" data-bs-offset="0" tabindex="0">
     <div id="loading-screen">
         <div class="spinner"></div>
     </div>
 
-    <div class="cover">
+    <div class="cover" id="cover">
         <div class="cover-content">
-            <h1 style="color: #ffffff;">Unveiling Trends in Movie Remakes</h1>
-            <p>An engaging look into trends, success stories, and the evolution of remade films.</p>
-            <a href="#main-content" class="btn btn-danger">Explore the Story</a>
+            <h1 id="main-title" style="color: #ffffff;">Unveiling Trends in Movie Remakes</h1>
+            <p>A look into trends, success stories, and the evolution of remade films.</p>
+            <a href="#navbarScrollSpy" class="btn btn-danger">Explore the Story</a>
         </div>
     </div>
 
+    <nav id="navbarScrollSpy" class="navbar navbar-expand-lg navbar-light sticky-top nav-container" style="background-color: white !important;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#cover">Movies Remakes</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#introduction">Intro</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#team">Team</a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdownMenu" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Dataset
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                            <li><a class="dropdown-item" href="#data">Data</a></li>
+                            <li><a class="dropdown-item" href="#adjust">Adjustment</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdownMenu" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Initial Insights
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                            <li><a class="dropdown-item" href="#eda-time">Through Time</a></li>
+                            <li><a class="dropdown-item" href="#eda-runtime">Runtime</a></li>
+                            <li><a class="dropdown-item" href="#eda-people">Opinions</a></li>
+                            <li><a class="dropdown-item" href="#eda-genre">Genre</a></li>
+                            <li><a class="dropdown-item" href="#eda-sentiment">Feelings</a></li>
+                            <li><a class="dropdown-item" href="#eda-cast">Cast</a></li>
+                            <li><a class="dropdown-item" href="#directions">Directions</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdownMenu" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Org. vs Remake
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                            <li><a class="dropdown-item" href="#org-vs-remake-intro">Intro</a></li>
+                            <li><a class="dropdown-item" href="#org-vs-remake-agg">Aggregate Analysis</a></li>
+                            <li><a class="dropdown-item" href="#org-vs-remake-pair">Pairwise Analysis</a></li>
+                            <li><a class="dropdown-item" href="#org-vs-remake-insights">Insights</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdownMenu" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            What to Remake?
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                            <li><a class="dropdown-item" href="#rmd-intro">Intro</a></li>
+                            <li><a class="dropdown-item" href="#rmd-feat">Feature Engineering</a></li>
+                            <li><a class="dropdown-item" href="#rmd-reg">Regression Analysis with All Features</a></li>
+                            <li><a class="dropdown-item" href="#rmd-caus">Causal Analysis</a></li>
+                            <li><a class="dropdown-item" href="#rmd-conc">Conclusion</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#conclusion">Conclusion</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div id="main-content" class="content">
+        <section id="introduction">
+            <h2>Introduction</h2>
 
-        <figure>
-            <img src="/assets/images/intro.webp" alt="Movie Remakes" style="width: 100%;">
-            <figcaption style="text-align: center; margin-top: 5px; margin-bottom: 20px;">Image by GPT</figcaption>
-        </figure>
+            <figure>
+                <img src="/assets/images/intro.webp" alt="Movie Remakes" style="width: 100%;">
+                <figcaption style="text-align: center; margin-top: 5px; margin-bottom: 20px;">Image by GPT</figcaption>
+            </figure>
 
-        <p>
-            You are a film director working for a well-known company - “Lausanne pictures”. It’s been a while since you
-            shot your last movie that took people’s breaths away and you wish to get back into the spotlight without
-            “dropping the ball”. But …. you are out of original ideas. “What if I take an already existing storyline but
-            make it bigger, better?”, you think to yourself. “But then, what movie should I choose to reenact so that
-            success is inevitable?”. Tough question. And here is where our team comes to assist you. MADAYAM is about to
-            unravel the MAD secrets of the remake industry "which movie should you remake? Will your remake match or
-            even surpass the success of the original? What characteristics of a movie increase its likelihood of being
-            remade?" - these are the questions we will answer for you based on the data across years of evolution and
-            development of film industry.
+            <p>
+                You are a film director working for a well-known company - “Lausanne pictures”. It’s been a while since
+                you shot your last movie that took people’s breaths away and you wish to get back into the spotlight
+                without “dropping the ball”. But …. you are out of original ideas. “What if I take an already existing
+                storyline but make it bigger, better?”, you think to yourself. “But then, what movie should I choose to
+                reenact so that success is inevitable?”. Tough question. And here is where our team comes to assist you.
+                MADAYAM is about to unravel the MAD secrets of the remake industry "which movie should you remake? Will
+                your remake match or even surpass the success of the original? What characteristics of a movie increase
+                its likelihood of being remade?" - these are the questions we will answer for you based on the data
+                across years of evolution and development of film industry. Are you ready for the most comprehensive
+                analysis involving the most popular movie datasets?
+            </p>
+        </section>
 
-            Are you ready for the most comprehensive analysis involving the most popular movie datasets?
-        </p>
-
-        <h2>Meet Our Team</h2>
-        <p>(randomized order)</p>
-        <div class="row justify-content-center" id="team-container">
-            {% for member in site.data.team %}
-            <div class="col-md-4 text-center team-member" data-order="{{ forloop.index }}">
-                <img src="/assets/images/{{ member.photo }}" alt="{{ member.name }}" class="team-photo">
-                <h3 style="font-size: 18pt;">{{ member.name }}</h3>
-                {{ member.status }}
-                <!-- icon for mail, github, linkedin, X, homepage -->
-                <div class="team-social">
-                    {% if member.homepage %}
-                    <a href="{{ member.homepage }}"><i class="fas fa-home"></i></a>
-                    {% endif %}
-                    {% if member.google_scholar %}
-                    <a href="{{ member.google_scholar }}"><i class="fas fa-graduation-cap"></i></a>
-                    {% endif %}
-                    {% if member.email %}
-                    <a href="mailto:{{ member.email }}"><i class="fas fa-envelope"></i></a>
-                    {% endif %}
-                    {% if member.github %}
-                    <a href="https://github.com/{{ member.github }}"><i class="fab fa-github"></i></a>
-                    {% endif %}
-                    {% if member.linkedin %}
-                    <a href="{{ member.linkedin }}"><i class="fab fa-linkedin"></i></a>
-                    {% endif %}
-                    {% if member.twitter %}
-                    <a href="{{ member.twitter }}"><i class="fab fa-twitter"></i></a>
-                    {% endif %}
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-
-        <h2>The Data</h2>
-
-        <p>
-            First, to provide you with the most accurate advice on which movies to remake, we need access to the best
-            and most comprehensive data. Unfortunately, no single dataset offers a complete picture of the film
-            industry. Therefore, we’ve combined several datasets, carefully merging and cleaning them to ensure the
-            analysis is both robust and reliable. No single source can provide all the information we need, so we’ve
-            combined data from the CMU Movie Corpus, TMDB, IMDb, and Wikipedia to create a comprehensive dataset that
-            covers a wide range of movie-related information. Each of the features in our dataset has been carefully
-            selected from one dataset and enriched with data from other sources to create the best possible dataset for
-            our analysis. Figure below shows the sources and their contribution to each feature in our dataset.
-            Continuous lines mean the main source of the data and dashed lines are complementary sources which have
-            been used to enrich the dataset.
-        </p>
-
-        <style>
-            .data-visualization-wrapper * {
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-            }
-
-            .data-visualization-wrapper {
-                font-family: Arial, sans-serif;
-                margin: 20px;
-                margin: 0 auto;
-            }
-
-            .data-visualization-wrapper .container {
-                position: relative;
-            }
-
-            .data-visualization-wrapper .logos {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 15%;
-            }
-
-            .data-visualization-wrapper .logo {
-                position: relative;
-            }
-
-            .data-visualization-wrapper .logo img {
-                width: 100px;
-                cursor: pointer;
-                transition: transform 0.3s;
-                border-radius: 15px;
-                z-index: 1000;
-            }
-
-            .data-visualization-wrapper .logo img:hover {
-                transform: scale(1.05);
-            }
-
-            .data-visualization-wrapper .logo .tooltip {
-                visibility: hidden;
-                width: max-content;
-                background-color: #1dafc6;
-                color: #fff;
-                text-align: center;
-                border-radius: 5px;
-                padding: 5px 10px;
-                position: absolute;
-                bottom: 110%;
-                left: 50%;
-                transform: translateX(-50%);
-                opacity: 0;
-                z-index: 100;
-            }
-
-            .data-visualization-wrapper .logo .tooltip::after {
-                content: "";
-                position: absolute;
-                top: 100%;
-                left: 50%;
-                transform: translateX(-50%);
-                border-width: 5px;
-                border-style: solid;
-                border-color: #333 transparent transparent transparent;
-            }
-
-            .data-visualization-wrapper .logo:hover .tooltip {
-                visibility: visible;
-                opacity: 1;
-            }
-
-            .data-visualization-wrapper #data-table {
-                width: 100%;
-                border-collapse: collapse;
-                table-layout: fixed;
-                background-color: #fff;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                margin-bottom: 40px;
-            }
-
-            .data-visualization-wrapper #data-table th,
-            .data-visualization-wrapper #data-table td {
-                border: 1px solid #ddd;
-                padding: 12px;
-                text-align: center;
-                height: 50px;
-                word-wrap: break-word;
-                width: calc(100% / 14);
-                position: relative;
-                font-size: 8pt;
-            }
-
-            .data-visualization-wrapper #data-table th {
-                background-color: #f4f4f4;
-                transition: background-color 0.3s;
-            }
-
-            .data-visualization-wrapper #data-table th:hover {
-                background-color: #e0e0e0;
-            }
-
-            .data-visualization-wrapper #data-table th .tooltip {
-                visibility: hidden;
-                width: max-content;
-                background-color: #1dafc6;
-                color: #fff;
-                text-align: center;
-                border-radius: 5px;
-                padding: 5px 10px;
-                position: absolute;
-                top: 110%;
-                left: 50%;
-                transform: translateX(-50%);
-                opacity: 0;
-                z-index: 100;
-            }
-
-            .data-visualization-wrapper #data-table th .tooltip::after {
-                content: "";
-                position: absolute;
-                bottom: 100%;
-                left: 50%;
-                transform: translateX(-50%);
-                border-width: 5px;
-                border-style: solid;
-                border-color: transparent transparent #333 transparent;
-            }
-
-            .data-visualization-wrapper #data-table th:hover .tooltip {
-                visibility: visible;
-                opacity: 1;
-            }
-
-            .data-visualization-wrapper .arrows {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 500px;
-                pointer-events: none;
-                z-index: 0;
-            }
-
-            .data-visualization-wrapper .arrow-line {
-                stroke: #f2f2f2;
-                stroke-width: 2;
-                transition: stroke 0.3s;
-                z-index: 0;
-            }
-
-            .data-visualization-wrapper .arrow-line.dashed {
-                stroke-dasharray: 4;
-            }
-
-            .data-visualization-wrapper .arrow-line.hovered {
-                stroke: #555;
-                z-index: 999;
-            }
-        </style>
-
-        <div class="data-visualization-wrapper">
-            <div class="container">
-                <div class="logos">
-                    <div class="logo" id="cmu-logo">
-                        <img src="/assets/images/cmu_logo.jpg" alt="CMU Movie Corpus">
-                        <div class="tooltip">CMU Movie Corpus</div>
-                    </div>
-                    <div class="logo" id="tmdb-logo">
-                        <img src="/assets/images/tmdb_logo.png" alt="TMDB">
-                        <div class="tooltip">TMDB</div>
-                    </div>
-                    <div class="logo" id="imdb-logo">
-                        <img src="/assets/images/imdb_logo.png" alt="IMDb">
-                        <div class="tooltip">IMDb
-                            information.</div>
-                    </div>
-                    <div class="logo" id="wikipedia-logo">
-                        <img src="/assets/images/wiki_logo.png" alt="Wikipedia">
-                        <div class="tooltip">Wikipedia</div>
+        <section id="team">
+            <h2>Meet Our Team</h2>
+            <p>(randomized order)</p>
+            <div class="row justify-content-center" id="team-container">
+                {% for member in site.data.team %}
+                <div class="col-md-4 text-center team-member" data-order="{{ forloop.index }}">
+                    <img src="/assets/images/{{ member.photo }}" alt="{{ member.name }}" class="team-photo">
+                    <h3 style="font-size: 18pt;">{{ member.name }}</h3>
+                    {{ member.status }}
+                    <div class="team-social">
+                        {% if member.homepage %}
+                        <a href="{{ member.homepage }}"><i class="fas fa-home"></i></a>
+                        {% endif %}
+                        {% if member.google_scholar %}
+                        <a href="{{ member.google_scholar }}"><i class="fas fa-graduation-cap"></i></a>
+                        {% endif %}
+                        {% if member.email %}
+                        <a href="mailto:{{ member.email }}"><i class="fas fa-envelope"></i></a>
+                        {% endif %}
+                        {% if member.github %}
+                        <a href="https://github.com/{{ member.github }}"><i class="fab fa-github"></i></a>
+                        {% endif %}
+                        {% if member.linkedin %}
+                        <a href="{{ member.linkedin }}"><i class="fab fa-linkedin"></i></a>
+                        {% endif %}
+                        {% if member.twitter %}
+                        <a href="{{ member.twitter }}"><i class="fab fa-twitter"></i></a>
+                        {% endif %}
                     </div>
                 </div>
-
-                <table id="data-table">
-                    <thead>
-                        <tr>
-                            <th class="data-table">Name<br>📇<div class="tooltip">Title of the Movie</div>
-                            </th>
-                            <th class="data-table">Genre<br>🍿<div class="tooltip">The date when the movie was released.
-                                </div>
-                            </th>
-                            <th class="data-table">Year<br>𝟚𝟘𝟚𝟜<div class="tooltip">The release date of the movie.
-                                </div>
-                            </th>
-                            <th class="data-table">Type<br>🅾️🅰️🅱️<div class="tooltip">Whether is this a regular,
-                                    short, or ...
-                                    movie.</div>
-                            </th>
-                            <th class="data-table">Country<br>🇨🇭<div class="tooltip">The origin of the movie.</div>
-                            </th>
-                            <th class="data-table">Lang<br>㍻<div class="tooltip">The language of the movie.</div>
-                            </th>
-                            <th class="data-table">Runtime<br>⏱️<div class="tooltip">The duration of a movie.</div>
-                            </th>
-                            <th class="data-table">Budget<br>💵<div class="tooltip">The budget expended for the
-                                    production.</div>
-                            </th>
-                            <th class="data-table">Rev.<br>🤑<div class="tooltip">The revenue of the movie.</div>
-                            </th>
-                            <th class="data-table">Votes<br>🗳️<div class="tooltip">The number and average votes of
-                                    people for the
-                                    movie.</div>
-                            </th class="data-table">
-                            <th>Crew<br>✨<div class="tooltip">The stars and crew of the movie.</div>
-                            </th class="data-table">
-                            <th class="data-table">Adult<br>🔞<div class="tooltip">If the movie is for adults only</div>
-                            </th>
-                            <th class="data-table">Plot<br>🗺️<div class="tooltip">The summary of the plot.</div>
-                            </th>
-                            <th class="data-table">Remake<br>♻️<div class="tooltip">Whether is the movie remade or is a
-                                    reference
-                                    for a remake.</div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <svg class="arrows" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-                            <path d="M0,0 L10,3.5 L0,7 Z" fill="#555" />
-                        </marker>
-                    </defs>
-                </svg>
+                {% endfor %}
             </div>
-        </div>
+        </section>
 
-        <h2>
-            Adjusting Revenue and Budget for Fair Comparisons
-        </h2>
+        <section id="data">
+            <h2>The Data</h2>
 
-        <div class="chart-container">
-            <img src="/assets/images/inflation.png" alt="Inflation Adjustment" style="width: 40%; margin-bottom: 20px;">
-        </div>
+            <p>
+                First, to provide you with the most accurate advice on which movies to remake, we need access to the
+                best
+                and most comprehensive data. Unfortunately, no single dataset offers a complete picture of the film
+                industry. Therefore, we’ve combined several datasets, carefully merging and cleaning them to ensure the
+                analysis is both robust and reliable. No single source can provide all the information we need, so we’ve
+                combined data from the CMU Movie Corpus, TMDB, IMDb, and Wikipedia to create a comprehensive dataset
+                that
+                covers a wide range of movie-related information. Each of the features in our dataset has been carefully
+                selected from one dataset and enriched with data from other sources to create the best possible dataset
+                for
+                our analysis. Figure below shows the sources and their contribution to each feature in our dataset.
+                Continuous lines mean the main source of the data and dashed lines are complementary sources which have
+                been used to enrich the dataset.
+            </p>
 
-        <p>
-            In our dataset, all the prices are in us-dollars. Different movies are built and displayed in different
-            countries and in different years. Hence, in order to be able to compare monetary features like budget and
-            revenue for different movies, it is important to adjust them.
-        </p>
+            <em>Hover on the Columns or Sources.</em>
 
-        <p>
-            1. Different countries: Cinema ticket prices and costs can be significantly different in different
-            countries. As a simple example, cinema tickets in Switzerland are around 20CHF but in Italy are 10Euro's. So
-            in order to compare how well a Swiss and Italian movie have been sold, we have to take into account these
-            different prices. The metric used for this purpose is Purchasing Power Parity (PPP) rate. In our research,
-            since there is not sufficient historical PPP rate data, we decided to ignore the country adjustment.
-        </p>
+            <style>
+                .data-visualization-wrapper * {
+                    box-sizing: border-box;
+                    margin: 0;
+                    padding: 0;
+                }
 
-        <p>
-            2. Inflation adjustment In time, the prices and costs in each country increase due to inflation. For
-            example, a cinema ticket in the 2000's might have cost 5$ but now it costs 10$. So again to compare
-            different movies which have been built in different times, we have to take into account these prices
-            changes. To do this, we adjust all the movies with the US CPI which is an index showing the price level
-            changes in the US. The definition of CPI is as following:
-        </p>
+                .data-visualization-wrapper {
+                    font-family: Arial, sans-serif;
+                    margin: 20px;
+                    margin: 0 auto;
+                }
 
-        <div>
-            \[ CPI_t = \frac{\text{Cost of Market Basket in Year } t}{\text{Cost of Market Basket in Base Year}} \times
-            100 \]
-        </div>
+                .data-visualization-wrapper .container {
+                    position: relative;
+                }
+
+                .data-visualization-wrapper .logos {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 15%;
+                }
+
+                .data-visualization-wrapper .logo {
+                    position: relative;
+                }
+
+                .data-visualization-wrapper .logo img {
+                    width: 100px;
+                    cursor: pointer;
+                    transition: transform 0.3s;
+                    border-radius: 15px;
+                    z-index: 1000;
+                }
+
+                .data-visualization-wrapper .logo img:hover {
+                    transform: scale(1.05);
+                }
+
+                .data-visualization-wrapper .logo .tooltip {
+                    visibility: hidden;
+                    width: max-content;
+                    background-color: #1dafc6;
+                    color: #fff;
+                    text-align: center;
+                    border-radius: 5px;
+                    padding: 5px 10px;
+                    position: absolute;
+                    bottom: 110%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    opacity: 0;
+                    z-index: 100;
+                }
+
+                .data-visualization-wrapper .logo .tooltip::after {
+                    content: "";
+                    position: absolute;
+                    top: 100%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    border-width: 5px;
+                    border-style: solid;
+                    border-color: #333 transparent transparent transparent;
+                }
+
+                .data-visualization-wrapper .logo:hover .tooltip {
+                    visibility: visible;
+                    opacity: 1;
+                }
+
+                .data-visualization-wrapper #data-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    table-layout: fixed;
+                    background-color: #fff;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    margin-bottom: 40px;
+                }
+
+                .data-visualization-wrapper #data-table th,
+                .data-visualization-wrapper #data-table td {
+                    border: 1px solid #ddd;
+                    padding: 12px;
+                    text-align: center;
+                    height: 50px;
+                    word-wrap: break-word;
+                    width: calc(100% / 14);
+                    position: relative;
+                    font-size: 8pt;
+                }
+
+                .data-visualization-wrapper #data-table th {
+                    background-color: #f4f4f4;
+                    transition: background-color 0.3s;
+                }
+
+                .data-visualization-wrapper #data-table th:hover {
+                    background-color: #e0e0e0;
+                }
+
+                .data-visualization-wrapper #data-table th .tooltip {
+                    visibility: hidden;
+                    width: max-content;
+                    background-color: #1dafc6;
+                    color: #fff;
+                    text-align: center;
+                    border-radius: 5px;
+                    padding: 5px 10px;
+                    position: absolute;
+                    top: 110%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    opacity: 0;
+                    z-index: 100;
+                }
+
+                .data-visualization-wrapper #data-table th .tooltip::after {
+                    content: "";
+                    position: absolute;
+                    bottom: 100%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    border-width: 5px;
+                    border-style: solid;
+                    border-color: transparent transparent #333 transparent;
+                }
+
+                .data-visualization-wrapper #data-table th:hover .tooltip {
+                    visibility: visible;
+                    opacity: 1;
+                }
+
+                .data-visualization-wrapper .arrows {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 500px;
+                    pointer-events: none;
+                    z-index: 0;
+                }
+
+                .data-visualization-wrapper .arrow-line {
+                    stroke: #f2f2f2;
+                    stroke-width: 2;
+                    transition: stroke 0.3s;
+                    z-index: 0;
+                }
+
+                .data-visualization-wrapper .arrow-line.dashed {
+                    stroke-dasharray: 4;
+                }
+
+                .data-visualization-wrapper .arrow-line.hovered {
+                    stroke: #555;
+                    z-index: 999;
+                }
+            </style>
+
+            <div class="data-visualization-wrapper">
+                <div class="container">
+                    <div class="logos">
+                        <div class="logo" id="cmu-logo">
+                            <img src="/assets/images/cmu_logo.jpg" alt="CMU Movie Corpus">
+                            <div class="tooltip">CMU Movie Corpus</div>
+                        </div>
+                        <div class="logo" id="tmdb-logo">
+                            <img src="/assets/images/tmdb_logo.png" alt="TMDB">
+                            <div class="tooltip">TMDB</div>
+                        </div>
+                        <div class="logo" id="imdb-logo">
+                            <img src="/assets/images/imdb_logo.png" alt="IMDb">
+                            <div class="tooltip">IMDb
+                                information.</div>
+                        </div>
+                        <div class="logo" id="wikipedia-logo">
+                            <img src="/assets/images/wiki_logo.png" alt="Wikipedia">
+                            <div class="tooltip">Wikipedia</div>
+                        </div>
+                    </div>
+
+                    <table id="data-table">
+                        <thead>
+                            <tr>
+                                <th class="data-table">Name<br>📇<div class="tooltip">Title of the Movie</div>
+                                </th>
+                                <th class="data-table">Genre<br>🍿<div class="tooltip">The date when the movie was
+                                        released.
+                                    </div>
+                                </th>
+                                <th class="data-table">Year<br>𝟚𝟘𝟚𝟜<div class="tooltip">The release date of the
+                                        movie.
+                                    </div>
+                                </th>
+                                <th class="data-table">Type<br>🅾️🅰️🅱️<div class="tooltip">Whether is this a regular,
+                                        short, or ...
+                                        movie.</div>
+                                </th>
+                                <th class="data-table">Country<br>🇨🇭<div class="tooltip">The origin of the movie.
+                                    </div>
+                                </th>
+                                <th class="data-table">Lang<br>㍻<div class="tooltip">The language of the movie.</div>
+                                </th>
+                                <th class="data-table">Runtime<br>⏱️<div class="tooltip">The duration of a movie.</div>
+                                </th>
+                                <th class="data-table">Budget<br>💵<div class="tooltip">The budget expended for the
+                                        production.</div>
+                                </th>
+                                <th class="data-table">Rev.<br>🤑<div class="tooltip">The revenue of the movie.</div>
+                                </th>
+                                <th class="data-table">Votes<br>🗳️<div class="tooltip">The number and average votes of
+                                        people for the
+                                        movie.</div>
+                                </th class="data-table">
+                                <th>Crew<br>✨<div class="tooltip">The stars and crew of the movie.</div>
+                                </th class="data-table">
+                                <th class="data-table">Adult<br>🔞<div class="tooltip">If the movie is for adults only
+                                    </div>
+                                </th>
+                                <th class="data-table">Plot<br>🗺️<div class="tooltip">The summary of the plot.</div>
+                                </th>
+                                <th class="data-table">Remake<br>♻️<div class="tooltip">Whether is the movie remade or
+                                        is a
+                                        reference
+                                        for a remake.</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <svg class="arrows" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                                <path d="M0,0 L10,3.5 L0,7 Z" fill="#555" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+
+            <script>
+                window.addEventListener('load', () => {
+                    const svg = document.querySelector('.arrows');
+                    const logos = document.querySelectorAll('.logo');
+                    const table = document.getElementById('data-table');
+                    const headers = table.querySelectorAll('th');
+
+                    const sourceToColumns = {
+                        'cmu-logo': [{ column: 12, type: 'solid' }, { column: 1, type: 'solid' }, { column: 4, type: 'solid' }, { column: 6, type: 'dashed' }, { column: 8, type: 'solid' }, { column: 11, type: 'solid' }, { column: 2, type: 'solid' }, { column: 0, type: 'solid' },],
+                        'tmdb-logo': [{ column: 12, type: 'dashed' }, { column: 1, type: 'dashed' }, { column: 4, type: 'dashed' }, { column: 6, type: 'solid' }, { column: 7, type: 'solid' }, { column: 8, type: 'dashed' }, { column: 9, type: 'dashed' }, { column: 2, type: 'dashed' }],
+                        'imdb-logo': [{ column: 1, type: 'dashed' }, { column: 6, type: 'dashed' }, { column: 5, type: 'solid' }, { column: 11, type: 'dashed' }, { column: 10, type: 'solid' }, { column: 9, type: 'solid' }, { column: 3, type: 'solid' }, { column: 2, type: 'dashed' }],
+                        'wikipedia-logo': [{ column: 13, type: 'solid' }]
+                    };
+
+                    logos.forEach(logo => {
+                        const logoId = logo.id;
+                        const mappings = sourceToColumns[logoId];
+                        if (mappings) {
+                            mappings.forEach(({ column, type }) => {
+                                drawLine(logo, headers[column], type);
+                            });
+                        }
+
+                        logo.addEventListener('mouseover', () => {
+                            highlightLinesBySource(logoId, true);
+                        });
+
+                        logo.addEventListener('mouseout', () => {
+                            highlightLinesBySource(logoId, false);
+                        });
+                    });
+
+                    headers.forEach((header, colIndex) => {
+                        header.addEventListener('mouseover', () => {
+                            highlightLinesByColumn(colIndex, true);
+                        });
+
+                        header.addEventListener('mouseout', () => {
+                            highlightLinesByColumn(colIndex, false);
+                        });
+                    });
+
+                    function drawLine(sourceElement, targetElement, lineType) {
+                        const svgNS = "http://www.w3.org/2000/svg";
+
+                        const sourceRect = sourceElement.getBoundingClientRect();
+                        const targetRect = targetElement.getBoundingClientRect();
+                        const containerRect = document.querySelector('.data-visualization-wrapper').getBoundingClientRect();
+
+                        const startX = sourceRect.left + sourceRect.width / 2 - containerRect.left;
+                        const startY = sourceRect.bottom - containerRect.top;
+                        const endX = targetRect.left + targetRect.width / 2 - containerRect.left;
+                        const endY = targetRect.top - containerRect.top;
+
+                        const line = document.createElementNS(svgNS, 'line');
+                        line.setAttribute('x1', startX);
+                        line.setAttribute('y1', startY);
+                        line.setAttribute('x2', endX);
+                        line.setAttribute('y2', endY);
+                        line.classList.add('arrow-line');
+                        if (lineType === 'dashed') {
+                            line.classList.add('dashed');
+                        }
+                        line.dataset.source = sourceElement.id;
+                        line.dataset.target = targetElement.cellIndex;
+
+                        svg.appendChild(line);
+                    }
+
+                    function highlightLinesBySource(sourceId, highlight) {
+                        const lines = document.querySelectorAll(`.arrow-line[data-source="${sourceId}"]`);
+                        lines.forEach(line => {
+                            line.classList.toggle('hovered', highlight);
+                        });
+                    }
+
+                    function highlightLinesByColumn(columnIndex, highlight) {
+                        const lines = document.querySelectorAll(`.arrow-line[data-target="${columnIndex}"]`);
+                        lines.forEach(line => {
+                            line.classList.toggle('hovered', highlight);
+                        });
+                    }
+                });
+            </script>
+
+        </section>
+
+        <section id="adjust">
+
+            <h2>
+                Adjusting Revenue and Budget for Fair Comparisons
+            </h2>
+
+            <div class="chart-container">
+                <img src="/assets/images/inflation.png" alt="Inflation Adjustment"
+                    style="width: 40%; margin-bottom: 20px;">
+            </div>
+
+            <p>
+                In our dataset, all monetary values are reported in US dollars. However, movies are produced and released in different countries and across various time periods. To compare monetary features like budget and revenue between movies, it is essential to adjust these values to account for these variations.
+            </p>
+
+            <p>
+                <b>Country Differences:</b>
+                Cinema ticket prices and production costs vary significantly across countries. For instance, cinema tickets in Switzerland cost around 20 CHF, whereas in Italy, they are approximately 10 Euros. To fairly compare the revenue of Swiss and Italian movies, it is necessary to account for these differences. This adjustment is typically made using the Purchasing Power Parity (PPP) rate, a metric that adjusts for differences in price levels between countries. However, due to insufficient historical PPP data, we decided to omit country-specific adjustments in our analysis.
+            </p>
+
+            <p>
+                <b>Inflation Adjustment:</b>
+                Over time, prices and costs increase due to inflation. For example, a cinema ticket that cost $5 in the 2000s might now cost $10. To compare movies released in different time periods, we adjusted all monetary values using the US Consumer Price Index (CPI). The CPI measures changes in price levels over time and is defined as follows:
+            </p>
+
+            <div>
+                \[ CPI_t = \frac{\text{Cost of Market Basket in Year } t}{\text{Cost of Market Basket in Base Year}}
+                \times
+                100 \]
+            </div>
+
+            <p>
+                By applying CPI adjustments, we ensure that movie budgets and revenues are comparable across different years, allowing for a more accurate analysis.
+            </p>
+        </section>
+
+        <section id="eda-time">
 
         <h2>Remakes and Movies Through Chronus</h2>
 
@@ -683,6 +896,10 @@
             for the whole dataset. Understandably, before you shoot a remake you have to shoot an original.
         </p>
 
+        </section>
+
+        <section id="eda-runtime">
+
         <h2>
             How Long Should Our Creative Struggle Take? Or Runtimes
         </h2>
@@ -744,6 +961,10 @@
             </div>
         </div>
 
+        </section>
+
+        <section id="eda-people">
+
         <h2>People and Their Opinions</h2>
 
         <p>
@@ -777,6 +998,10 @@
         <div class="chart-container">
             <iframe src="/assets/plots/violin_plot.html" width="820px" height="620px" frameborder="0"></iframe>
         </div>
+
+        </section>
+
+        <section id="eda-genre">
 
         <h2>Bombastic Genre Combo</h2>
 
@@ -821,6 +1046,10 @@
             one of these options seems like a safe choice. Well, for now that seems fair.
         </p>
 
+        </section>
+
+        <section id="eda-sentiment">
+
         <h2>
             Laughing or Crying? Hating or Loving? Sinking into Despair or Rising in Joy?
         </h2>
@@ -860,6 +1089,10 @@
             happy or sad ending of the original story, whether it will be remade remains a mystery. To conclude our
             brief analysis, it is up to us to choose an original, making the audience cry tears of sadness or joy.
         </p>
+
+        </section>
+
+        <section id="eda-cast">
 
         <h2>Who Should We Invite to Star?</h2>
 
@@ -937,6 +1170,30 @@
             <iframe src="/assets/plots/popularity_crew_plot.html" width="920px" height="620px" frameborder="0"></iframe>
         </div>
 
+        </section>
+
+        <section id="directions">
+            <h2>Future Directions</h2>
+
+            <p>
+                Following our exploratory data analysis (EDA) and initial investigation into patterns and differences between movie remakes, originals, and other movies, we delve deeper into two key areas of analysis:
+            </p>
+
+            <p>
+                <strong>Comparison of Movie Originals vs. Their Remakes:</strong>
+                In this section, we take a closer look at how specific features of original movies differ from their remakes. By comparing attributes such as runtime, budget, revenue, and popularity, we aim to uncover the defining characteristics of remakes and understand the changes made to adapt these movies for modern audiences.
+            </p>
+
+            <p>
+                <strong>What Movie Should I Build From, and How Should I Make It?</strong>
+                Here, we shift focus to explore what makes a movie more likely to be remade and how certain features contribute to its potential success.
+            </p>
+
+            These sections build on our EDA findings, offering a deeper understanding of the remake industry and actionable insights for filmmakers and industry professionals.
+        </section>
+
+        <section id="org-vs-remake-intro">
+
         <h2>Feature Comparison of Movie Originals vs. Their Remakes</h2>
 
         <p>
@@ -971,9 +1228,13 @@
             Image: Original IT and its remake in 1970 and 2017, respectively.
         </div>
 
-        <h2>
-            1. Visualizing and Testing Differences: Aggregate Analysis of Originals vs. Remakes
-        </h2>
+        </section>
+
+        <section id="org-vs-remake-agg">
+
+        <h3>
+            Visualizing and Testing Differences: Aggregate Analysis of Originals vs. Remakes
+        </h3>
 
         <p>
             We apply Kolmogorov-Smirnov (KS) test to determine if two distributions are significantly different. If the
@@ -1096,7 +1357,7 @@
             </div>
         </div>
 
-        <h2>1.1. The Role of Time: Investigating Industry Trends and Their Impact</h2>
+        <h4>The Role of Time: Investigating Industry Trends and Their Impact</h4>
 
         <p>
             Since remakes are inherently produced after the originals, it is important to consider the potential impact
@@ -1143,7 +1404,7 @@
             We will formally test the impact of time on these features using regression analysis on the next slide.
         </p>
 
-        <h2>1.2. Assessing the Impact of Remakes: A Regression Analysis with Time Controls</h2>
+        <h4>Assessing the Impact of Remakes: A Regression Analysis with Time Controls</h4>
 
         <p>
             To test whether the differences in star popularity, vote average, and budget between originals and remakes
@@ -1213,13 +1474,13 @@
 
         <ul>
             <li>
-                Significant Originality Coefficient: Across all three regressions, the coefficient of the "original"
+                <strong>Significant Originality Coefficient:</strong> Across all three regressions, the coefficient of the "original"
                 dummy variable is statistically significant (indicated in blue). This suggests that whether a movie is
                 an original or a remake has a meaningful impact on star popularity, vote average, and budget, even after
                 controlling for decade-based time trends.
             </li>
             <li>
-                Direction of the Effect: The coefficients for star popularity and budget are negative, indicating that
+                <strong>Direction of the Effect:</strong> The coefficients for star popularity and budget are negative, indicating that
                 remakes tend to have higher values for these features compared to originals. In contrast, the
                 coefficient for vote average is positive, showing that originals tend to have slightly higher vote
                 averages than remakes. These directions are consistent with the patterns observed in the distributions
@@ -1231,7 +1492,11 @@
             Note: The coefficients are on normalized features.
         </p>
 
-        <h2>2. Pairwise Analysis of Originals and Their Remakes</h2>
+        </section>
+
+        <section id="org-vs-remake-pair">
+
+        <h3>Pairwise Analysis of Originals and Their Remakes</h3>
 
         <div class="row justify-content-center align-items-center mt-4">
             <div class="col-md-8">
@@ -1251,95 +1516,7 @@
             </div>
         </div>
 
-        <script>
-            window.addEventListener('load', () => {
-                const svg = document.querySelector('.arrows');
-                const logos = document.querySelectorAll('.logo');
-                const table = document.getElementById('data-table');
-                const headers = table.querySelectorAll('th');
-
-                const sourceToColumns = {
-                    'cmu-logo': [{ column: 12, type: 'solid' }, { column: 1, type: 'solid' }, { column: 4, type: 'solid' }, { column: 6, type: 'dashed' }, { column: 8, type: 'solid' }, { column: 11, type: 'solid' }, { column: 2, type: 'solid' }, { column: 0, type: 'solid' },],
-                    'tmdb-logo': [{ column: 12, type: 'dashed' }, { column: 1, type: 'dashed' }, { column: 4, type: 'dashed' }, { column: 6, type: 'solid' }, { column: 7, type: 'solid' }, { column: 8, type: 'dashed' }, { column: 9, type: 'dashed' }, { column: 2, type: 'dashed' }],
-                    'imdb-logo': [{ column: 1, type: 'dashed' }, { column: 6, type: 'dashed' }, { column: 5, type: 'solid' }, { column: 11, type: 'dashed' }, { column: 10, type: 'solid' }, { column: 9, type: 'solid' }, { column: 3, type: 'solid' }, { column: 2, type: 'dashed' }],
-                    'wikipedia-logo': [{ column: 13, type: 'solid' }]
-                };
-
-                logos.forEach(logo => {
-                    const logoId = logo.id;
-                    const mappings = sourceToColumns[logoId];
-                    if (mappings) {
-                        mappings.forEach(({ column, type }) => {
-                            drawLine(logo, headers[column], type);
-                        });
-                    }
-
-                    logo.addEventListener('mouseover', () => {
-                        highlightLinesBySource(logoId, true);
-                    });
-
-                    logo.addEventListener('mouseout', () => {
-                        highlightLinesBySource(logoId, false);
-                    });
-                });
-
-                headers.forEach((header, colIndex) => {
-                    header.addEventListener('mouseover', () => {
-                        highlightLinesByColumn(colIndex, true);
-                    });
-
-                    header.addEventListener('mouseout', () => {
-                        highlightLinesByColumn(colIndex, false);
-                    });
-                });
-
-                function drawLine(sourceElement, targetElement, lineType) {
-                    const svgNS = "http://www.w3.org/2000/svg";
-
-                    const sourceRect = sourceElement.getBoundingClientRect();
-                    const targetRect = targetElement.getBoundingClientRect();
-                    const containerRect = document.querySelector('.data-visualization-wrapper').getBoundingClientRect();
-
-                    const startX = sourceRect.left + sourceRect.width / 2 - containerRect.left;
-                    const startY = sourceRect.bottom - containerRect.top;
-                    const endX = targetRect.left + targetRect.width / 2 - containerRect.left;
-                    const endY = targetRect.top - containerRect.top;
-
-                    const line = document.createElementNS(svgNS, 'line');
-                    line.setAttribute('x1', startX);
-                    line.setAttribute('y1', startY);
-                    line.setAttribute('x2', endX);
-                    line.setAttribute('y2', endY);
-                    line.classList.add('arrow-line');
-                    if (lineType === 'dashed') {
-                        line.classList.add('dashed');
-                    }
-                    line.dataset.source = sourceElement.id;
-                    line.dataset.target = targetElement.cellIndex;
-
-                    svg.appendChild(line);
-                }
-
-                function highlightLinesBySource(sourceId, highlight) {
-                    const lines = document.querySelectorAll(`.arrow-line[data-source="${sourceId}"]`);
-                    lines.forEach(line => {
-                        line.classList.toggle('hovered', highlight);
-                    });
-                }
-
-                function highlightLinesByColumn(columnIndex, highlight) {
-                    const lines = document.querySelectorAll(`.arrow-line[data-target="${columnIndex}"]`);
-                    lines.forEach(line => {
-                        line.classList.toggle('hovered', highlight);
-                    });
-                }
-            });
-        </script>
-
-
-
-
-        <h2>2.1. Testing for Differences: Mean and Median Analysis</h2>
+        <h4>Testing for Differences: Mean and Median Analysis</h4>
 
         <p>
             In this analysis, we examine whether the mean and median of the differences between features of original
@@ -1393,7 +1570,7 @@
                 <div class="tab-pane fade show active" id="v-pills-11-2-1" role="tabpanel"
                     aria-labelledby="v-pills-tab-11-2-1" tabindex="0">
                     <em>Mean and Median are significantly less than zero (p = 0.0002, p = 0.0004).</em>
-                    ‍
+                
                     <iframe src="/assets/plots/runtime_difference_distplot.html" width="820px" height="470px"
                         frameborder="0"></iframe>
                 </div>
@@ -1466,7 +1643,7 @@
             reflecting variability.
         </p>
 
-        <h2>2.2. Analyzing Original Features that Influence Remake Features</h2>
+        <h4>Analyzing Original Features that Influence Remake Features</h4>
 
         <p>
             To understand how original movie features influence remakes, we performed regression analyses on a selected
@@ -1558,7 +1735,11 @@
             originals and remakes.
         </p>
 
-        <h2>3. Key Insights from Original vs. Remake Analysis</h2>
+        </section>
+
+        <section id="org-vs-remake-insights">
+
+        <h3>Key Insights from Original vs. Remake Analysis</h3>
 
         <p>
             The analysis reveals significant differences between movie originals and their remakes across several
@@ -1574,6 +1755,10 @@
             This suggests that while remakes are shaped by modern industry dynamics, they also carry forward critical
             aspects of their originals, such as financial success and audience reception.
         </p>
+
+        </section>
+
+        <section id="rmd-intro">
 
         <h2>
             What Movie Should I Build From, and How Should I Make It?
@@ -1598,6 +1783,10 @@
             through regression using causal analysis and treatment effect estimation to confirm their significance.
         </p>
 
+        </section>
+
+        <section id="rmd-feat">
+
         <h3>
             Feature Engineering
         </h3>
@@ -1619,6 +1808,10 @@
             interested in its proportional relationship to the budget.
         </p>
 
+        </section>
+
+        <section id="rmd-reg">
+
         <h3>
             Regression Analysis with All Features
         </h3>
@@ -1636,6 +1829,10 @@
         <iframe src="/assets/plots/is_remake.html" width="820px" height="620px" frameborder="0"></iframe>
 
         <iframe src="/assets/plots/has_remake.html" width="820px" height="620px" frameborder="0"></iframe>
+
+        </section>
+
+        <section id="rmd-caus">
 
         <h3>
             Causal Analysis
@@ -1665,6 +1862,10 @@
 
         <iframe src="/assets/plots/casual_has_remake_ate.html" width="820px" height="620px" frameborder="0"></iframe>
 
+        </section>
+
+        <section id="rmd-conc">
+
         <h3>
             Let’s Cook!
         </h3>
@@ -1676,46 +1877,46 @@
 
         <ul>
             <li>
-                High Vote Average: Movies that receive higher viewer ratings are more likely to inspire a remake. A
+                <strong>High Vote Average:</strong> Movies that receive higher viewer ratings are more likely to inspire a remake. A
                 possible interpretation is that higher-quality or more critically acclaimed films are deemed valuable
                 intellectual property worth revisiting or updating for newer audiences.
             </li>
             <li>
-                Being in Specific Genres (Comedy, Thriller, Romance): Certain genres appear more likely to inspire
+                <strong>Being in Specific Genres (Comedy, Thriller, Romance):</strong> Certain genres appear more likely to inspire
                 remakes.
                 <ul>
                     <li>
-                        Comedy: Comedies that resonate well with audiences may be remade to align with contemporary
+                        <em>Comedy:</em> Comedies that resonate well with audiences may be remade to align with contemporary
                         humor, and cultural shifts, or to reach new demographic segments.
                     </li>
                     <li>
-                        Thriller: Thrillers can be easily adapted to modern contexts and technologies, keeping their
+                        <em>Thriller:</em> Thrillers can be easily adapted to modern contexts and technologies, keeping their
                         suspense elements fresh.
                     </li>
                     <li>
-                        Romance: Romantic films that achieve a timeless emotional resonance may be reinterpreted for new
+                        <em>Romance:</em> Romantic films that achieve a timeless emotional resonance may be reinterpreted for new
                         eras or cultural backdrops.
                     </li>
                 </ul>
             </li>
             <li>
-                Black and White Movies: Historically, many black-and-white classics have been remade in color or updated
+                <strong>Black and White Movies:</strong> Historically, many black-and-white classics have been remade in color or updated
                 to reflect modern production values. This suggests that older, iconic films (often black and white)
                 serve as prime candidates for remaking, potentially due to nostalgia, cinematic legacy, or the desire to
                 revitalize stories for contemporary audiences.
             </li>
             <li>
-                Made in the USA: U.S.-produced films—given the global prominence of Hollywood—are more likely to be
+                <strong>Made in the USA:</strong> U.S.-produced films—given the global prominence of Hollywood—are more likely to be
                 remade. This may stem from the wide international reach, market potential, and cultural influence of
                 American cinema.
             </li>
             <li>
-                Made Before 1980: Older films, particularly from before 1980, are more frequently remade. As time
+                <strong>Made Before 1980:</strong> Older films, particularly from before 1980, are more frequently remade. As time
                 passes, production values, storytelling techniques, and audience expectations shift, making these older
                 stories appealing targets for modern reinterpretation.
             </li>
             <li>
-                High Log of the Revenue-to-Budget Ratio: Films that proved financially successful relative to their
+                <strong>High Log of the Revenue-to-Budget Ratio:</strong> Films that proved financially successful relative to their
                 production costs are likely to catch the attention of filmmakers and studios looking for profitable
                 properties to revisit. This financial indicator suggests that the perceived commercial viability drives
                 the decision to invest in a remake.
@@ -1729,27 +1930,27 @@
 
         <ul>
             <li>
-                Negative Sentiment: Remakes tend to arise even when the original film has a negative sentiment.
+                <strong>Negative Sentiment:</strong> Remakes tend to arise even when the original film has a negative sentiment.
                 Filmmakers might see an opportunity to reinterpret or enhance the emotional resonance of a sad or somber
                 story to better connect with modern audiences or have deeper feelings in the movie.
             </li>
             <li>
-                High Budget: Modern remakes are often given higher budgets, possibly to leverage updated technology,
+                <strong>High Budget:</strong> Modern remakes are often given higher budgets, possibly to leverage updated technology,
                 special effects, or star power. Studios may feel more confident investing heavily in known intellectual
                 property, anticipating stronger box-office returns due to brand recognition.
             </li>
             <li>
-                High Average Popularity of the First Three Cast Members: Remakes often get well-known or rising star
+                <strong>High Average Popularity of the First Three Cast Members:</strong> Remakes often get well-known or rising star
                 actors to generate publicity and attract audiences. Casting high-profile talent can rekindle interest in
                 a familiar story and differentiate the remake from its predecessor.
             </li>
             <li>
-                Being in Specific Genres (Thriller, Romance): Similar to the pattern seen for having a remake, certain
+                <strong>Being in Specific Genres (Thriller, Romance):</strong> Similar to the pattern seen for having a remake, certain
                 genres—thrillers and romances—are common subjects of remakes. These genres rely on timeless emotional or
                 suspenseful narratives, making them ripe for re-interpretation and modernization.
             </li>
             <li>
-                Made in the USA: The U.S. film industry’s influence is again evident. Remakes are frequently developed
+                <strong>Made in the USA:</strong> The U.S. film industry’s influence is again evident. Remakes are frequently developed
                 within Hollywood, likely due to the robust infrastructure, global distribution networks, and a history
                 of successful adaptations.
             </li>
@@ -1766,30 +1967,37 @@
             about potential unobserved confounders.
         </p>
 
-        <h2>Deja View: Uncovering the Patterns Behind Movie Remakes</h2>
+        </section>
 
-        <p>
-            Our analysis shows that remakes are not just random re-tellings of old stories—they are shaped by a
-            combination of market strategy, cultural trends, and enduring audience appeal. Original films that gain
-            enough acclaim or popularity often inspire filmmakers to create remakes, using big-name stars and larger
-            budgets to boost their chances of success. It’s clear that certain characteristics—like being older,
-            produced in the U.S., achieving strong initial audience approval, or coming from genres known for their
-            timeless appeal—make a film more likely to be revisited and reshaped for a new era.
-        </p>
+        <section id="conclusion">
+                
+            <h2>Deja View: Uncovering the Patterns Behind Movie Remakes</h2>
 
-        <p>
-            At the same time, the features that define a remake often echo those of the original film, such as runtime,
-            popularity, and financial performance, even as they’re updated to fit modern tastes and production
-            standards. For instance, classic black-and-white hits might be reintroduced in vivid color with contemporary
-            technology, appealing to both nostalgic fans and first-time viewers.
-        </p>
+            <p>
+                Our analysis shows that remakes are not just random re-tellings of old stories—they are shaped by a
+                combination of market strategy, cultural trends, and enduring audience appeal. Original films that gain
+                enough acclaim or popularity often inspire filmmakers to create remakes, using big-name stars and larger
+                budgets to boost their chances of success. It’s clear that certain characteristics—like being older,
+                produced in the U.S., achieving strong initial audience approval, or coming from genres known for their
+                timeless appeal—make a film more likely to be revisited and reshaped for a new era.
+            </p>
 
-        <p>
-            Our checks on data quality and matching confirm that these insights aren’t just coincidences—they hold up
-            even when we control for other factors. Put simply, the process of choosing, creating, and marketing remakes
-            isn’t random; it follows patterns that blend the legacy of the original film with the commercial and
-            creative forces of today’s film industry.
-        </p>
+            <p>
+                At the same time, the features that define a remake often echo those of the original film, such as runtime,
+                popularity, and financial performance, even as they’re updated to fit modern tastes and production
+                standards. For instance, classic black-and-white hits might be reintroduced in vivid color with contemporary
+                technology, appealing to both nostalgic fans and first-time viewers.
+            </p>
+
+            <p>
+                Our checks on data quality and matching confirm that these insights aren’t just coincidences—they hold up
+                even when we control for other factors. Put simply, the process of choosing, creating, and marketing remakes
+                isn’t random; it follows patterns that blend the legacy of the original film with the commercial and
+                creative forces of today’s film industry.
+            </p>
+
+
+        </section>
 
         <small>We acknowledge using GPT model to generate fictional images for this data story.</small>
 
@@ -1812,28 +2020,49 @@
                 Code 💻 and analysis 🧐 with ❤️ by the team.
             </p>
         </footer>
-
     </div>
 
     <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const container = document.getElementById('team-container');
-            const items = Array.from(container.children);
-            items.sort(() => Math.random() - 0.5);
-            items.forEach((item) => {
-                container.appendChild(item);
-            });
-        });
-    </script>
-
-    <script>
         window.addEventListener('load', () => {
             const loadingScreen = document.getElementById('loading-screen');
             loadingScreen.classList.add('hidden');
+
             const content = document.getElementById('content');
-            content.style.display = 'block';
+            if (content) {
+                content.style.display = 'block';
+            }
+
+            const mainTitle = document.getElementById('main-title');
+            mainTitle.classList.add('start-typing');
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const container = document.getElementById('team-container');
+            if (container) {
+                const items = Array.from(container.children);
+                items.sort(() => Math.random() - 0.5);
+                items.forEach((item) => {
+                    container.appendChild(item);
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cover = document.querySelector('.cover');
+
+            document.addEventListener('mousemove', (e) => {
+                const xPos = (e.clientX / window.innerWidth) - 0.5;
+                const yPos = (e.clientY / window.innerHeight) - 0.5;
+
+                const moveFactor = 20;
+
+                const xOffset = 50 + xPos * moveFactor;
+                const yOffset = 50 + yPos * moveFactor * 3;
+
+                cover.style.backgroundPosition = `${xOffset}% ${yOffset}%`;
+            });
         });
     </script>
 </body>

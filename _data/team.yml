@@ -8,9 +8,12 @@
   status: Master in Computer Science
   photo: aryan.jpeg
 - name: Amirmahdi Hosseinabadi
+  homepage: https://people.epfl.ch/amirmahdi.hosseinabadi/?lang=en
   email: amirmahdi.hosseinabadi@epfl.ch
   status: Master in Financial Engineering
   photo: amirmahdi.jpg
+  linkedin: https://www.linkedin.com/in/hosseinabadi/
+  github: hosseinabadi
 - name: Matin Ansaripour
   email: matin.ansaripour@epfl.ch
   github: matinansaripour
@@ -22,7 +25,7 @@
   email: sabri.arslan@epfl.ch
   status: Master in Computer Science
   photo: yigit.jpg
-- name: Maria Yuffa Meshcheryakova
+- name: Maria Yuffa
   email: maria.yuffameshcheryakova@epfl.ch
   status: Master in Neuro-X
   photo: maria.jpeg
