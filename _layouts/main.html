@@ -351,7 +351,7 @@
                 {% for member in site.data.team %}
                 <div class="col-md-4 text-center team-member" data-order="{{ forloop.index }}">
                     <img src="/assets/images/{{ member.photo }}" alt="{{ member.name }}" class="team-photo">
-                    <h3 style="font-size: 18pt; padding-top: 10px;">{{ member.name }}</h3>
+                    <h3 style="font-size: 18pt; padding-top: 0px;">{{ member.name }}</h3>
                     {{ member.status }}
                     <div class="team-social">
                         {% if member.homepage %}
