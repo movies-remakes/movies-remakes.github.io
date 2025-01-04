@@ -270,6 +270,22 @@
                         </ul>
                     </li>
 
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdownMenu" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Initial Insights
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                            <li><a class="dropdown-item" href="#eda-time">Through Time</a></li>
+                            <li><a class="dropdown-item" href="#eda-runtime">Runtime</a></li>
+                            <li><a class="dropdown-item" href="#eda-people">Opinions</a></li>
+                            <li><a class="dropdown-item" href="#eda-genre">Genre</a></li>
+                            <li><a class="dropdown-item" href="#eda-sentiment">Feelings</a></li>
+                            <li><a class="dropdown-item" href="#eda-cast">Cast</a></li>
+                            <li><a class="dropdown-item" href="#directions">Directions</a></li>
+                        </ul>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="#conclusion">Conclusion</a>
                     </li>
@@ -353,6 +369,8 @@
                 Continuous lines mean the main source of the data and dashed lines are complementary sources which have
                 been used to enrich the dataset.
             </p>
+
+            <em>Hover on the Columns or Sources.</em>
 
             <style>
                 .data-visualization-wrapper * {
@@ -744,29 +762,17 @@
             </div>
 
             <p>
-                In our dataset, all the prices are in us-dollars. Different movies are built and displayed in different
-                countries and in different years. Hence, in order to be able to compare monetary features like budget
-                and
-                revenue for different movies, it is important to adjust them.
+                In our dataset, all monetary values are reported in US dollars. However, movies are produced and released in different countries and across various time periods. To compare monetary features like budget and revenue between movies, it is essential to adjust these values to account for these variations.
             </p>
 
             <p>
-                1. Different countries: Cinema ticket prices and costs can be significantly different in different
-                countries. As a simple example, cinema tickets in Switzerland are around 20CHF but in Italy are
-                10Euro's. So
-                in order to compare how well a Swiss and Italian movie have been sold, we have to take into account
-                these
-                different prices. The metric used for this purpose is Purchasing Power Parity (PPP) rate. In our
-                research,
-                since there is not sufficient historical PPP rate data, we decided to ignore the country adjustment.
+                Country Differences:
+                Cinema ticket prices and production costs vary significantly across countries. For instance, cinema tickets in Switzerland cost around 20 CHF, whereas in Italy, they are approximately 10 Euros. To fairly compare the revenue of Swiss and Italian movies, it is necessary to account for these differences. This adjustment is typically made using the Purchasing Power Parity (PPP) rate, a metric that adjusts for differences in price levels between countries. However, due to insufficient historical PPP data, we decided to omit country-specific adjustments in our analysis.
             </p>
 
             <p>
-                2. Inflation adjustment In time, the prices and costs in each country increase due to inflation. For
-                example, a cinema ticket in the 2000's might have cost 5$ but now it costs 10$. So again to compare
-                different movies which have been built in different times, we have to take into account these prices
-                changes. To do this, we adjust all the movies with the US CPI which is an index showing the price level
-                changes in the US. The definition of CPI is as following:
+                Inflation Adjustment:
+                Over time, prices and costs increase due to inflation. For example, a cinema ticket that cost $5 in the 2000s might now cost $10. To compare movies released in different time periods, we adjusted all monetary values using the US Consumer Price Index (CPI). The CPI measures changes in price levels over time and is defined as follows:
             </p>
 
             <div>
@@ -774,8 +780,13 @@
                 \times
                 100 \]
             </div>
+
+            <p>
+                By applying CPI adjustments, we ensure that movie budgets and revenues are comparable across different years, allowing for a more accurate analysis.
+            </p>
         </section>
 
+        <section id="eda-time">
 
         <h2>Remakes and Movies Through Chronus</h2>
 
@@ -858,6 +869,10 @@
             for the whole dataset. Understandably, before you shoot a remake you have to shoot an original.
         </p>
 
+        </section>
+
+        <section id="eda-runtime">
+
         <h2>
             How Long Should Our Creative Struggle Take? Or Runtimes
         </h2>
@@ -919,6 +934,10 @@
             </div>
         </div>
 
+        </section>
+
+        <section id="eda-people">
+
         <h2>People and Their Opinions</h2>
 
         <p>
@@ -952,6 +971,10 @@
         <div class="chart-container">
             <iframe src="/assets/plots/violin_plot.html" width="820px" height="620px" frameborder="0"></iframe>
         </div>
+
+        </section>
+
+        <section id="eda-genre">
 
         <h2>Bombastic Genre Combo</h2>
 
@@ -996,6 +1019,10 @@
             one of these options seems like a safe choice. Well, for now that seems fair.
         </p>
 
+        </section>
+
+        <section id="eda-sentiment">
+
         <h2>
             Laughing or Crying? Hating or Loving? Sinking into Despair or Rising in Joy?
         </h2>
@@ -1035,6 +1062,10 @@
             happy or sad ending of the original story, whether it will be remade remains a mystery. To conclude our
             brief analysis, it is up to us to choose an original, making the audience cry tears of sadness or joy.
         </p>
+
+        </section>
+
+        <section id="eda-cast">
 
         <h2>Who Should We Invite to Star?</h2>
 
@@ -1111,6 +1142,28 @@
         <div class="chart-container">
             <iframe src="/assets/plots/popularity_crew_plot.html" width="920px" height="620px" frameborder="0"></iframe>
         </div>
+
+        </section>
+
+        <section id="directions">
+            <h2>Future Directions</h2>
+            
+            <p>
+                Following our exploratory data analysis (EDA) and initial investigation into patterns and differences between movie remakes, originals, and other movies, we delve deeper into two key areas of analysis:
+            </p>
+
+            <p>
+                Feature Comparison of Movie Originals vs. Their Remakes:
+                In this section, we take a closer look at how specific features of original movies differ from their remakes. By comparing attributes such as runtime, budget, revenue, and popularity, we aim to uncover the defining characteristics of remakes and understand the changes made to adapt these movies for modern audiences.
+            </p>
+
+            <p>
+                What Movie Should I Build From, and How Should I Make It?
+                Here, we shift focus to explore what makes a movie more likely to be remade and how certain features contribute to its potential success.
+            </p>
+
+            These sections build on our EDA findings, offering a deeper understanding of the remake industry and actionable insights for filmmakers and industry professionals.
+        </section>
 
         <h2>Feature Comparison of Movie Originals vs. Their Remakes</h2>
 
