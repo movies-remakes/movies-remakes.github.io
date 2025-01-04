@@ -15,7 +15,6 @@
         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
-        /********** Base Styles **********/
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #ffffff;
@@ -25,7 +24,6 @@
             padding: 0;
         }
 
-        /********** Loading Screen **********/
         #loading-screen {
             position: fixed;
             top: 0;
@@ -279,7 +277,6 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div id="main-content" class="content">
         <section id="introduction">
             <h2>Introduction</h2>
@@ -312,7 +309,6 @@
                     <img src="/assets/images/{{ member.photo }}" alt="{{ member.name }}" class="team-photo">
                     <h3 style="font-size: 18pt;">{{ member.name }}</h3>
                     {{ member.status }}
-                    <!-- icon for mail, github, linkedin, X, homepage -->
                     <div class="team-social">
                         {% if member.homepage %}
                         <a href="{{ member.homepage }}"><i class="fas fa-home"></i></a>
