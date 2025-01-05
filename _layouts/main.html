@@ -47,16 +47,51 @@
             z-index: 9999;
         }
 
+        
         .loading-text {
             font-size: 1.5rem;
-            font-weight: 500;
-            animation: fadeInOut 1.5s linear infinite;
+            font-weight: bold;
+            height: 2rem; /* Fixed height to prevent jumping */
+            overflow: hidden;
+            position: relative;
         }
 
-        @keyframes fadeInOut {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
+        .loading-text span {
+            display: block;
+            position: absolute;
+            width: 100%;
+            opacity: 0;
+            animation: changeText 6s infinite;
+        }
+
+        .loading-text span:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .loading-text span:nth-child(2) {
+            animation-delay: 1s;
+        }
+
+        .loading-text span:nth-child(3) {
+            animation-delay: 2s;
+        }
+
+        .loading-text span:nth-child(4) {
+            animation-delay: 3s;
+        }
+
+        .loading-text span:nth-child(5) {
+            animation-delay: 4s;
+        }
+
+        .loading-text span:nth-child(6) {
+            animation-delay: 5s;
+        }
+
+        @keyframes changeText {
+            0% { opacity: 0; transform: translateY(100%); }
+            10%, 90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-100%); }
         }
 
         #loading-screen.hidden {
@@ -299,7 +334,14 @@
     <div id="loading-screen">
         <div class="spinner"></div>
         <br>
-        <div class="loading-text" id="loadingText">Be still, we are preparing</div>
+        <div class="loading-text">
+            <span>Lights, camera... loading!</span>
+            <span>Rewriting the remake... again.</span>
+            <span>Searching for the better version...</span>
+            <span>Comparing sequels with originals...</span>
+            <span>Loading... because remakes take time too.</span>
+            <span>And now, the feature presentation...</span>
+        </div>
     </div>
 
     <div class="cover" id="cover">
