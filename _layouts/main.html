@@ -24,6 +24,15 @@
             padding: 0;
         }
 
+        .float-img {
+            float: right;
+            margin: 10px;
+        }
+ 
+        .float-p {
+            text-align: justify;
+        }
+
         #loading-screen {
             position: fixed;
             top: 0;
@@ -1903,17 +1912,15 @@
             Let’s Cook!
         </h3>
 
-        <div class="chart-container">
             <img src="/assets/images/cook.webp" alt="Inflation Adjustment"
-                style="width: 50%; margin-bottom: 20px;">
-        </div>
+                style="width: 50%; margin-bottom: 20px;" class="float-img">
 
-        <p>
+        <p class="float-p">
             To conclude, when considering movies that have at least one subsequent remake, the following features showed
             a significant causal relationship:
         </p>
 
-        <ul>
+        <ul class="float-p">
             <li>
                 <strong>High Vote Average:</strong> Movies that receive higher viewer ratings are more likely to inspire a remake. A
                 possible interpretation is that higher-quality or more critically acclaimed films are deemed valuable
@@ -1961,12 +1968,12 @@
             </li>
         </ul>
 
-        <p>
+        <p class="float-p">
             For movies that are themselves remakes of earlier works, the following features have a significant causal
             relationship:
         </p>
 
-        <ul>
+        <ul class="float-p">
             <li>
                 <strong>Negative Sentiment:</strong> Remakes tend to arise even when the original film has a negative sentiment.
                 Filmmakers might see an opportunity to reinterpret or enhance the emotional resonance of a sad or somber
@@ -1994,7 +2001,7 @@
             </li>
         </ul>
 
-        <p>
+        <p class="float-p">
             The analysis suggests that certain film characteristics are causally linked to the likelihood of a movie
             having a remake or being a remake. Films that are older, successful, and produced in the U.S., and that
             belong to certain genres, appear more likely to inspire future remakes. For movies that are themselves
