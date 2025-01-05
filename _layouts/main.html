@@ -47,6 +47,12 @@
             z-index: 9999;
         }
 
+        .loading-text {
+            font-size: 1.5rem;
+            font-weight: 500;
+            animation: fadeInOut 1.5s linear infinite;
+        }
+
         #loading-screen.hidden {
             display: none;
         }
@@ -266,7 +272,35 @@
 <body data-bs-spy="scroll" data-bs-target="#navbarScrollSpy" data-bs-offset="0" tabindex="0">
     <div id="loading-screen">
         <div class="spinner"></div>
+        <div class="loading-text" id="loadingText">Be still, we are preparing</div>
     </div>
+
+    <script>
+        const sentences = [
+            "Loading awesomeness... stay tuned.",
+            "Making pixels behave.",
+            "Loading... one byte at a time.",
+            "Prepping the good stuff.",
+            "Dusting off the data.",
+            "Hold on, aligning the stars.",
+            "Drawing charts... or doodling.",
+            "Loading... our hamster is running the wheel.",
+            "Thinking... but not too hard.",
+            "Running on coffee and code.",
+            "Summoning insights from the void.",
+            "Brewing some analytical tea.",
+            "Opening the portal to data heaven.",
+            "Unleashing the power of visuals.",
+            "Crunching numbers like a snack."
+        ];
+        let index = 0;
+        const loadingText = document.getElementById("loadingText");
+
+        setInterval(() => {
+            index = (index + 1) % sentences.length;
+            loadingText.textContent = sentences[index];
+        }, 1500);
+    </script>
 
     <div class="cover" id="cover">
         <div class="cover-content">
