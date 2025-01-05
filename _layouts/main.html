@@ -53,6 +53,12 @@
             animation: fadeInOut 1.5s linear infinite;
         }
 
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
         #loading-screen.hidden {
             display: none;
         }
@@ -273,8 +279,26 @@
     <div id="loading-screen">
         <div class="spinner"></div>
         <br>
-        <div class="loading-text" id="loadingText">We are Preparing!</div>
+        <div class="loading-text" id="loadingText">Be still, we are preparing</div>
     </div>
+
+    <script>
+        const sentences = [
+            "Be still, we are preparing",
+            "Loading charts",
+            "Loading images",
+            "Loading analysis",
+            "Coding",
+            "We are just a little bit thinking"
+        ];
+        let index = 0;
+        const loadingText = document.getElementById("loadingText");
+
+        setInterval(() => {
+            index = (index + 1) % sentences.length;
+            loadingText.textContent = sentences[index];
+        }, 1500);
+    </script>
 
     <div class="cover" id="cover">
         <div class="cover-content">
