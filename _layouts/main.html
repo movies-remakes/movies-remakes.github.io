@@ -267,13 +267,6 @@
             } */
         }
     </style>
-</head>
-
-<body data-bs-spy="scroll" data-bs-target="#navbarScrollSpy" data-bs-offset="0" tabindex="0">
-    <div id="loading-screen">
-        <div class="spinner"></div>
-        <div class="loading-text" id="loadingText">Be still, we are preparing</div>
-    </div>
 
     <script>
         const sentences = [
@@ -301,6 +294,14 @@
             loadingText.textContent = sentences[index];
         }, 1500);
     </script>
+</head>
+
+<body data-bs-spy="scroll" data-bs-target="#navbarScrollSpy" data-bs-offset="0" tabindex="0">
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <br>
+        <div class="loading-text" id="loadingText">Be still, we are preparing</div>
+    </div>
 
     <div class="cover" id="cover">
         <div class="cover-content">
