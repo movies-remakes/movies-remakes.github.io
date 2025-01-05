@@ -292,9 +292,9 @@
             "Be still, we are preparing",
         ];
         let index = 0;
-        const loadingText = document.getElementById("loadingText");
-
+        
         setInterval(() => {
+            let loadingText = document.getElementById("loadingText");
             index = (index + 1) % sentences.length;
             loadingText.textContent = sentences[index];
             console.log("changing")
