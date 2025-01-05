@@ -34,6 +34,10 @@
             text-align: justify;
         }
 
+        #loading-screen.hidden {
+            display: none;
+        }
+
         #loading-screen {
             position: fixed;
             top: 0;
@@ -42,60 +46,73 @@
             height: 100%;
             background: #fff;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
+            gap: 20px;
         }
 
-        
-        .loading-text {
-            font-size: 1.5rem;
-            font-weight: bold;
-            height: 2rem; /* Fixed height to prevent jumping */
-            overflow: hidden;
+        .loading-words {
+            width: 500px;
             position: relative;
+            height: 2em; 
+            line-height: 2em;
+            /* overflow: hidden; */
+            font-size: 1.5rem;
         }
 
-        .loading-text span {
-            display: block;
+
+        .loading-words span {
             position: absolute;
             width: 100%;
+            text-align: center;
             opacity: 0;
-            animation: changeText 6s infinite;
+            transform: translateY(100%);
+            animation: rotateWords 8s infinite;
         }
 
-        .loading-text span:nth-child(1) {
+        .loading-words span:nth-child(1) {
             animation-delay: 0s;
         }
 
-        .loading-text span:nth-child(2) {
-            animation-delay: 1s;
-        }
-
-        .loading-text span:nth-child(3) {
+        .loading-words span:nth-child(2) {
             animation-delay: 2s;
         }
 
-        .loading-text span:nth-child(4) {
-            animation-delay: 3s;
-        }
-
-        .loading-text span:nth-child(5) {
+        .loading-words span:nth-child(3) {
             animation-delay: 4s;
         }
 
-        .loading-text span:nth-child(6) {
-            animation-delay: 5s;
+        .loading-words span:nth-child(4) {
+            animation-delay: 6s;
         }
 
-        @keyframes changeText {
-            0% { opacity: 0; transform: translateY(100%); }
-            10%, 90% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-100%); }
-        }
+        @keyframes rotateWords {
+            0% {
+                opacity: 0;
+                transform: translateY(100%);
+            }
 
-        #loading-screen.hidden {
-            display: none;
+            5% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            20% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            25% {
+                opacity: 0;
+                transform: translateY(-100%);
+            }
+
+            50% {
+                opacity: 0;
+                transform: translateY(-100%);
+            }
         }
 
         .spinner {
@@ -296,42 +313,12 @@
                 color: rgb(91, 187, 249);
                 font-size: 48pt;
             }
-            
-            /* .klogo:hover {
-                color: rgb(91, 187, 249);
-                text-shadow: 0px 0px 30px rgb(91, 187, 249);
-                box-shadow: 0px 0px 30px rgb(91, 187, 249);
-                -moz-transition: all 0.2s ease-in;
-                -o-transition: all 0.2s ease-in;
-                -webkit-transition: all 0.2s ease-in;
-                transition: all 0.2s ease-in;
-            } */
         }
     </style>
-
-    <script>
-        const sentences = [
-            "Loading charts",
-            "Loading images",
-            "Loading analysis",
-            "Coding",
-            "We are just a little bit thinking",
-            "Be still, we are preparing",
-        ];
-        let index = 0;
-        
-        setInterval(() => {
-            let loadingText = document.getElementById("loadingText");
-            index = (index + 1) % sentences.length;
-            loadingText.textContent = sentences[index];
-            console.log("changing")
-            console.log(index)
-        }, 1500);
-    </script>
 </head>
 
 <body data-bs-spy="scroll" data-bs-target="#navbarScrollSpy" data-bs-offset="0" tabindex="0">
-    <div id="loading-screen">
+    <!-- <div id="loading-screen">
         <div class="spinner"></div>
         <br>
         <div class="loading-text">
@@ -341,6 +328,18 @@
             <span>Comparing sequels with originals...</span>
             <span>Loading... because remakes take time too.</span>
             <span>And now, the feature presentation...</span>
+        </div>
+    </div> -->
+
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <div class="loading-container">
+            <p class="loading-words">
+                <span>Loading your data...</span>
+                <span>Fetching resources...</span>
+                <span>Almost there!</span>
+                <span>Finishing up...</span>
+            </p>
         </div>
     </div>
 
