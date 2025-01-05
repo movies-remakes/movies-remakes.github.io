@@ -62,14 +62,13 @@
             font-size: 1.5rem;
         }
 
-
         .loading-words span {
             position: absolute;
             width: 100%;
             text-align: center;
             opacity: 0;
             transform: translateY(100%);
-            animation: rotateWords 8s infinite;
+            animation: rotateWords 10s infinite;
         }
 
         .loading-words span:nth-child(1) {
@@ -77,15 +76,39 @@
         }
 
         .loading-words span:nth-child(2) {
-            animation-delay: 2s;
+            animation-delay: 1s;
         }
 
         .loading-words span:nth-child(3) {
-            animation-delay: 4s;
+            animation-delay: 2s;
         }
 
         .loading-words span:nth-child(4) {
+            animation-delay: 3s;
+        }
+
+        .loading-words span:nth-child(5) {
+            animation-delay: 4s;
+        }
+
+        .loading-words span:nth-child(6) {
+            animation-delay: 5s;
+        }
+
+        .loading-words span:nth-child(7) {
             animation-delay: 6s;
+        }
+
+        .loading-words span:nth-child(8) {
+            animation-delay: 7s;
+        }
+
+        .loading-words span:nth-child(9) {
+            animation-delay: 8s;
+        }
+
+        .loading-words span:nth-child(10) {
+            animation-delay: 9s;
         }
 
         @keyframes rotateWords {
@@ -318,27 +341,21 @@
 </head>
 
 <body data-bs-spy="scroll" data-bs-target="#navbarScrollSpy" data-bs-offset="0" tabindex="0">
-    <!-- <div id="loading-screen">
-        <div class="spinner"></div>
-        <br>
-        <div class="loading-text">
-            <span>Lights, camera... loading!</span>
-            <span>Rewriting the remake... again.</span>
-            <span>Searching for the better version...</span>
-            <span>Comparing sequels with originals...</span>
-            <span>Loading... because remakes take time too.</span>
-            <span>And now, the feature presentation...</span>
-        </div>
-    </div> -->
 
     <div id="loading-screen">
         <div class="spinner"></div>
         <div class="loading-container">
             <p class="loading-words">
-                <span>Loading your data...</span>
-                <span>Fetching resources...</span>
-                <span>Almost there!</span>
-                <span>Finishing up...</span>
+                <span>Action! But wait, loading first.</span>
+                <span>Loading... because remakes need time too.</span>
+                <span>From classics to modern hits, we're on it.</span>
+                <span>Hold on, lining up the stars.</span>
+                <span>Directing your data story, scene by scene.</span>
+                <span>Our hamster is running the wheel.</span>
+                <span>Assembling the Avengers... of remakes.</span>
+                <span>Crossing the multiverse of movie remakes.</span>
+                <span>Lights, camera... loading!</span>
+                <span>Sequels take time, so does this.</span>
             </p>
         </div>
     </div>
